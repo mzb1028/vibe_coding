@@ -150,7 +150,22 @@ async def _score_batch(
     prompt = _build_rank_prompt(cv, role, jobs_batch)
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"responseMimeType": "application/json", "temperature": 0.2},
+        "generationConfig": {
+            "responseMimeType": "application/json",
+            "responseSchema": {
+                "type": "ARRAY",
+                "items": {
+                    "type": "OBJECT",
+                    "properties": {
+                        "id": {"type": "INTEGER"},
+                        "score": {"type": "INTEGER"},
+                        "reason": {"type": "STRING"},
+                    },
+                    "required": ["id", "score", "reason"],
+                },
+            },
+            "temperature": 0.2,
+        },
     }
     url = GEMINI_URL.format(model=GEMINI_MODEL, api_key=api_key)
 
@@ -170,7 +185,10 @@ async def _score_batch(
         if text.startswith("json"):
             text = text[4:]
 
-    return json.loads(text)
+    parsed = json.loads(text)
+    if not isinstance(parsed, list):
+        raise ValueError(f"Expected a JSON array from Gemini, got: {type(parsed).__name__}")
+    return parsed
 
 
 @app.post("/rank")
@@ -210,6 +228,8 @@ async def rank_jobs(request: RankRequest) -> dict:
                 detail=f"Gemini scoring failed: {batch_result}",
             )
         for entry in batch_result:
+            if not isinstance(entry, dict):
+                continue
             try:
                 job_id = int(entry.get("id"))
             except (TypeError, ValueError):
