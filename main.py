@@ -5,8 +5,9 @@ import os
 import re
 
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 app = FastAPI(title="Reeds Jobs API")
@@ -17,6 +18,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """Surface the real error instead of a bare 'Internal Server Error' body."""
+    return JSONResponse(
+        status_code=500,
+        content={"detail": f"Unhandled error: {type(exc).__name__}: {exc}"},
+    )
 
 GREENHOUSE_BOARDS = [
     "riskified",
@@ -111,6 +121,14 @@ class RankRequest(BaseModel):
 def _chunks(items: list, size: int):
     for i in range(0, len(items), size):
         yield items[i : i + size]
+
+
+def _safe_score(value) -> int:
+    """Coerce a model-provided score into an int in [0, 100], never raising."""
+    try:
+        return max(0, min(100, int(value)))
+    except (TypeError, ValueError):
+        return 0
 
 
 def _build_rank_prompt(cv: str, role: str, jobs_batch: list[dict]) -> str:
@@ -245,8 +263,8 @@ async def rank_jobs(request: RankRequest) -> dict:
                 "company": job.get("company"),
                 "location": job.get("location"),
                 "apply_url": job.get("apply_url"),
-                "score": entry.get("score", 0),
-                "reason": entry.get("reason", "Scoring unavailable for this job."),
+                "score": _safe_score(entry.get("score")),
+                "reason": entry.get("reason") or "Scoring unavailable for this job.",
             }
         )
 
