@@ -10,6 +10,13 @@ CPG metrics (trade spend, OTIF, OEE, forecast MAPE, demand-space share).
 - `index.html` — self-contained prototype (open directly in a browser). Seeded
   daily simulation data (730 days) plus a live intraday tick: ticker, run-rate
   hero, and alert stream update in real time.
+- **Department workspaces**: each scorecard opens a full page (hash-routed
+  tabs) with key metrics, a 90-day trend, an active-projects portfolio,
+  sourced industry benchmarks, and related alerts.
+- **User data entry**: "Edit data" on any department page lets you type your
+  own numbers (KPI values/deltas, health score, projects — add/remove/edit).
+  Edits persist in browser localStorage, flow back to the Overview tiles and
+  scorecards, and can be exported/imported as JSON from the header.
 - Industry-specific config lives in the `PACK` object at the top of the script —
   segments, competitors, share matrix, ticker symbols, departments, alerts — so
   the engine can be re-pointed at another vertical (snacks, sensors) by swapping

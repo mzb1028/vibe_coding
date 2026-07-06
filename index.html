@@ -40,8 +40,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .chg.up{color:var(--good)} .chg.dn{color:var(--critical)} .chg.flat{color:var(--ink-3)}
 .tick.flash .val{color:#fff}
 
-/* ================= HEADER ================= */
-header{display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:1px solid var(--hairline);flex-wrap:wrap}
+/* ================= HEADER + NAV ================= */
+header{display:flex;align-items:center;gap:16px;padding:12px 22px;border-bottom:1px solid var(--hairline);flex-wrap:wrap}
 .wordmark{display:flex;align-items:center;gap:10px}
 .wordmark .block{width:24px;height:24px;border-radius:var(--r);background:#1c5cab;
   display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:12px;color:#fff}
@@ -52,11 +52,16 @@ header{display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:
 .pack select{background:var(--raised);color:var(--ink);border:1px solid var(--hairline);border-radius:var(--r);
   padding:4px 8px;font:inherit;font-size:12px}
 .hspace{flex:1}
+.tool-btn{padding:3px 10px;border:1px solid var(--hairline);border-radius:var(--r);color:var(--ink-2);font-size:11px;font-family:var(--mono)}
+.tool-btn:hover{background:var(--raised);color:var(--ink)}
 .clock{font-family:var(--mono);font-size:12px;color:var(--ink-2);display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--good)}
-.ceo{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink-2)}
-.ceo .av{width:24px;height:24px;border-radius:50%;background:var(--raised);border:1px solid var(--hairline);
-  display:grid;place-items:center;font-size:9.5px;font-weight:650;color:var(--ink-2)}
+nav.tabs{display:flex;gap:2px;padding:0 22px;border-bottom:1px solid var(--hairline);overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{padding:9px 14px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+  border-bottom:2px solid transparent;white-space:nowrap}
+.tab:hover{color:var(--ink-2)}
+.tab.on{color:var(--ink);border-bottom-color:var(--accent)}
 
 /* ================= FILTER ROW ================= */
 .filters{display:flex;align-items:center;gap:8px;padding:12px 22px 0;flex-wrap:wrap}
@@ -68,6 +73,7 @@ header{display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:
 
 /* ================= LAYOUT ================= */
 .shell{display:grid;grid-template-columns:minmax(0,1fr) 324px;gap:14px;padding:14px 22px 40px;max-width:1560px;margin:0 auto}
+.shell.full{grid-template-columns:1fr;max-width:1240px}
 @media (max-width:1100px){.shell{grid-template-columns:1fr}.rail{position:static !important;max-height:none !important}}
 .main{display:flex;flex-direction:column;gap:14px;min-width:0}
 .card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r);padding:14px 16px;min-width:0}
@@ -121,15 +127,15 @@ header{display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:
 .dept .score{margin-left:auto;font-family:var(--mono);font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
 .meter{height:3px;border-radius:2px;margin-bottom:12px;position:relative;overflow:hidden}
 .meter .fill{position:absolute;inset:0 auto 0 0;border-radius:2px}
-.dept .krow{display:flex;align-items:center;gap:10px;padding:5px 0;border-top:1px solid var(--grid)}
-.dept .krow:first-of-type{border-top:none}
-.dept .kname{font-size:11.5px;color:var(--ink-2);flex:1;min-width:0}
-.dept .kval{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
-.dept .kdelta{width:54px;text-align:right}
+.krow{display:flex;align-items:center;gap:10px;padding:5px 0;border-top:1px solid var(--grid)}
+.krow:first-of-type{border-top:none}
+.kname{font-size:11.5px;color:var(--ink-2);flex:1;min-width:0}
+.kval{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+.kdelta{width:54px;text-align:right}
 .dept .drill{margin-top:9px;font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
 .dept:hover .drill{color:var(--accent)}
 .status-chip{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
-  font-weight:650;padding:2px 7px;border-radius:var(--r);border:1px solid}
+  font-weight:650;padding:2px 7px;border-radius:var(--r);border:1px solid;white-space:nowrap}
 .status-chip.good{color:var(--good);border-color:rgba(12,163,12,.3)}
 .status-chip.warning{color:var(--warning);border-color:rgba(250,178,25,.3)}
 .status-chip.serious{color:var(--serious);border-color:rgba(236,131,90,.35)}
@@ -151,21 +157,39 @@ header{display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:
 .alert.enter{animation:slidein .3s ease}
 @keyframes slidein{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
 
-/* ================= DRILL-DOWN MODAL ================= */
-.modal-back{position:fixed;inset:0;background:rgba(5,6,8,.72);z-index:100;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:6vh 16px 40px}
-.modal-back.open{display:flex}
-.modal{background:var(--surface);border:1px solid #2d3038;border-radius:var(--r);width:min(880px,94vw);padding:20px 24px 22px}
-.modal .m-head{display:flex;align-items:center;gap:12px;margin-bottom:2px}
-.modal .m-head h2{font-size:15px;font-weight:650}
-.modal .m-close{margin-left:auto;color:var(--ink-3);font-size:16px;padding:2px 8px;border:1px solid var(--hairline);border-radius:var(--r)}
-.modal .m-close:hover{color:var(--ink);background:var(--raised)}
-.modal .m-sub{font-size:11.5px;color:var(--ink-3);margin-bottom:14px}
-.modal h4{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:18px 0 6px}
-.modal .viz-table td:nth-child(3){font-family:var(--sans);color:var(--ink-2);text-align:left}
-.modal .viz-table th:nth-child(3){text-align:left}
-.modal .viz-table td:last-child{font-family:var(--sans);color:var(--ink-3);text-align:left;font-size:11px}
-.modal .viz-table th:last-child{text-align:left}
-.m-alerts{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+/* ================= DEPARTMENT PAGE ================= */
+.dept-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dept-head h2{font-size:16px;font-weight:650;letter-spacing:0;text-transform:none;color:var(--ink)}
+.dept-head .score-big{font-family:var(--mono);font-size:22px;font-weight:700}
+.back{font-size:11px;font-family:var(--mono);color:var(--ink-3);padding:3px 9px;border:1px solid var(--hairline);border-radius:var(--r)}
+.back:hover{color:var(--ink);background:var(--raised)}
+.edit-btn{margin-left:auto}
+.edit-btn.on{color:var(--warning);border-color:rgba(250,178,25,.4)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:960px){.two-col{grid-template-columns:1fr}}
+.kpi-edit{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--grid)}
+.kpi-edit:first-of-type{border-top:none}
+.kpi-edit .kname{flex:1}
+input.field,select.field{background:var(--raised);color:var(--ink);border:1px solid #33363c;border-radius:var(--r);
+  padding:3px 7px;font-family:var(--mono);font-size:12px;width:88px}
+input.field.wide{width:100%;font-family:var(--sans)}
+input.field:focus{border-color:var(--accent);outline:none}
+.proj-table{width:100%;border-collapse:collapse;font-size:12px}
+.proj-table th{text-align:left;color:var(--ink-3);font-weight:500;padding:6px 8px;border-bottom:1px solid var(--hairline);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.proj-table td{padding:7px 8px;border-bottom:1px solid var(--grid);vertical-align:middle}
+.proj-table td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.proj-table .pname{font-weight:600;color:var(--ink)}
+.proj-table .pdesc{font-size:11px;color:var(--ink-3);margin-top:2px}
+.pbar{height:3px;border-radius:2px;background:#24262b;position:relative;min-width:70px}
+.pbar .pfill{position:absolute;inset:0 auto 0 0;border-radius:2px;background:var(--accent)}
+.row-del{color:var(--ink-3);font-size:13px;padding:1px 7px;border:1px solid var(--hairline);border-radius:var(--r)}
+.row-del:hover{color:var(--critical);border-color:rgba(208,59,59,.4)}
+.add-row{margin-top:9px;font-size:11px;font-family:var(--mono);color:var(--ink-2);padding:4px 10px;border:1px dashed #33363c;border-radius:var(--r)}
+.add-row:hover{color:var(--ink);border-color:var(--accent)}
+.editbar{display:flex;gap:8px;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--grid)}
+.save-btn{background:#1c5cab;color:#fff;border:none;padding:5px 16px;border-radius:var(--r);font-size:12px;font-weight:600}
+.save-btn:hover{background:#2a6ec2}
+.editnote{font-size:10.5px;color:var(--ink-3)}
 footer{padding:10px 22px 26px;text-align:center;font-size:10.5px;color:var(--ink-3)}
 footer span{font-family:var(--mono)}
 </style>
@@ -190,121 +214,31 @@ footer span{font-family:var(--mono)}
     </select>
   </div>
   <div class="hspace"></div>
+  <button class="tool-btn" id="exportBtn" title="Download your data as JSON">⭳ Export</button>
+  <button class="tool-btn" id="importBtn" title="Load data from a JSON file">⭱ Import</button>
+  <button class="tool-btn" id="resetBtn" title="Discard your edits and restore seed data">Reset</button>
+  <input type="file" id="importFile" accept=".json" class="hidden">
   <div class="clock"><span class="live-dot" aria-hidden="true"></span><span>LIVE</span><span id="clock">—</span></div>
-  <div class="ceo"><div class="av">CEO</div><span>M. Bianchi</span></div>
 </header>
 
-<!-- FILTER ROW (scopes hero, KPI tiles, revenue chart) -->
-<div class="filters" role="group" aria-label="Date range">
-  <span class="flabel">Range</span>
-  <button class="range-btn" data-days="7">7D</button>
-  <button class="range-btn on" data-days="30">30D</button>
-  <button class="range-btn" data-days="90">90D</button>
-  <button class="range-btn" data-days="365">1Y</button>
-  <span class="asof" id="asof"></span>
-</div>
+<!-- NAV TABS -->
+<nav class="tabs" id="tabs"></nav>
 
-<div class="shell">
-  <div class="main">
+<!-- VIEW ROOT -->
+<div id="view"></div>
 
-    <!-- HERO + KPI ROW -->
-    <div class="hero-row">
-      <div class="card hero">
-        <div class="lbl">Net sales run-rate · today</div>
-        <div class="big"><span id="heroVal">—</span><span class="unit">M</span></div>
-        <div class="vs">vs daily plan $<span id="heroPlan">—</span>M · <span class="delta" id="heroDelta">—</span></div>
-      </div>
-      <div class="card tile" id="tile-mtd"></div>
-      <div class="card tile" id="tile-ebitda"></div>
-      <div class="card tile" id="tile-otif"></div>
-      <div class="card tile" id="tile-mape"></div>
-    </div>
-
-    <!-- REVENUE VS PLAN -->
-    <div class="card">
-      <div class="card-head">
-        <h2>Net sales vs plan</h2><span class="sub">daily, $M · gross-to-net basis · simulation</span>
-        <button class="tbl-toggle" data-target="rev">⊞ Table</button>
-      </div>
-      <div class="legend">
-        <span class="key"><span class="line-key" style="background:var(--s-foodlube)"></span>Actual</span>
-        <span class="key"><span class="line-key" style="background:var(--ink-3)"></span>Plan</span>
-      </div>
-      <div class="plot-wrap" id="revPlot"></div>
-      <div class="tooltip" id="revTip"></div>
-      <div id="revTable" class="hidden"></div>
-    </div>
-
-    <!-- DEMAND SPACE SHARE -->
-    <div class="card">
-      <div class="card-head">
-        <h2>Market share by demand space</h2><span class="sub">$ share, L52W</span>
-        <button class="tbl-toggle" data-target="share">⊞ Table</button>
-      </div>
-      <div class="legend" id="shareLegend"></div>
-      <div class="plot-wrap" id="sharePlot"></div>
-      <div class="tooltip" id="shareTip"></div>
-      <div id="shareTable" class="hidden"></div>
-      <div class="provenance">Illustrative directional estimates. Brand-level share by segment requires syndicated data (Circana / NIQ), which is not public. Known anchors: Swanson is the #1-selling US broth (Circana, via Food Dive, 2022); College Inn + Kitchen Basics ≈ $110–120M net sales (B&amp;G Foods 8-K, 2026); top-5 bone-broth players hold ≈ 42% combined (Fortune Business Insights). Food Lube is fictional.</div>
-    </div>
-
-    <!-- DEPARTMENT SCORECARDS -->
-    <div class="card-head" style="padding:2px 2px 0">
-      <h2>Department health</h2>
-      <span class="sub">composite scores · click a department for detail</span>
-    </div>
-    <div class="dept-grid" id="deptGrid"></div>
-  </div>
-
-  <!-- ALERT RAIL -->
-  <aside class="rail">
-    <div class="card">
-      <div class="card-head">
-        <h2>Alerts</h2>
-        <span class="sub" id="alertCount"></span>
-      </div>
-      <div class="alert-list" id="alertList" aria-live="polite"></div>
-      <div class="provenance">Simulated scenario feed. Items referencing real companies are either sourced facts (marked) or hypothetical scenarios (marked “Scenario”).</div>
-    </div>
-  </aside>
-</div>
-
-<!-- DRILL-DOWN MODAL -->
-<div class="modal-back" id="modalBack">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-    <div class="m-head">
-      <h2 id="mTitle">—</h2>
-      <span class="status-chip" id="mChip"></span>
-      <span class="score" id="mScore" style="font-family:var(--mono);font-size:18px;font-weight:700"></span>
-      <button class="m-close" id="mClose" aria-label="Close">✕</button>
-    </div>
-    <div class="m-sub" id="mSub"></div>
-    <h4 id="mTrendLabel"></h4>
-    <div class="plot-wrap" id="mPlot"></div>
-    <div class="tooltip" id="mTip"></div>
-    <h4>Metrics vs industry benchmarks</h4>
-    <div id="mTable"></div>
-    <h4>Related alerts</h4>
-    <div class="m-alerts" id="mAlerts"></div>
-    <div class="provenance" id="mProv"></div>
-  </div>
-</div>
-
-<footer>FOOD LUBE CO. · internal executive prototype · company data is seeded simulation — benchmarks &amp; category facts sourced (see drill-downs / README) · pack <span>soup-broth-concentrates@0.2</span></footer>
+<footer>FOOD LUBE CO. · internal executive prototype · company data is seeded simulation, editable per department — benchmarks &amp; category facts sourced (see README) · pack <span>soup-broth-concentrates@0.3</span></footer>
 
 <script>
 "use strict";
 /* =====================================================================
-   INDUSTRY PACK — swappable config. Everything domain-specific lives
-   here; the dashboard engine below only reads this object.
-   Data provenance convention:
-     - Food Lube values: seeded simulation (fictional company)
-     - "bench"/"src" fields: real published benchmarks, sourced
-     - share matrix: illustrative (syndicated data not public)
+   INDUSTRY PACK — swappable config (see README for data provenance).
+   Company values + projects are simulation seeds; the user can edit
+   them (Edit mode) and edits persist in localStorage.
    ===================================================================== */
 const PACK = {
   id:"soup-broth-concentrates", currency:"USD",
-  company:{name:"Food Lube Co.", fyNetSalesM:1420, grossMarginPct:31.4},
+  company:{name:"Food Lube Co.", fyNetSalesM:1420},
   segments:["Value","Mainstream","Premium","Functional","Convenience"],
   competitors:[
     {id:"foodlube",  name:"Food Lube",            hex:"#3987e5"},
@@ -315,11 +249,6 @@ const PACK = {
     {id:"imagine",   name:"Imagine (Hain)",       hex:"#008300"},
     {id:"other",     name:"Other (incl. Swanson, College Inn, PL)", hex:"#33363c"}
   ],
-  /* ILLUSTRATIVE $ share by demand space (rows sum to 100).
-     Anchored to public facts where they exist: Swanson = #1 US broth
-     (in "Other"); top-5 bone-broth brands ≈42% combined, led by
-     Ancient Brands ≈12.5% (in "Other"), so no single named brand
-     exceeds low-teens in Functional. */
   share:{
     "Value":       {foodlube: 8, knorr:26, btb: 5, pacific: 0, kettlefire: 0, imagine: 0, other:61},
     "Mainstream":  {foodlube:11, knorr: 8, btb: 3, pacific: 7, kettlefire: 0, imagine: 4, other:67},
@@ -342,9 +271,12 @@ const PACK = {
       {n:"Net sales MTD vs plan", v:"+2.1%", d:+2.1, up:"good"},
       {n:"Trade spend ROI",       v:"1.42×", d:+0.06,up:"good"},
       {n:"ACV distribution",      v:"68.3%", d:+0.8, up:"good"}],
+     projects:[
+      {name:"Club channel expansion — Pantry Gold 6-pack",desc:"October rotation accepted in Midwest region; scale to 2 more regions",lead:"J. Whitfield",stage:"Execution",due:"2026-10-15",budgetK:850,pct:55,status:"On track"},
+      {name:"Trade promotion optimization rollout",desc:"TPM/TPO platform to lift trade ROI from 1.42× toward 1.6×",lead:"S. Okafor",stage:"Pilot",due:"2026-12-01",budgetK:1200,pct:30,status:"On track"},
+      {name:"Foodservice broth program pilot",desc:"SimmrPro chef-grade pastes into regional distributors",lead:"D. Reyes",stage:"Scoping",due:"2027-02-28",budgetK:400,pct:10,status:"At risk"}],
      detail:{
-      trendLabel:"ACV distribution, 90 days (%)",
-      trend:{start:66.2,end:68.3,noise:.25},
+      trendLabel:"ACV distribution, 90 days (%)", trendKpi:2, trend:{start:66.2,noise:.25},
       rows:[
         ["Trade spend, % gross sales","19.4% (sim)","15–25% is typical for CPG brands — usually the 2nd-largest cost after COGS","TrewUp / Eightx (2026)"],
         ["Gross-to-net deductions","33.8% (sim)","30–40% total G2N is common; net revenue lands near 60–70% of gross","Eightx (2026)"],
@@ -355,9 +287,12 @@ const PACK = {
       {n:"Blended $ share",   v:"9.2%",  d:+0.3, up:"good"},
       {n:"Brand vitality idx",v:"71",    d:-1.0, up:"good"},
       {n:"Media ROAS",        v:"2.8×",  d:+0.2, up:"good"}],
+     projects:[
+      {name:"EmberWell winter functional campaign",desc:"Sipping-broth media flight timed to soup season peak (Nov–Feb)",lead:"A. Lindqvist",stage:"Execution",due:"2027-02-15",budgetK:2400,pct:40,status:"On track"},
+      {name:"Stone & Sprig packaging redesign",desc:"Premium carton refresh; also addresses seal-integrity complaint driver",lead:"M. Chen",stage:"Design",due:"2026-11-30",budgetK:600,pct:65,status:"On track"},
+      {name:"Retail media network test",desc:"Kroger/Walmart retail media pilots; measure ROAS vs national media",lead:"A. Lindqvist",stage:"Pilot",due:"2026-09-30",budgetK:350,pct:80,status:"On track"}],
      detail:{
-      trendLabel:"Blended $ share, 90 days (%)",
-      trend:{start:8.9,end:9.2,noise:.05},
+      trendLabel:"Blended $ share, 90 days (%)", trendKpi:0, trend:{start:8.9,noise:.05},
       rows:[
         ["US soup category size","—","≈ $5.9B (2024), ≈ 2.5% CAGR to 2032; shelf-stable ≈ 47% of it","GlobeNewswire / Mordor (2025)"],
         ["Bone broth segment","—","≈ $1.2B global (2025), ≈ 6% CAGR; North America ≈ 36% of it","Fortune Business Insights"],
@@ -368,9 +303,13 @@ const PACK = {
       {n:"OEE (network)",   v:"67.8%", d:-2.4, up:"good"},
       {n:"OTIF fill rate",  v:"91.8%", d:-2.8, up:"good"},
       {n:"Days inventory",  v:"61d",   d:+4.0, up:"bad"}],
+     projects:[
+      {name:"Camden Line 4 filler overhaul",desc:"Carton filler micro-stoppages at 2× baseline; −1.9pts network OEE",lead:"R. Novak",stage:"Execution",due:"2026-08-15",budgetK:950,pct:45,status:"Behind"},
+      {name:"Toledo DC carrier diversification",desc:"Add 2 regional carriers to close the OTIF gap vs 96% target",lead:"K. Iwu",stage:"Negotiation",due:"2026-09-01",budgetK:150,pct:60,status:"At risk"},
+      {name:"Q1 commodity hedge extension",desc:"Extend chicken & can-sheet cover from 60% to 75% of Q1 needs",lead:"P. Solano",stage:"Approval",due:"2026-08-01",budgetK:0,pct:85,status:"On track"},
+      {name:"Demand forecast ML pilot",desc:"Target hero-SKU MAPE from 24% to ≤20% (club channel volatility)",lead:"T. Mbeki",stage:"Pilot",due:"2026-12-15",budgetK:520,pct:35,status:"On track"}],
      detail:{
-      trendLabel:"OTIF fill rate, 90 days (%)",
-      trend:{start:95.1,end:91.8,noise:.3},
+      trendLabel:"OTIF fill rate, 90 days (%)", trendKpi:1, trend:{start:95.1,noise:.3},
       rows:[
         ["OEE (network)","67.8% (sim)","≈ 85% is the world-class benchmark; food plants commonly run 60–75%, dragged by packaging-line micro-stoppages","Brightly / Explitia"],
         ["OTIF fill rate","91.8% (sim)","Major-retailer compliance programs commonly demand high-90s OTIF, with fines for misses","industry norm"],
@@ -381,9 +320,13 @@ const PACK = {
       {n:"Active pipeline projects", v:"14",    d:+2.0, up:"good"},
       {n:"% sales from <3yr products",v:"17.2%",d:+1.1, up:"good"},
       {n:"Stage-gate on-time",       v:"83%",   d:-3.0, up:"good"}],
+     projects:[
+      {name:"SimmrPro chef-grade paste launch",desc:"Passed gate 3 (top-2-box 78%); launch tracking to Q4 soup season",lead:"L. Fontaine",stage:"Gate 4 — Launch prep",due:"2026-10-01",budgetK:1800,pct:70,status:"On track"},
+      {name:"EmberWell concentrate paste",desc:"Functional bone-broth paste format — the concentrate flank of Functional",lead:"L. Fontaine",stage:"Gate 2 — Development",due:"2027-03-31",budgetK:900,pct:25,status:"On track"},
+      {name:"Sodium-reduction reformulation — Hearth",desc:"−15% sodium across mainstream line without top-2-box loss",lead:"N. Adeyemi",stage:"Gate 3 — Validation",due:"2027-01-31",budgetK:650,pct:50,status:"At risk"},
+      {name:"Regenerative-sourced broth exploration",desc:"Supply feasibility for regenerative-ag positioning in Premium",lead:"C. Duval",stage:"Gate 1 — Discovery",due:"2027-06-30",budgetK:200,pct:15,status:"On track"}],
      detail:{
-      trendLabel:"% of sales from products <3 yrs old, 90 days",
-      trend:{start:16.1,end:17.2,noise:.12},
+      trendLabel:"% of sales from products <3 yrs old, 90 days", trendKpi:1, trend:{start:16.1,noise:.12},
       rows:[
         ["Innovation vitality","17.2% (sim)","Growth-oriented CPGs commonly target 15–20%+ of sales from recent launches","industry norm"],
         ["Active pipeline projects","14 (sim)","—","—"],
@@ -394,9 +337,12 @@ const PACK = {
       {n:"EBITDA margin LTM", v:"13.2%", d:+0.4, up:"good"},
       {n:"Net leverage",      v:"3.4×",  d:-0.1, up:"bad"},
       {n:"Cash conversion",   v:"84%",   d:+2.0, up:"good"}],
+     projects:[
+      {name:"Working capital program",desc:"DIO −5 days by Q2; frees ≈ $19M cash at current run-rate",lead:"H. Baptiste",stage:"Execution",due:"2027-04-30",budgetK:250,pct:35,status:"On track"},
+      {name:"Trade deduction settlement cleanup",desc:"Backlog at 4.2% of gross sales vs ≤3.5% target; club channel focus",lead:"E. Vargas",stage:"Execution",due:"2026-09-30",budgetK:180,pct:50,status:"At risk"},
+      {name:"ERP consolidation phase 2",desc:"Single ledger across Camden & Toledo sites; closes 2 days faster",lead:"H. Baptiste",stage:"Build",due:"2027-05-31",budgetK:2100,pct:40,status:"On track"}],
      detail:{
-      trendLabel:"EBITDA margin LTM, 90 days (%)",
-      trend:{start:12.8,end:13.2,noise:.06},
+      trendLabel:"EBITDA margin LTM, 90 days (%)", trendKpi:0, trend:{start:12.8,noise:.06},
       rows:[
         ["Gross margin","31.4% (sim)","Public food pure-plays: 21–38%, median ≈ 33% — Utz 24.9%, BellRing 33.3%, Simply Good 36.2%, Hain 21.4% (FY2025)","Eightx (2026)"],
         ["Operating margin","≈ 9% (sim)","Healthy public food operators run ≈ 1–15% operating margin","Eightx (2026)"],
@@ -407,9 +353,12 @@ const PACK = {
       {n:"Complaints / M units", v:"2.1", d:-0.3, up:"bad"},
       {n:"First-pass quality",   v:"98.7%",d:+0.1,up:"good"},
       {n:"Audit score (SQF)",    v:"96",   d: 0.0,up:"good"}],
+     projects:[
+      {name:"Seal integrity CAPA — Stone & Sprig carton",desc:"Complaint rate 3.1/M vs 2.1 baseline; corrective action with carton supplier",lead:"G. Tanaka",stage:"Containment",due:"2026-08-31",budgetK:120,pct:40,status:"At risk"},
+      {name:"SQF recertification prep",desc:"Annual GFSI-benchmarked audit cycle; Camden passed unannounced audit clean",lead:"G. Tanaka",stage:"Execution",due:"2026-11-15",budgetK:90,pct:60,status:"On track"},
+      {name:"Supplier quality scorecard rollout",desc:"Tiered scorecards for top-40 ingredient & packaging suppliers",lead:"F. Osei",stage:"Design",due:"2027-01-31",budgetK:160,pct:20,status:"On track"}],
      detail:{
-      trendLabel:"Consumer complaints per million units, 90 days",
-      trend:{start:2.5,end:2.1,noise:.05},
+      trendLabel:"Consumer complaints per million units, 90 days", trendKpi:0, trend:{start:2.5,noise:.05},
       rows:[
         ["Complaints / M units","2.1 (sim)","—","—"],
         ["First-pass quality","98.7% (sim)","Quality losses are one of OEE's three factors; food lines lose most to micro-stoppages and changeovers","Brightly / Explitia"],
@@ -417,8 +366,6 @@ const PACK = {
         ["Recall exposure","low (sim)","—","—"]],
       prov:"SQF/GFSI context is factual; scores are simulation."}}
   ],
-  /* Alert feed. type: "fact" = sourced real-world item; "scenario" =
-     hypothetical simulation; "sim" = internal fictional-company event. */
   alerts:[
     {sev:"critical",dept:"SUPPLY CHAIN · SIM",min:12, msg:"Chicken input index +8.2% WoW — annualized COGS exposure $3.1M across EmberWell and Hearth stock lines."},
     {sev:"serious", dept:"SUPPLY CHAIN · SIM",min:34, msg:"OTIF dipped to 91.8% at Toledo DC — carrier capacity shortfall; 96% target breach for 6 consecutive days."},
@@ -442,6 +389,25 @@ const PACK = {
 };
 
 /* =====================================================================
+   USER STATE — editable overlay persisted to localStorage
+   ===================================================================== */
+const LS_KEY="foodlube-state-v1";
+function seedState(){
+  return {departments: PACK.departments.map(d=>({
+    name:d.name, score:d.score,
+    kpis:d.kpis.map(k=>({...k})),
+    projects:d.projects.map(p=>({...p}))
+  }))};
+}
+let STATE;
+try{
+  const raw=localStorage.getItem(LS_KEY);
+  STATE = raw? JSON.parse(raw) : seedState();
+  if(!STATE.departments || STATE.departments.length!==PACK.departments.length) STATE=seedState();
+}catch(e){ STATE=seedState(); }
+function saveState(){ try{localStorage.setItem(LS_KEY,JSON.stringify(STATE))}catch(e){} }
+
+/* =====================================================================
    DATA ENGINE — deterministic seeded series (730 days, daily)
    ===================================================================== */
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -449,15 +415,13 @@ const rng = mulberry32(20260706);
 const DAY = 864e5, NOW = new Date();
 const N_DAYS = 730;
 const t0 = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate()).getTime() - (N_DAYS-1)*DAY;
-
-/* Soup seasonality: winter peak (mid-January), summer trough. Weekend shipping dip. */
 function seasonal(ts){
   const d = new Date(ts), doy = (ts - new Date(d.getFullYear(),0,0).getTime())/DAY;
   const season = 1 + 0.26*Math.cos(2*Math.PI*(doy-15)/365.25);
   const dow = d.getDay(), wk = (dow===0||dow===6) ? 0.52 : 1 + (dow===1?0.10:0) + (dow===4?0.06:0);
   return {season, wk};
 }
-const baseDaily = PACK.company.fyNetSalesM/365; // ≈ $3.89M/day
+const baseDaily = PACK.company.fyNetSalesM/365;
 const days=[], actual=[], plan=[];
 {
   let drift = 0;
@@ -466,12 +430,11 @@ const days=[], actual=[], plan=[];
     const growth = Math.pow(1.045, i/365);
     drift = drift*0.92 + (rng()-0.5)*0.05;
     const p = baseDaily*season*wk*growth;
-    const recentLift = i > N_DAYS-120 ? 0.021 : 0; // recent quarters running ahead of plan
+    const recentLift = i > N_DAYS-120 ? 0.021 : 0;
     const a = p * (1 + drift*0.6 + (rng()-0.5)*0.09 + 0.008 + recentLift);
     days.push(ts); plan.push(p); actual.push(Math.max(0.4, a));
   }
 }
-/* generic 90-day metric series between two anchors */
 function metricSeries(start,end,noise,n=90,seed=7){
   const r=mulberry32(seed*7919+13); const out=[];
   for(let i=0;i<n;i++){
@@ -483,6 +446,8 @@ function metricSeries(start,end,noise,n=90,seed=7){
 const fmtM = v => "$"+v.toFixed(2)+"M";
 const fmtDate = ts => new Date(ts).toLocaleDateString("en-US",{month:"short",day:"numeric"});
 const fmtDateY = ts => new Date(ts).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+const num = s => { const m=String(s).replace(/[^0-9.\-]/g,""); const v=parseFloat(m); return isNaN(v)?null:v; };
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 /* =====================================================================
    CHART HELPERS (SVG, hand-rolled)
@@ -490,7 +455,6 @@ const fmtDateY = ts => new Date(ts).toLocaleDateString("en-US",{month:"short",da
 const SVGNS="http://www.w3.org/2000/svg";
 function el(tag,attrs,parent){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
 function niceTicks(max,n){const raw=max/n,mag=Math.pow(10,Math.floor(Math.log10(raw)));const norm=raw/mag;const step=(norm<1.5?1:norm<3?2:norm<7?5:10)*mag;const out=[];for(let v=0;v<=max+1e-9;v+=step)out.push(v);return out}
-
 function sparkline(values, w=120, h=26, accentLast=true){
   const svg=document.createElementNS(SVGNS,"svg");
   svg.setAttribute("width",w);svg.setAttribute("height",h);svg.setAttribute("aria-hidden","true");
@@ -506,8 +470,6 @@ function sparkline(values, w=120, h=26, accentLast=true){
   }
   return svg;
 }
-
-/* ---------- generic line chart with crosshair (used by main + modal) ---------- */
 function lineChart(host,tipEl,series,opts){
   host.innerHTML="";
   const n=series[0].vals.length;
@@ -519,7 +481,7 @@ function lineChart(host,tipEl,series,opts){
   const X=i=>M.l+i*iw/(n-1), Y=v=>M.t+ih-((v-ymin)/(ymax-ymin))*ih;
   const svg=el("svg",{width:"100%",height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":opts.aria||"line chart"});
   host.appendChild(svg);
-  const yt=opts.zeroBase?niceTicks(ymax,4):[ymin,ymin+span*.5,ymax].map(v=>v);
+  const yt=opts.zeroBase?niceTicks(ymax,4):[ymin,ymin+span*.5,ymax];
   yt.forEach(v=>{
     el("line",{x1:M.l,x2:W-M.r,y1:Y(v),y2:Y(v),stroke:"var(--grid)","stroke-width":1},svg);
     const t=el("text",{x:M.l-8,y:Y(v)+4,"text-anchor":"end",fill:"#5f6672","font-size":10,"font-family":"var(--mono)"},svg);
@@ -563,12 +525,127 @@ function lineChart(host,tipEl,series,opts){
   hit.addEventListener("mouseleave",()=>{tipEl.style.display="none";cross.setAttribute("visibility","hidden");dots.forEach(d=>d.setAttribute("visibility","hidden"))});
 }
 
-/* ---------- Revenue vs plan ---------- */
+/* =====================================================================
+   STATUS HELPERS
+   ===================================================================== */
+function statusOf(score){return score>=75?"good":score>=60?"warning":score>=45?"serious":"critical"}
+const STATUS_LABEL={good:"Healthy",warning:"Watch",serious:"At risk",critical:"Critical"};
+const STATUS_ICON={good:"✔",warning:"◔",serious:"◆",critical:"▲"};
+const PSTATUS={"On track":"good","At risk":"warning","Behind":"serious","Done":"good"};
+const SEV_LABEL={critical:"Critical",serious:"Serious",warning:"Warning",good:"Positive"};
+
+/* =====================================================================
+   ROUTER + NAV
+   ===================================================================== */
+const TABS=[{id:"overview",label:"Overview"}].concat(PACK.departments.map((d,i)=>({id:"dept-"+i,label:d.name})));
+function renderTabs(){
+  const nav=document.getElementById("tabs");nav.innerHTML="";
+  const cur=location.hash.slice(1)||"overview";
+  TABS.forEach(t=>{
+    const b=document.createElement("button");
+    b.className="tab"+(t.id===cur?" on":"");b.textContent=t.label;
+    b.addEventListener("click",()=>{location.hash=t.id});
+    nav.appendChild(b);
+  });
+}
+window.addEventListener("hashchange",()=>{route()});
+function route(){
+  const h=location.hash.slice(1)||"overview";
+  renderTabs();
+  if(h.startsWith("dept-")){renderDeptPage(+h.split("-")[1]||0)}
+  else renderOverview();
+  window.scrollTo(0,0);
+}
+
+/* =====================================================================
+   OVERVIEW PAGE
+   ===================================================================== */
 let revDays=30;
+function renderOverview(){
+  document.getElementById("view").innerHTML=`
+  <div class="filters" role="group" aria-label="Date range">
+    <span class="flabel">Range</span>
+    <button class="range-btn ${revDays===7?"on":""}" data-days="7">7D</button>
+    <button class="range-btn ${revDays===30?"on":""}" data-days="30">30D</button>
+    <button class="range-btn ${revDays===90?"on":""}" data-days="90">90D</button>
+    <button class="range-btn ${revDays===365?"on":""}" data-days="365">1Y</button>
+    <span class="asof">as of ${NOW.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>
+  </div>
+  <div class="shell">
+    <div class="main">
+      <div class="hero-row">
+        <div class="card hero">
+          <div class="lbl">Net sales run-rate · today</div>
+          <div class="big"><span id="heroVal">—</span><span class="unit">M</span></div>
+          <div class="vs">vs daily plan $<span id="heroPlan">—</span>M · <span class="delta" id="heroDelta">—</span></div>
+        </div>
+        <div class="card tile" id="tile-mtd"></div>
+        <div class="card tile" id="tile-ebitda"></div>
+        <div class="card tile" id="tile-otif"></div>
+        <div class="card tile" id="tile-mape"></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Net sales vs plan</h2><span class="sub">daily, $M · gross-to-net basis · simulation</span>
+          <button class="tbl-toggle" data-target="rev">⊞ Table</button>
+        </div>
+        <div class="legend">
+          <span class="key"><span class="line-key" style="background:var(--s-foodlube)"></span>Actual</span>
+          <span class="key"><span class="line-key" style="background:var(--ink-3)"></span>Plan</span>
+        </div>
+        <div class="plot-wrap" id="revPlot"></div>
+        <div class="tooltip" id="revTip"></div>
+        <div id="revTable" class="hidden"></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Market share by demand space</h2><span class="sub">$ share, L52W</span>
+          <button class="tbl-toggle" data-target="share">⊞ Table</button>
+        </div>
+        <div class="legend" id="shareLegend"></div>
+        <div class="plot-wrap" id="sharePlot"></div>
+        <div class="tooltip" id="shareTip"></div>
+        <div id="shareTable" class="hidden"></div>
+        <div class="provenance">Illustrative directional estimates. Brand-level share by segment requires syndicated data (Circana / NIQ), which is not public. Known anchors: Swanson is the #1-selling US broth (Circana, via Food Dive, 2022); College Inn + Kitchen Basics ≈ $110–120M net sales (B&amp;G Foods 8-K, 2026); top-5 bone-broth players hold ≈ 42% combined (Fortune Business Insights). Food Lube is fictional.</div>
+      </div>
+      <div class="card-head" style="padding:2px 2px 0">
+        <h2>Department health</h2>
+        <span class="sub">composite scores · click a department to open its workspace</span>
+      </div>
+      <div class="dept-grid" id="deptGrid"></div>
+    </div>
+    <aside class="rail">
+      <div class="card">
+        <div class="card-head"><h2>Alerts</h2><span class="sub" id="alertCount"></span></div>
+        <div class="alert-list" id="alertList" aria-live="polite"></div>
+        <div class="provenance">Simulated scenario feed. Items referencing real companies are either sourced facts (marked FACT) or hypothetical scenarios (marked SCENARIO).</div>
+      </div>
+    </aside>
+  </div>`;
+  document.querySelectorAll(".range-btn").forEach(b=>{
+    b.addEventListener("click",()=>{
+      document.querySelectorAll(".range-btn").forEach(x=>x.classList.remove("on"));
+      b.classList.add("on");revDays=+b.dataset.days;
+      drawRevenue();renderTiles();
+    });
+  });
+  document.querySelectorAll(".tbl-toggle").forEach(b=>{
+    b.addEventListener("click",()=>{
+      const id=b.dataset.target;
+      const plot=document.getElementById(id+"Plot"), tbl=document.getElementById(id+"Table");
+      const showTbl=tbl.classList.contains("hidden");
+      tbl.classList.toggle("hidden",!showTbl);plot.classList.toggle("hidden",showTbl);
+      b.textContent=showTbl?"◫ Chart":"⊞ Table";
+    });
+  });
+  drawRevenue();drawShare();renderTiles();renderDepts();renderAlerts();
+  tickHeroNow();
+}
 function drawRevenue(){
+  const host=document.getElementById("revPlot"); if(!host)return;
   const n=Math.min(revDays,N_DAYS);
   const xs=days.slice(-n), ya=actual.slice(-n), yp=plan.slice(-n);
-  lineChart(document.getElementById("revPlot"),document.getElementById("revTip"),
+  lineChart(host,document.getElementById("revTip"),
     [{name:"Actual",vals:ya,color:"#3987e5"},{name:"Plan",vals:yp,color:"#5f6672"}],
     {h:260,zeroBase:true,area:true,aria:"Daily net sales versus plan",
      yfmt:v=>"$"+(v>=10?v.toFixed(0):v.toFixed(1))+"M",
@@ -580,10 +657,8 @@ function drawRevenue(){
   for(let i=n-1;i>=0;i-=step){rows+=`<tr><td>${fmtDateY(xs[i])}</td><td>${fmtM(ya[i])}</td><td>${fmtM(yp[i])}</td><td>${((ya[i]/yp[i]-1)*100).toFixed(1)}%</td></tr>`}
   tbl.innerHTML=`<table class="viz-table"><thead><tr><th>Date</th><th>Actual</th><th>Plan</th><th>Δ vs plan</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
-
-/* ---------- Demand-space share: horizontal 100% stacked bars ---------- */
 function drawShare(){
-  const host=document.getElementById("sharePlot"); host.innerHTML="";
+  const host=document.getElementById("sharePlot"); if(!host)return; host.innerHTML="";
   const rowsN=PACK.segments.length, comp=PACK.competitors;
   const W=host.clientWidth||820, rowH=18, gapY=16, M={t:6,r:14,b:4,l:104};
   const H=M.t+rowsN*(rowH+gapY)-gapY+M.b;
@@ -596,9 +671,9 @@ function drawShare(){
     const t=el("text",{x:M.l-12,y:y+rowH/2+4,"text-anchor":"end",fill:"#9aa1ac","font-size":11.5},svg);
     t.textContent=seg;
     let x=M.l;
-    comp.forEach((c,ci)=>{
+    comp.forEach(c=>{
       const pct=PACK.share[seg][c.id]||0; if(!pct)return;
-      const wpx=pct/100*iw - 2; // 2px surface gap between segments
+      const wpx=pct/100*iw - 2;
       if(wpx<=0)return;
       const r=el("rect",{x:x,y:y,width:Math.max(1,wpx),height:rowH,fill:c.hex,rx:2},svg);
       if(wpx>40){
@@ -629,12 +704,8 @@ function drawShare(){
   let rows=PACK.segments.map(seg=>`<tr><td>${seg}</td>${comp.map(c=>`<td>${PACK.share[seg][c.id]||0}%</td>`).join("")}</tr>`).join("");
   tbl.innerHTML=`<table class="viz-table"><thead><tr><th>Demand space</th>${head}</tr></thead><tbody>${rows}</tbody></table>`;
 }
-
-/* =====================================================================
-   KPI TILES
-   ===================================================================== */
 function statTile(hostId,label,val,unit,delta,deltaGoodWhenUp,meta,seriesVals){
-  const host=document.getElementById(hostId);
+  const host=document.getElementById(hostId); if(!host)return;
   const up=delta>=0, good=(up===deltaGoodWhenUp);
   host.innerHTML=`<div class="lbl">${label}</div>
     <div class="val">${val}<span class="unit">${unit}</span></div>
@@ -649,93 +720,41 @@ function renderTiles(){
   const spark=[];const step=Math.max(1,Math.floor(n/12));
   for(let i=Math.max(0,n-12*step);i<n;i+=step)spark.push(a[i]);
   statTile("tile-mtd","Net sales · period","$"+sum(a).toFixed(0),"M",dVsPlan,true,"vs plan",spark);
-  statTile("tile-ebitda","EBITDA margin · LTM","13.2","%",0.4,true,"vs prior LTM",[12.1,12.3,12.2,12.5,12.6,12.4,12.8,12.9,13.0,12.9,13.1,13.2]);
-  statTile("tile-otif","Fill rate · OTIF","91.8","%",-2.8,true,"target 96%",[95.1,95.3,94.8,95.0,94.6,94.9,94.2,93.8,93.1,92.6,92.2,91.8]);
+  /* EBITDA + OTIF tiles read from the (editable) department state */
+  const fin=STATE.departments[4], sup=STATE.departments[2];
+  const eb=num(fin.kpis[0].v)??13.2, ot=num(sup.kpis[1].v)??91.8;
+  statTile("tile-ebitda","EBITDA margin · LTM",eb.toFixed(1),"%",fin.kpis[0].d,true,"vs prior LTM",metricSeries(eb-0.5,eb,.06,12,41));
+  statTile("tile-otif","Fill rate · OTIF",ot.toFixed(1),"%",sup.kpis[1].d,true,"target 96%",metricSeries(ot+3.3,ot,.2,12,42));
   statTile("tile-mape","Forecast MAPE · hero SKUs","24","%",1.6,false,"target ≤20%",[21,20,22,21,23,22,21,23,24,23,25,24]);
 }
-
-/* =====================================================================
-   DEPARTMENT SCORECARDS + DRILL-DOWN
-   ===================================================================== */
-function statusOf(score){return score>=75?"good":score>=60?"warning":score>=45?"serious":"critical"}
-const STATUS_LABEL={good:"Healthy",warning:"Watch",serious:"At risk",critical:"Critical"};
-const STATUS_ICON={good:"✔",warning:"◔",serious:"◆",critical:"▲"};
 function renderDepts(){
-  const grid=document.getElementById("deptGrid");grid.innerHTML="";
-  PACK.departments.forEach((d,di)=>{
+  const grid=document.getElementById("deptGrid"); if(!grid)return; grid.innerHTML="";
+  STATE.departments.forEach((d,di)=>{
     const st=statusOf(d.score);
     const card=document.createElement("div");card.className="card dept";
-    card.setAttribute("role","button");card.setAttribute("tabindex","0");
-    card.setAttribute("aria-label",d.name+" — open detail");
+    card.setAttribute("role","link");card.setAttribute("tabindex","0");
+    card.setAttribute("aria-label",d.name+" — open workspace");
     const kpiRows=d.kpis.map(k=>{
       const up=k.d>=0, good=(k.up==="good")===(k.d>=0)||k.d===0;
       const cls=k.d===0?"":(good?"up":"dn");
       const arrow=k.d===0?"—":(up?"▲":"▼");
-      return `<div class="krow"><span class="kname">${k.n}</span>
-        <span class="kval">${k.v}</span>
+      return `<div class="krow"><span class="kname">${esc(k.n)}</span>
+        <span class="kval">${esc(k.v)}</span>
         <span class="kdelta delta ${cls}">${arrow} ${k.d===0?"":Math.abs(k.d).toFixed(1)}</span></div>`;
     }).join("");
-    card.innerHTML=`<div class="dept-top"><h3>${d.name}</h3>
+    const nProj=d.projects.length, nRisk=d.projects.filter(p=>p.status!=="On track"&&p.status!=="Done").length;
+    card.innerHTML=`<div class="dept-top"><h3>${esc(d.name)}</h3>
         <span class="status-chip ${st}">${STATUS_ICON[st]} ${STATUS_LABEL[st]}</span>
         <span class="score" style="color:var(--${st})">${d.score}</span></div>
       <div class="meter" style="background:color-mix(in srgb, var(--${st}) 16%, transparent)">
         <div class="fill" style="width:${d.score}%;background:var(--${st})"></div></div>
       ${kpiRows}
-      <div class="drill">VIEW DETAIL →</div>`;
-    card.addEventListener("click",()=>openDept(di));
-    card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDept(di)}});
+      <div class="drill">${nProj} PROJECTS${nRisk?` · ${nRisk} NEED ATTENTION`:""} · OPEN WORKSPACE →</div>`;
+    card.addEventListener("click",()=>{location.hash="dept-"+di});
+    card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();location.hash="dept-"+di}});
     grid.appendChild(card);
   });
 }
-function deptTag(name){return name.split(" ")[0].replace("&","").toUpperCase()}
-function openDept(di){
-  const d=PACK.departments[di], st=statusOf(d.score);
-  document.getElementById("mTitle").textContent=d.name;
-  const chip=document.getElementById("mChip");
-  chip.className="status-chip "+st; chip.innerHTML=STATUS_ICON[st]+" "+STATUS_LABEL[st];
-  const sc=document.getElementById("mScore"); sc.textContent=d.score; sc.style.color=`var(--${st})`;
-  document.getElementById("mSub").textContent="Composite health score · Food Lube values are seeded simulation; benchmark column is sourced from public research.";
-  document.getElementById("mTrendLabel").textContent=d.detail.trendLabel;
-  document.getElementById("mProv").textContent=d.detail.prov;
-  // benchmark table
-  const rows=d.detail.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
-  document.getElementById("mTable").innerHTML=
-    `<table class="viz-table"><thead><tr><th>Metric</th><th>Food Lube</th><th>Industry benchmark / fact</th><th>Source</th></tr></thead><tbody>${rows}</tbody></table>`;
-  // related alerts
-  const key=d.name.split(" ")[0].toUpperCase();
-  const rel=[...document.querySelectorAll("#alertList .alert")].filter(a=>{
-    const src=a.querySelector(".a-src").textContent;
-    if(d.name.startsWith("Supply"))return src.includes("SUPPLY")||src.includes("OPS");
-    if(d.name.startsWith("Commercial"))return src.includes("COMMERCIAL")||src.includes("DEMAND");
-    if(d.name.startsWith("Marketing"))return src.includes("COMPETITIVE");
-    return src.includes(key);
-  }).slice(0,4);
-  const mA=document.getElementById("mAlerts");mA.innerHTML="";
-  if(rel.length)rel.forEach(a=>mA.appendChild(a.cloneNode(true)));
-  else mA.innerHTML='<div class="provenance" style="border:none;padding:0">No related alerts in the current window.</div>';
-  // trend chart
-  document.getElementById("modalBack").classList.add("open");
-  document.body.style.overflow="hidden";
-  requestAnimationFrame(()=>{
-    const t=d.detail.trend;
-    const vals=metricSeries(t.start,t.end,t.noise,90,di+3);
-    lineChart(document.getElementById("mPlot"),document.getElementById("mTip"),
-      [{name:d.detail.trendLabel.split(",")[0],vals,color:"#3987e5"}],
-      {h:200,zeroBase:false,area:true,aria:d.detail.trendLabel,
-       yfmt:v=>v.toFixed(1),
-       xlabel:i=>fmtDate(days[N_DAYS-90+i]),
-       tipTitle:i=>fmtDateY(days[N_DAYS-90+i])});
-  });
-}
-function closeDept(){document.getElementById("modalBack").classList.remove("open");document.body.style.overflow=""}
-document.getElementById("mClose").addEventListener("click",closeDept);
-document.getElementById("modalBack").addEventListener("click",e=>{if(e.target.id==="modalBack")closeDept()});
-window.addEventListener("keydown",e=>{if(e.key==="Escape")closeDept()});
-
-/* =====================================================================
-   ALERT STREAM
-   ===================================================================== */
-const SEV_LABEL={critical:"Critical",serious:"Serious",warning:"Warning",good:"Positive"};
 function alertNode(a,ts){
   const n=document.createElement("div");n.className="alert "+a.sev;
   const t=ts.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
@@ -748,7 +767,7 @@ function alertNode(a,ts){
 }
 let alertTotal=0;
 function renderAlerts(){
-  const list=document.getElementById("alertList");
+  const list=document.getElementById("alertList"); if(!list)return; list.innerHTML=""; alertTotal=0;
   PACK.alerts.forEach(a=>{
     list.appendChild(alertNode(a,new Date(Date.now()-a.min*6e4)));
     alertTotal++;
@@ -756,18 +775,207 @@ function renderAlerts(){
   updateAlertCount();
 }
 function updateAlertCount(){
+  const c=document.getElementById("alertCount"); if(!c)return;
   const crit=document.querySelectorAll("#alertList .alert.critical, #alertList .alert.serious").length;
-  document.getElementById("alertCount").textContent=`${alertTotal} today · ${crit} need attention`;
+  c.textContent=`${alertTotal} today · ${crit} need attention`;
 }
 let liveIdx=0;
 function pushLiveAlert(){
   const list=document.getElementById("alertList");
-  const a=PACK.liveAlerts[liveIdx%PACK.liveAlerts.length];liveIdx++;
-  const n=alertNode(a,new Date());n.classList.add("enter");
-  list.prepend(n);alertTotal++;updateAlertCount();
-  while(list.children.length>28)list.removeChild(list.lastChild);
+  if(list){
+    const a=PACK.liveAlerts[liveIdx%PACK.liveAlerts.length];liveIdx++;
+    const n=alertNode(a,new Date());n.classList.add("enter");
+    list.prepend(n);alertTotal++;updateAlertCount();
+    while(list.children.length>28)list.removeChild(list.lastChild);
+  }
   setTimeout(pushLiveAlert, 16000+Math.random()*22000);
 }
+
+/* =====================================================================
+   DEPARTMENT WORKSPACE PAGE (with edit mode)
+   ===================================================================== */
+let editMode=false;
+function deptAlerts(d){
+  const key=d.name.split(" ")[0].toUpperCase();
+  return PACK.alerts.filter(a=>{
+    if(d.name.startsWith("Supply"))return a.dept.includes("SUPPLY")||a.dept.includes("OPS");
+    if(d.name.startsWith("Commercial"))return a.dept.includes("COMMERCIAL")||a.dept.includes("DEMAND");
+    if(d.name.startsWith("Marketing"))return a.dept.includes("COMPETITIVE");
+    return a.dept.includes(key);
+  });
+}
+function renderDeptPage(di){
+  const d=STATE.departments[di], def=PACK.departments[di], st=statusOf(d.score);
+  const view=document.getElementById("view");
+  const kpiRows=d.kpis.map((k,ki)=>{
+    if(editMode) return `<div class="kpi-edit">
+      <span class="kname">${esc(k.n)}</span>
+      <input class="field" data-kpi="${ki}" data-f="v" value="${esc(k.v)}" aria-label="${esc(k.n)} value">
+      <input class="field" data-kpi="${ki}" data-f="d" type="number" step="0.1" value="${k.d}" style="width:64px" aria-label="${esc(k.n)} delta">
+    </div>`;
+    const up=k.d>=0, good=(k.up==="good")===(k.d>=0)||k.d===0;
+    const cls=k.d===0?"":(good?"up":"dn");
+    const arrow=k.d===0?"—":(up?"▲":"▼");
+    return `<div class="krow"><span class="kname">${esc(k.n)}</span>
+      <span class="kval">${esc(k.v)}</span>
+      <span class="kdelta delta ${cls}">${arrow} ${k.d===0?"":Math.abs(k.d).toFixed(1)}</span></div>`;
+  }).join("");
+  const projHead=`<tr><th>Project</th><th>Lead</th><th>Stage</th><th>Due</th><th>Budget $K</th><th style="min-width:90px">Progress</th><th>Status</th>${editMode?"<th></th>":""}</tr>`;
+  const projRows=d.projects.map((p,pi)=>{
+    if(editMode) return `<tr data-proj="${pi}">
+      <td><input class="field wide" data-f="name" value="${esc(p.name)}" aria-label="Project name">
+          <input class="field wide" data-f="desc" value="${esc(p.desc)}" style="margin-top:4px;font-size:11px" aria-label="Project description"></td>
+      <td><input class="field" data-f="lead" value="${esc(p.lead)}" style="width:90px"></td>
+      <td><input class="field" data-f="stage" value="${esc(p.stage)}" style="width:110px"></td>
+      <td><input class="field" data-f="due" type="date" value="${esc(p.due)}" style="width:125px"></td>
+      <td><input class="field" data-f="budgetK" type="number" value="${p.budgetK}" style="width:72px"></td>
+      <td><input class="field" data-f="pct" type="number" min="0" max="100" value="${p.pct}" style="width:58px"> %</td>
+      <td><select class="field" data-f="status" style="width:96px">
+        ${["On track","At risk","Behind","Done"].map(s=>`<option ${s===p.status?"selected":""}>${s}</option>`).join("")}</select></td>
+      <td><button class="row-del" data-del="${pi}" title="Remove project">✕</button></td>
+    </tr>`;
+    const pst=PSTATUS[p.status]||"warning";
+    return `<tr>
+      <td><div class="pname">${esc(p.name)}</div><div class="pdesc">${esc(p.desc)}</div></td>
+      <td>${esc(p.lead)}</td>
+      <td>${esc(p.stage)}</td>
+      <td class="num">${esc(p.due)}</td>
+      <td class="num">${p.budgetK?p.budgetK.toLocaleString():"—"}</td>
+      <td><div class="pbar"><div class="pfill" style="width:${p.pct}%"></div></div></td>
+      <td><span class="status-chip ${pst}">${STATUS_ICON[pst]} ${esc(p.status)}</span></td>
+    </tr>`;
+  }).join("");
+  const benchRows=def.detail.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td style="font-family:var(--sans);color:var(--ink-2);text-align:left">${r[2]}</td><td style="font-family:var(--sans);color:var(--ink-3);text-align:left;font-size:11px">${r[3]}</td></tr>`).join("");
+  const rel=deptAlerts(def);
+  const totBudget=d.projects.reduce((s,p)=>s+(+p.budgetK||0),0);
+  view.innerHTML=`
+  <div class="shell full">
+    <div class="main">
+      <div class="card">
+        <div class="dept-head">
+          <button class="back" id="backBtn">← OVERVIEW</button>
+          <h2>${esc(d.name)}</h2>
+          <span class="status-chip ${st}">${STATUS_ICON[st]} ${STATUS_LABEL[st]}</span>
+          ${editMode
+            ?`<span style="font-size:11px;color:var(--ink-3)">Health score</span><input class="field" id="scoreInput" type="number" min="0" max="100" value="${d.score}" style="width:64px">`
+            :`<span class="score-big" style="color:var(--${st})">${d.score}</span>`}
+          <button class="tool-btn edit-btn ${editMode?"on":""}" id="editBtn">${editMode?"✕ Cancel":"✎ Edit data"}</button>
+        </div>
+        ${editMode?`<div class="editnote" style="margin-top:8px">Type your own numbers. Values accept any format ("92.4%", "1.6×", "58d") — deltas are numeric. Changes save to this browser and flow back to the Overview.</div>`:""}
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><h2>Key metrics</h2><span class="sub">editable · flows to overview</span></div>
+          ${kpiRows}
+          ${editMode?`<div class="editbar"><button class="save-btn" id="saveBtn">Save changes</button><span class="editnote">or Cancel above to discard</span></div>`:""}
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>${esc(def.detail.trendLabel)}</h2></div>
+          <div class="plot-wrap" id="dPlot"></div>
+          <div class="tooltip" id="dTip"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Active projects</h2>
+          <span class="sub">${d.projects.length} projects · $${(totBudget/1000).toFixed(1)}M committed · simulation, editable</span>
+        </div>
+        <div style="overflow-x:auto"><table class="proj-table"><thead>${projHead}</thead><tbody>${projRows}</tbody></table></div>
+        ${editMode?`<button class="add-row" id="addProj">＋ Add project</button>`:""}
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Metrics vs industry benchmarks</h2><span class="sub">benchmark column is sourced from public research</span></div>
+        <table class="viz-table"><thead><tr><th>Metric</th><th>Food Lube</th><th style="text-align:left">Industry benchmark / fact</th><th style="text-align:left">Source</th></tr></thead><tbody>${benchRows}</tbody></table>
+        <div class="provenance">${def.detail.prov}</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Related alerts</h2></div>
+        <div class="alert-list" style="max-height:none" id="dAlerts"></div>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("backBtn").addEventListener("click",()=>{location.hash="overview"});
+  document.getElementById("editBtn").addEventListener("click",()=>{editMode=!editMode;renderDeptPage(di)});
+  const dA=document.getElementById("dAlerts");
+  if(rel.length)rel.forEach(a=>dA.appendChild(alertNode(a,new Date(Date.now()-a.min*6e4))));
+  else dA.innerHTML='<div class="provenance" style="border:none;padding:0">No related alerts in the current window.</div>';
+  // trend chart anchored to the (possibly edited) headline KPI
+  const t=def.detail.trend, endV=num(d.kpis[def.detail.trendKpi].v)??t.start;
+  requestAnimationFrame(()=>{
+    lineChart(document.getElementById("dPlot"),document.getElementById("dTip"),
+      [{name:def.detail.trendLabel.split(",")[0],vals:metricSeries(t.start,endV,t.noise,90,di+3),color:"#3987e5"}],
+      {h:210,zeroBase:false,area:true,aria:def.detail.trendLabel,
+       yfmt:v=>v.toFixed(1),
+       xlabel:i=>fmtDate(days[N_DAYS-90+i]),
+       tipTitle:i=>fmtDateY(days[N_DAYS-90+i])});
+  });
+  if(editMode){
+    document.getElementById("saveBtn").addEventListener("click",()=>{
+      document.querySelectorAll("#view [data-kpi]").forEach(inp=>{
+        const k=d.kpis[+inp.dataset.kpi];
+        if(inp.dataset.f==="v")k.v=inp.value.trim()||k.v;
+        else k.d=parseFloat(inp.value)||0;
+      });
+      document.querySelectorAll("#view tr[data-proj]").forEach(tr=>{
+        const p=d.projects[+tr.dataset.proj];
+        tr.querySelectorAll("[data-f]").forEach(inp=>{
+          const f=inp.dataset.f;
+          if(f==="budgetK"||f==="pct")p[f]=Math.max(0,parseFloat(inp.value)||0);
+          else p[f]=inp.value.trim();
+        });
+        p.pct=Math.min(100,p.pct);
+      });
+      const si=document.getElementById("scoreInput");
+      if(si)d.score=Math.max(0,Math.min(100,parseInt(si.value)||d.score));
+      saveState();editMode=false;renderDeptPage(di);
+    });
+    document.getElementById("addProj").addEventListener("click",()=>{
+      // read current inputs into state first so they aren't lost
+      document.querySelectorAll("#view tr[data-proj]").forEach(tr=>{
+        const p=d.projects[+tr.dataset.proj];
+        tr.querySelectorAll("[data-f]").forEach(inp=>{
+          const f=inp.dataset.f;
+          if(f==="budgetK"||f==="pct")p[f]=Math.max(0,parseFloat(inp.value)||0);
+          else p[f]=inp.value.trim();
+        });
+      });
+      d.projects.push({name:"New project",desc:"",lead:"",stage:"Scoping",due:"",budgetK:0,pct:0,status:"On track"});
+      renderDeptPage(di);
+    });
+    document.querySelectorAll("#view [data-del]").forEach(b=>{
+      b.addEventListener("click",()=>{
+        d.projects.splice(+b.dataset.del,1);
+        renderDeptPage(di);
+      });
+    });
+  }
+}
+
+/* =====================================================================
+   EXPORT / IMPORT / RESET
+   ===================================================================== */
+document.getElementById("exportBtn").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(STATE,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download="foodlube-data.json";a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const j=JSON.parse(r.result);
+      if(j.departments&&j.departments.length===PACK.departments.length){STATE=j;saveState();route()}
+      else alert("File doesn't match this pack's structure (expected "+PACK.departments.length+" departments).");
+    }catch(err){alert("Couldn't read that file as JSON.")}
+  };
+  r.readAsText(f); e.target.value="";
+});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  if(confirm("Discard your edits and restore the seed data?")){STATE=seedState();saveState();route()}
+});
 
 /* =====================================================================
    TICKER + HERO + CLOCK (live simulation)
@@ -783,7 +991,7 @@ function renderTicker(){
 }
 function paintTicker(flashIdx){
   tickState.forEach((t,i)=>{
-    const d=document.getElementById("tick-"+i);
+    const d=document.getElementById("tick-"+i); if(!d)return;
     const cls=t.chg>0.02?"up":t.chg<-0.02?"dn":"flat";
     const arrow=t.chg>0.02?"▲":t.chg<-0.02?"▼":"·";
     d.innerHTML=`<span class="sym">${t.sym}</span><span class="val">${t.fmt(t.val)}</span>
@@ -800,16 +1008,21 @@ function tickTicker(){
   paintTicker(i);
   setTimeout(tickTicker, 1400+Math.random()*2200);
 }
-let heroRun = actual[actual.length-1]*0.63; // partial day accumulated
+let heroRun = actual[actual.length-1]*0.63;
+function tickHeroNow(){
+  const hv=document.getElementById("heroVal"); if(!hv)return;
+  const planToday=plan[plan.length-1];
+  hv.textContent="$"+heroRun.toFixed(2);
+  document.getElementById("heroPlan").textContent=planToday.toFixed(2);
+  const pace=heroRun/(planToday*0.66);
+  const dd=document.getElementById("heroDelta");
+  dd.textContent=(pace>=1?"▲ +":"▼ −")+Math.abs((pace-1)*100).toFixed(1)+"% vs pace";
+  dd.className="delta "+(pace>=1?"up":"dn");
+}
 function tickHero(){
   const planToday=plan[plan.length-1];
   heroRun += planToday*0.0006*(0.7+rng()*0.8);
-  document.getElementById("heroVal").textContent="$"+heroRun.toFixed(2);
-  document.getElementById("heroPlan").textContent=planToday.toFixed(2);
-  const pace=heroRun/(planToday*0.66); // vs expected pace at this hour
-  const d=document.getElementById("heroDelta");
-  d.textContent=(pace>=1?"▲ +":"▼ −")+Math.abs((pace-1)*100).toFixed(1)+"% vs pace";
-  d.className="delta "+(pace>=1?"up":"dn");
+  tickHeroNow();
   setTimeout(tickHero,2000);
 }
 function tickClock(){
@@ -821,28 +1034,11 @@ function tickClock(){
 }
 
 /* =====================================================================
-   WIRING
+   BOOT
    ===================================================================== */
-document.querySelectorAll(".range-btn").forEach(b=>{
-  b.addEventListener("click",()=>{
-    document.querySelectorAll(".range-btn").forEach(x=>x.classList.remove("on"));
-    b.classList.add("on");revDays=+b.dataset.days;
-    drawRevenue();renderTiles();
-  });
-});
-document.querySelectorAll(".tbl-toggle").forEach(b=>{
-  b.addEventListener("click",()=>{
-    const id=b.dataset.target;
-    const plot=document.getElementById(id+"Plot"), tbl=document.getElementById(id+"Table");
-    const showTbl=tbl.classList.contains("hidden");
-    tbl.classList.toggle("hidden",!showTbl);plot.classList.toggle("hidden",showTbl);
-    b.textContent=showTbl?"◫ Chart":"⊞ Table";
-  });
-});
-document.getElementById("asof").textContent="as of "+NOW.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
-let rsz;window.addEventListener("resize",()=>{clearTimeout(rsz);rsz=setTimeout(()=>{drawRevenue();drawShare()},150)});
-
-renderTicker();drawRevenue();drawShare();renderTiles();renderDepts();renderAlerts();
+let rsz;window.addEventListener("resize",()=>{clearTimeout(rsz);rsz=setTimeout(()=>{if(!(location.hash.slice(1)||"overview").startsWith("dept"))
+{drawRevenue();drawShare()}},150)});
+renderTicker();route();
 tickClock();tickHero();tickTicker();
 setTimeout(pushLiveAlert,9000);
 </script>
