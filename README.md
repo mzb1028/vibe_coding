@@ -1,60 +1,78 @@
-# Food Lube — Company Command Center
+# Food Lube — CPG Intelligence Dashboard
 
-A founder's command center for **Food Lube**, a startup in the US soup, broth &
-concentrates space. The company starts at zero: **every company number in the
-app is entered by the founder** — nothing is simulated. Market context is
-sourced from public research.
+A two-mode intelligence dashboard for a food/beverage CPG operator:
 
-## Using it
+- **My Company** — internal operating view of a functional food CPG
+  (fictional demo profile: ≈$75M revenue, asset-light — co-manufacturer,
+  3PL, broker-supported sales). 72 KPIs across 10 departments.
+- **Industry** — external competitive-intelligence view of real soup/broth
+  competitors, showing **only externally-observable [E] KPIs**.
 
-Open `index.html` in any browser. Your data is saved in that browser
-(localStorage) and never leaves your machine. Use **Export backup** in the
-header regularly — it downloads a JSON file you can restore with **Import** on
-any computer.
+Every KPI carries the same data contract:
 
-### Tabs
+```
+{ id, name, department, scope ("I"|"E"), cadence, value, unit,
+  target, trend[], confidence ("certain"|"likely"|"guessing"), source, note }
+```
 
-- **Overview** — health scoreboard (cash, monthly burn, runway, spent-to-date,
-  revenue, MoM growth, gross margin, inventory, CAC, stockholders' equity),
-  cash-balance chart, monthly revenue vs. expenses, spend by category, and a
-  you-vs-the-market benchmark table.
-- **CEO** — milestones, key numbers (units produced/sold, retail doors, web
-  orders, new customers — feeds CAC), projects, and weekly → five-year
-  planning horizons.
-- **Finance** — equity ledger (Common Stock / Additional Paid-In Capital),
-  expense ledger (12 CPG categories; Equipment is capitalized), revenue ledger
-  (by channel), and auto-generated **Income Statement, Balance Sheet, and
-  Statement of Cash Flows** (MTD/QTD/YTD/all-time). Statement structure follows
-  the Capstone layout: Sales → Variable Costs → Contribution Margin → Period
-  Costs → EBIT → Taxes → Net Profit.
-- **Operations** — raw-materials ledger (purchases auto-post to the expense
-  ledger; on-hand quantities become balance-sheet inventory), finished-goods
-  inventory, and a shipments board with carrier tracking numbers (freight
-  auto-posts to expenses).
-- **Market** — sourced category outlook, competitive landscape, peer cost
-  structure, and a cost-driver/trend watch list.
+**Confidence coloring** (always on): certain → green, likely → yellow,
+guessing → red. Hover any number for its confidence and source.
 
-### Accounting notes
+## Repo layout
 
-- COGS is accrual-adjusted: material purchases sitting in inventory are an
-  asset, not a cost, until consumed/sold (COGS = purchases − Δ inventory).
-- Equipment is capitalized and depreciated straight-line over 60 months.
-- Taxes accrue at the 21% US federal corporate rate on positive pre-tax income
-  and sit in Income Tax Payable. The balance sheet always balances.
-- Burn/runway use a trailing-90-day average and only display after 2+ weeks of
-  ledger history.
+```
+shared/seed.json      SINGLE SOURCE OF TRUTH for all mock data
+frontend/             React (Vite) app — dark theme, responsive
+  src/data/index.js   the swappable data interface (mock | api)
+  src/data/mock.js    mock provider (reads shared/seed.json)
+  src/data/api.js     API provider (FastAPI backend)
+backend/main.py       FastAPI service (serves the same seed; same contract)
+render.yaml           Render deployment blueprint (static site + API)
+index.html            the founder's command center (previous phase) —
+                      preserved untouched; later becomes the LIVE [I] source
+```
 
-## Data provenance (market facts)
+No numbers are hardcoded in components; everything flows through
+`frontend/src/data/index.js`. Switch providers with `VITE_DATA_SOURCE=api`
+and `VITE_API_BASE=<backend url>` — zero UI changes.
 
-- US soup ≈$5.9B (2024), ≈2.5% CAGR — GlobeNewswire / Mordor Intelligence (2025)
-- Bone broth ≈$1.2B global (2025), ≈6% CAGR; top-5 ≈42% combined — Fortune Business Insights
-- Peer gross margins 21–38%, median ≈33% (Utz 24.9%, BellRing 33.3%, Simply Good 36.2%, Hain 21.4%, FY2025) — Eightx / filings
-- Trade spend 15–25% of gross sales; gross-to-net 30–40% — TrewUp / Eightx
-- Swanson is the #1-selling US broth — Circana, via Food Dive (2022)
-- B&G Foods acquired College Inn + Kitchen Basics for ~$110M — B&G Foods 8-K (2026)
-- CPG forecast MAPE 15–25% acceptable — Planster / Imperia
+## Run locally
 
-## Roadmap
+```
+# frontend (mock mode — no backend needed)
+cd frontend && npm install && npm run dev
 
-Later phases: hosted backend with login (multi-device sync), CSV import,
-editable market-research content, and budget-vs-actual planning.
+# backend (optional in Phase 1)
+pip install -r backend/requirements.txt
+uvicorn backend.main:app --reload
+```
+
+## Deploy on Render (no coding required)
+
+1. Render.com → New → **Blueprint** → select this GitHub repo.
+2. Render reads `render.yaml` and creates both services (free tier).
+3. To use API mode, set the static site's env var `VITE_DATA_SOURCE=api`
+   and `VITE_API_BASE` to the API service URL, then redeploy.
+
+## Build phases
+
+- **Phase 1 (this)** — full schema, 10 departments, mock data, confidence
+  coloring, both modes, all views (overview, drill-down, competitor grid
+  sortable by velocity/distribution/share/launches, cadence filter).
+- **Phase 2** — wire free [E] sources behind the same interface: SEC (public
+  comps), USPTO, FDA/FSIS recalls & warning letters, LinkedIn-style job
+  signals, Similarweb, Amazon rank.
+- **Phase 3** — paid syndicated data (Circana/SPINS: velocity, distribution,
+  share) and internal [I] sources (ERP, FP&A — including the founder tool's
+  real ledgers).
+
+## Data honesty
+
+The company profile is **fictional demo data** (every value tagged
+`source: "... (mock)"`). Competitor names are real; competitor values are
+mock (confidence `guessing`, red) except where the source cites a public
+record — e.g., Imagine's parent-level revenue trend from Hain Celestial
+filings. Sourced category facts: Swanson is the #1-selling US broth
+(Circana via Food Dive, 2022); Hain net sales $1.78B FY23 → ≈$1.53B TTM;
+College Inn + Kitchen Basics ≈$110–120M net sales (B&G Foods 8-K, 2026);
+US soup ≈$5.9B growing ≈2.5% CAGR; bone broth ≈$1.2B growing ≈6%.
