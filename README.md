@@ -17,4 +17,21 @@ CPG metrics (trade spend, OTIF, OEE, forecast MAPE, demand-space share).
 - Competitor set (real companies, configurable): Knorr (Unilever), Better Than
   Bouillon (Summit Hill), Pacific Foods (Campbell's), Kettle & Fire, Imagine (Hain).
 
-All numbers are simulated for design purposes — not actual market data.
+## Data provenance
+
+Food Lube company values are **seeded simulation** (the company is fictional).
+Everything stated about the real world is sourced:
+
+- Trade spend 15–25% of gross sales; gross-to-net deductions 30–40% — TrewUp / Eightx CPG benchmarks
+- Food pure-play gross margins 21–38% (median ~33%); Utz 24.9%, BellRing 33.3%, Simply Good Foods 36.2%, Hain 21.4% (FY2025) — Eightx / company filings
+- CPG forecast MAPE 15–25% acceptable; hero-SKU accuracy targets 80–90% — Planster / Imperia
+- OEE world-class ≈85%; food plants typically 60–75% — Brightly Software / Explitia
+- US soup market ≈$5.9B (2024), ≈2.5% CAGR — GlobeNewswire / Mordor Intelligence
+- Bone broth ≈$1.2B global (2025), ≈6% CAGR; top-5 players ≈42% combined — Fortune Business Insights
+- Swanson is the #1-selling US broth — Circana, via Food Dive (2022)
+- B&G Foods acquired College Inn + Kitchen Basics for ~$110M (≈$110–120M net sales) — B&G Foods 8-K (2026)
+
+Brand-level market share **by demand space is illustrative** (syndicated
+Circana/NIQ data is not public) and is labeled as such in the UI. Alert-feed
+items referencing real companies are either sourced facts (marked `FACT`) or
+hypothetical scenarios (marked `SCENARIO`); all internal events are marked `SIM`.

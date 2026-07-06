@@ -7,151 +7,173 @@
 <style>
 /* ================= TOKENS ================= */
 :root{
-  --page:#0c0d10; --surface:#14161a; --raised:#1a1d23; --hairline:#262a31;
-  --ink:#f2f3f5; --ink-2:#9aa1ac; --ink-3:#5f6672;
+  --page:#0b0c0e; --surface:#121316; --raised:#17181c; --hairline:#24262b;
+  --ink:#e8eaed; --ink-2:#9aa1ac; --ink-3:#5f6672;
   --accent:#3987e5;
-  /* validated categorical (dark surface #14161a) — fixed entity order, never cycled */
+  /* validated categorical (dark surface) — fixed entity order, never cycled */
   --s-foodlube:#3987e5; --s-knorr:#199e70; --s-btb:#c98500;
   --s-pacific:#9085e9; --s-kettlefire:#e66767; --s-imagine:#008300;
-  --s-other:#3a3f47;
+  --s-other:#33363c;
   /* status (reserved — never used as series) */
   --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
-  --grid:#22252b;
+  --grid:#1e2025;
   --mono:ui-monospace,"SF Mono","Cascadia Mono","JetBrains Mono",Consolas,monospace;
   --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:3px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+html,body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:13.5px;line-height:1.45}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:2px}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
 }
 
 /* ================= TICKER ================= */
 .ticker{position:sticky;top:0;z-index:50;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
-  background:#08090b;border-bottom:1px solid var(--hairline);font-family:var(--mono);font-size:12px}
+  background:#08090b;border-bottom:1px solid var(--hairline);font-family:var(--mono);font-size:11.5px}
 .ticker::-webkit-scrollbar{display:none}
-.tick{display:flex;align-items:baseline;gap:7px;padding:7px 16px;border-right:1px solid #1a1c21;white-space:nowrap}
-.tick .sym{color:var(--ink-3);letter-spacing:.08em;font-size:10.5px}
+.tick{display:flex;align-items:baseline;gap:7px;padding:6px 15px;border-right:1px solid #17181c;white-space:nowrap}
+.tick .sym{color:var(--ink-3);letter-spacing:.08em;font-size:10px}
 .tick .val{color:var(--ink);font-variant-numeric:tabular-nums}
-.tick .chg{font-variant-numeric:tabular-nums;font-size:11.5px}
+.tick .chg{font-variant-numeric:tabular-nums;font-size:11px}
 .chg.up{color:var(--good)} .chg.dn{color:var(--critical)} .chg.flat{color:var(--ink-3)}
-.tick.flash .val{color:#fff;text-shadow:0 0 12px rgba(57,135,229,.65)}
+.tick.flash .val{color:#fff}
 
 /* ================= HEADER ================= */
-header{display:flex;align-items:center;gap:18px;padding:14px 22px;border-bottom:1px solid var(--hairline);flex-wrap:wrap}
+header{display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:1px solid var(--hairline);flex-wrap:wrap}
 .wordmark{display:flex;align-items:center;gap:10px}
-.wordmark .block{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#3987e5 0%,#1c5cab 100%);
-  display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:13px;color:#fff}
-.wordmark h1{font-size:16px;font-weight:650;letter-spacing:.01em}
+.wordmark .block{width:24px;height:24px;border-radius:var(--r);background:#1c5cab;
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:12px;color:#fff}
+.wordmark h1{font-size:14.5px;font-weight:650;letter-spacing:.02em}
 .wordmark h1 span{color:var(--ink-3);font-weight:400}
 .pack{display:flex;align-items:center;gap:8px;margin-left:6px}
-.pack label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
-.pack select{background:var(--raised);color:var(--ink);border:1px solid var(--hairline);border-radius:6px;
-  padding:5px 9px;font:inherit;font-size:12.5px}
+.pack label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.pack select{background:var(--raised);color:var(--ink);border:1px solid var(--hairline);border-radius:var(--r);
+  padding:4px 8px;font:inherit;font-size:12px}
 .hspace{flex:1}
-.clock{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 8px rgba(12,163,12,.7)}
-.ceo{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-2)}
-.ceo .av{width:26px;height:26px;border-radius:50%;background:var(--raised);border:1px solid var(--hairline);
-  display:grid;place-items:center;font-size:10.5px;font-weight:650;color:var(--ink-2)}
+.clock{font-family:var(--mono);font-size:12px;color:var(--ink-2);display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--good)}
+.ceo{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink-2)}
+.ceo .av{width:24px;height:24px;border-radius:50%;background:var(--raised);border:1px solid var(--hairline);
+  display:grid;place-items:center;font-size:9.5px;font-weight:650;color:var(--ink-2)}
 
 /* ================= FILTER ROW ================= */
 .filters{display:flex;align-items:center;gap:8px;padding:12px 22px 0;flex-wrap:wrap}
-.filters .flabel{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-right:4px}
-.range-btn{padding:4px 12px;border:1px solid var(--hairline);border-radius:6px;color:var(--ink-2);font-size:12px;font-family:var(--mono)}
+.filters .flabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-right:4px}
+.range-btn{padding:3px 11px;border:1px solid var(--hairline);border-radius:var(--r);color:var(--ink-2);font-size:11.5px;font-family:var(--mono)}
 .range-btn:hover{background:var(--raised)}
-.range-btn.on{background:var(--raised);color:var(--ink);border-color:#39404b;font-weight:600}
-.asof{margin-left:auto;font-size:11.5px;color:var(--ink-3);font-family:var(--mono)}
+.range-btn.on{background:var(--raised);color:var(--ink);border-color:#3a3e46;font-weight:600}
+.asof{margin-left:auto;font-size:11px;color:var(--ink-3);font-family:var(--mono)}
 
 /* ================= LAYOUT ================= */
-.shell{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;padding:16px 22px 40px;max-width:1560px;margin:0 auto}
+.shell{display:grid;grid-template-columns:minmax(0,1fr) 324px;gap:14px;padding:14px 22px 40px;max-width:1560px;margin:0 auto}
 @media (max-width:1100px){.shell{grid-template-columns:1fr}.rail{position:static !important;max-height:none !important}}
-.main{display:flex;flex-direction:column;gap:16px;min-width:0}
-.card{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:16px 18px;min-width:0}
+.main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r);padding:14px 16px;min-width:0}
 .card-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
-.card-head h2{font-size:13px;font-weight:650;letter-spacing:.02em}
-.card-head .sub{font-size:11.5px;color:var(--ink-3)}
-.tbl-toggle{margin-left:auto;font-size:11px;color:var(--ink-3);border:1px solid var(--hairline);border-radius:5px;padding:3px 9px;font-family:var(--mono)}
+.card-head h2{font-size:11.5px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.card-head .sub{font-size:11px;color:var(--ink-3)}
+.tbl-toggle{margin-left:auto;font-size:10.5px;color:var(--ink-3);border:1px solid var(--hairline);border-radius:var(--r);padding:2px 8px;font-family:var(--mono)}
 .tbl-toggle:hover{color:var(--ink-2);background:var(--raised)}
 
 /* ================= HERO + KPI ROW ================= */
-.hero-row{display:grid;grid-template-columns:minmax(260px,1.25fr) repeat(4,minmax(150px,1fr));gap:16px}
+.hero-row{display:grid;grid-template-columns:minmax(250px,1.2fr) repeat(4,minmax(150px,1fr));gap:14px}
 @media (max-width:1350px){.hero-row{grid-template-columns:repeat(2,1fr)}}
-.hero .lbl,.tile .lbl{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
-.hero .big{font-size:52px;font-weight:650;line-height:1;letter-spacing:-.01em}
-.hero .big .unit{font-size:22px;color:var(--ink-2);font-weight:500;margin-left:2px}
-.hero .vs{margin-top:10px;font-size:12.5px;color:var(--ink-2)}
-.delta{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+.hero .lbl,.tile .lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
+.hero .big{font-size:40px;font-weight:650;line-height:1;letter-spacing:-.01em}
+.hero .big .unit{font-size:18px;color:var(--ink-2);font-weight:500;margin-left:2px}
+.hero .vs{margin-top:10px;font-size:12px;color:var(--ink-2)}
+.delta{font-family:var(--mono);font-size:11.5px;font-variant-numeric:tabular-nums}
 .delta.up{color:var(--good)} .delta.dn{color:var(--critical)}
-.tile .val{font-size:26px;font-weight:650;line-height:1.1}
-.tile .val .unit{font-size:14px;color:var(--ink-2);font-weight:500}
-.tile .meta{margin-top:6px;font-size:11.5px;color:var(--ink-3)}
-.tile svg{display:block;margin-top:10px}
+.tile .val{font-size:22px;font-weight:650;line-height:1.1}
+.tile .val .unit{font-size:13px;color:var(--ink-2);font-weight:500}
+.tile .meta{margin-top:6px;font-size:11px;color:var(--ink-3)}
+.tile svg{display:block;margin-top:9px}
 
 /* ================= CHART CHROME ================= */
 .plot-wrap{position:relative}
-.legend{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 2px;font-size:11.5px;color:var(--ink-2)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:7px 0 2px;font-size:11px;color:var(--ink-2)}
 .legend .key{display:inline-flex;align-items:center;gap:6px}
-.key .swatch{width:10px;height:10px;border-radius:3px;flex:none}
-.key .line-key{width:16px;height:2px;border-radius:1px;flex:none}
-.tooltip{position:absolute;pointer-events:none;background:#1e2229;border:1px solid #333a45;border-radius:7px;
-  padding:8px 11px;font-size:11.5px;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:20;min-width:150px;display:none}
-.tooltip .tt-date{font-family:var(--mono);color:var(--ink-3);font-size:10.5px;margin-bottom:5px}
+.key .swatch{width:8px;height:8px;border-radius:2px;flex:none}
+.key .line-key{width:14px;height:2px;border-radius:1px;flex:none}
+.tooltip{position:absolute;pointer-events:none;background:#1b1d22;border:1px solid #31343c;border-radius:var(--r);
+  padding:8px 11px;font-size:11.5px;box-shadow:0 6px 20px rgba(0,0,0,.45);z-index:20;min-width:150px;display:none}
+.tooltip .tt-date{font-family:var(--mono);color:var(--ink-3);font-size:10px;margin-bottom:5px}
 .tooltip .tt-row{display:flex;align-items:center;gap:7px;margin-top:3px}
 .tooltip .tt-row .v{margin-left:auto;font-family:var(--mono);font-variant-numeric:tabular-nums}
 .viz-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
-.viz-table th{text-align:right;color:var(--ink-3);font-weight:500;padding:6px 10px;border-bottom:1px solid var(--hairline);font-size:11px;letter-spacing:.04em}
+.viz-table th{text-align:right;color:var(--ink-3);font-weight:500;padding:5px 9px;border-bottom:1px solid var(--hairline);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
 .viz-table th:first-child,.viz-table td:first-child{text-align:left}
-.viz-table td{padding:6px 10px;border-bottom:1px solid var(--grid);font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.viz-table td{padding:5px 9px;border-bottom:1px solid var(--grid);font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .viz-table td:first-child{font-family:var(--sans);color:var(--ink)}
 .hidden{display:none !important}
+.provenance{margin-top:9px;font-size:10.5px;color:var(--ink-3);border-top:1px solid var(--grid);padding-top:8px}
 
 /* ================= SCORECARDS ================= */
-.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media (max-width:1350px){.dept-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:760px){.dept-grid{grid-template-columns:1fr}}
-.dept .dept-top{display:flex;align-items:center;gap:9px;margin-bottom:12px}
-.dept .dept-top h3{font-size:12.5px;font-weight:650}
-.dept .score{margin-left:auto;font-family:var(--mono);font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
-.meter{height:5px;border-radius:3px;margin-bottom:14px;position:relative;overflow:hidden}
-.meter .fill{position:absolute;inset:0 auto 0 0;border-radius:3px}
-.dept .krow{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--grid)}
+.dept{cursor:pointer;transition:border-color .12s}
+.dept:hover{border-color:#3a3e46}
+.dept .dept-top{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.dept .dept-top h3{font-size:12px;font-weight:650}
+.dept .score{margin-left:auto;font-family:var(--mono);font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.meter{height:3px;border-radius:2px;margin-bottom:12px;position:relative;overflow:hidden}
+.meter .fill{position:absolute;inset:0 auto 0 0;border-radius:2px}
+.dept .krow{display:flex;align-items:center;gap:10px;padding:5px 0;border-top:1px solid var(--grid)}
 .dept .krow:first-of-type{border-top:none}
-.dept .kname{font-size:12px;color:var(--ink-2);flex:1;min-width:0}
-.dept .kval{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
-.dept .kdelta{width:58px;text-align:right}
-.status-chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
-  font-weight:650;padding:2px 8px;border-radius:20px;border:1px solid}
-.status-chip.good{color:var(--good);border-color:rgba(12,163,12,.35);background:rgba(12,163,12,.08)}
-.status-chip.warning{color:var(--warning);border-color:rgba(250,178,25,.35);background:rgba(250,178,25,.08)}
-.status-chip.serious{color:var(--serious);border-color:rgba(236,131,90,.4);background:rgba(236,131,90,.08)}
-.status-chip.critical{color:var(--critical);border-color:rgba(208,59,59,.4);background:rgba(208,59,59,.1)}
+.dept .kname{font-size:11.5px;color:var(--ink-2);flex:1;min-width:0}
+.dept .kval{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+.dept .kdelta{width:54px;text-align:right}
+.dept .drill{margin-top:9px;font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
+.dept:hover .drill{color:var(--accent)}
+.status-chip{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+  font-weight:650;padding:2px 7px;border-radius:var(--r);border:1px solid}
+.status-chip.good{color:var(--good);border-color:rgba(12,163,12,.3)}
+.status-chip.warning{color:var(--warning);border-color:rgba(250,178,25,.3)}
+.status-chip.serious{color:var(--serious);border-color:rgba(236,131,90,.35)}
+.status-chip.critical{color:var(--critical);border-color:rgba(208,59,59,.35)}
 
 /* ================= ALERT RAIL ================= */
-.rail{position:sticky;top:46px;align-self:start;max-height:calc(100vh - 62px);display:flex;flex-direction:column;min-width:0}
+.rail{position:sticky;top:44px;align-self:start;max-height:calc(100vh - 58px);display:flex;flex-direction:column;min-width:0}
 .rail .card{display:flex;flex-direction:column;min-height:0;flex:1}
-.alert-list{overflow-y:auto;margin-top:10px;display:flex;flex-direction:column;gap:8px;padding-right:2px;scrollbar-width:thin}
-.alert{display:flex;gap:10px;padding:10px 11px;background:var(--raised);border:1px solid var(--hairline);border-radius:8px;position:relative}
-.alert .stripe{width:3px;border-radius:2px;flex:none}
+.alert-list{overflow-y:auto;margin-top:9px;display:flex;flex-direction:column;gap:7px;padding-right:2px;scrollbar-width:thin}
+.alert{display:flex;gap:9px;padding:9px 10px;background:var(--raised);border:1px solid var(--hairline);border-radius:var(--r)}
+.alert .stripe{width:2px;border-radius:1px;flex:none}
 .alert.critical .stripe{background:var(--critical)} .alert.serious .stripe{background:var(--serious)}
 .alert.warning .stripe{background:var(--warning)} .alert.good .stripe{background:var(--good)}
 .alert .a-body{flex:1;min-width:0}
 .alert .a-top{display:flex;align-items:center;gap:8px;margin-bottom:3px}
-.alert .a-time{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.alert .a-msg{font-size:12px;color:var(--ink-2);line-height:1.4}
-.alert .a-src{margin-top:5px;font-size:10.5px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.04em}
-.alert.enter{animation:slidein .35s ease}
-@keyframes slidein{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-footer{padding:10px 22px 26px;text-align:center;font-size:11px;color:var(--ink-3)}
+.alert .a-time{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.alert .a-msg{font-size:11.5px;color:var(--ink-2);line-height:1.45}
+.alert .a-src{margin-top:4px;font-size:10px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.05em}
+.alert.enter{animation:slidein .3s ease}
+@keyframes slidein{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+
+/* ================= DRILL-DOWN MODAL ================= */
+.modal-back{position:fixed;inset:0;background:rgba(5,6,8,.72);z-index:100;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:6vh 16px 40px}
+.modal-back.open{display:flex}
+.modal{background:var(--surface);border:1px solid #2d3038;border-radius:var(--r);width:min(880px,94vw);padding:20px 24px 22px}
+.modal .m-head{display:flex;align-items:center;gap:12px;margin-bottom:2px}
+.modal .m-head h2{font-size:15px;font-weight:650}
+.modal .m-close{margin-left:auto;color:var(--ink-3);font-size:16px;padding:2px 8px;border:1px solid var(--hairline);border-radius:var(--r)}
+.modal .m-close:hover{color:var(--ink);background:var(--raised)}
+.modal .m-sub{font-size:11.5px;color:var(--ink-3);margin-bottom:14px}
+.modal h4{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:18px 0 6px}
+.modal .viz-table td:nth-child(3){font-family:var(--sans);color:var(--ink-2);text-align:left}
+.modal .viz-table th:nth-child(3){text-align:left}
+.modal .viz-table td:last-child{font-family:var(--sans);color:var(--ink-3);text-align:left;font-size:11px}
+.modal .viz-table th:last-child{text-align:left}
+.m-alerts{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+footer{padding:10px 22px 26px;text-align:center;font-size:10.5px;color:var(--ink-3)}
 footer span{font-family:var(--mono)}
 </style>
 </head>
 <body>
 
 <!-- LIVE TICKER -->
-<div class="ticker" id="ticker" role="marquee" aria-label="Live market ticker"></div>
+<div class="ticker" id="ticker" role="marquee" aria-label="Live indicator ticker"></div>
 
 <!-- HEADER -->
 <header>
@@ -201,7 +223,7 @@ footer span{font-family:var(--mono)}
     <!-- REVENUE VS PLAN -->
     <div class="card">
       <div class="card-head">
-        <h2>Net sales vs plan</h2><span class="sub">daily, $M · gross-to-net basis</span>
+        <h2>Net sales vs plan</h2><span class="sub">daily, $M · gross-to-net basis · simulation</span>
         <button class="tbl-toggle" data-target="rev">⊞ Table</button>
       </div>
       <div class="legend">
@@ -216,19 +238,20 @@ footer span{font-family:var(--mono)}
     <!-- DEMAND SPACE SHARE -->
     <div class="card">
       <div class="card-head">
-        <h2>Market share by demand space</h2><span class="sub">$ share, L52W scanner + panel est.</span>
+        <h2>Market share by demand space</h2><span class="sub">$ share, L52W</span>
         <button class="tbl-toggle" data-target="share">⊞ Table</button>
       </div>
       <div class="legend" id="shareLegend"></div>
       <div class="plot-wrap" id="sharePlot"></div>
       <div class="tooltip" id="shareTip"></div>
       <div id="shareTable" class="hidden"></div>
+      <div class="provenance">Illustrative directional estimates. Brand-level share by segment requires syndicated data (Circana / NIQ), which is not public. Known anchors: Swanson is the #1-selling US broth (Circana, via Food Dive, 2022); College Inn + Kitchen Basics ≈ $110–120M net sales (B&amp;G Foods 8-K, 2026); top-5 bone-broth players hold ≈ 42% combined (Fortune Business Insights). Food Lube is fictional.</div>
     </div>
 
     <!-- DEPARTMENT SCORECARDS -->
     <div class="card-head" style="padding:2px 2px 0">
-      <h2 style="font-size:13px">Department health</h2>
-      <span class="sub">composite scores, refreshed intraday</span>
+      <h2>Department health</h2>
+      <span class="sub">composite scores · click a department for detail</span>
     </div>
     <div class="dept-grid" id="deptGrid"></div>
   </div>
@@ -237,99 +260,184 @@ footer span{font-family:var(--mono)}
   <aside class="rail">
     <div class="card">
       <div class="card-head">
-        <h2>Live alerts</h2>
+        <h2>Alerts</h2>
         <span class="sub" id="alertCount"></span>
       </div>
       <div class="alert-list" id="alertList" aria-live="polite"></div>
+      <div class="provenance">Simulated scenario feed. Items referencing real companies are either sourced facts (marked) or hypothetical scenarios (marked “Scenario”).</div>
     </div>
   </aside>
 </div>
 
-<footer>FOOD LUBE CO. · internal executive prototype · seeded simulation data — not actual market data · pack <span>soup-broth-concentrates@0.1</span></footer>
+<!-- DRILL-DOWN MODAL -->
+<div class="modal-back" id="modalBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="m-head">
+      <h2 id="mTitle">—</h2>
+      <span class="status-chip" id="mChip"></span>
+      <span class="score" id="mScore" style="font-family:var(--mono);font-size:18px;font-weight:700"></span>
+      <button class="m-close" id="mClose" aria-label="Close">✕</button>
+    </div>
+    <div class="m-sub" id="mSub"></div>
+    <h4 id="mTrendLabel"></h4>
+    <div class="plot-wrap" id="mPlot"></div>
+    <div class="tooltip" id="mTip"></div>
+    <h4>Metrics vs industry benchmarks</h4>
+    <div id="mTable"></div>
+    <h4>Related alerts</h4>
+    <div class="m-alerts" id="mAlerts"></div>
+    <div class="provenance" id="mProv"></div>
+  </div>
+</div>
+
+<footer>FOOD LUBE CO. · internal executive prototype · company data is seeded simulation — benchmarks &amp; category facts sourced (see drill-downs / README) · pack <span>soup-broth-concentrates@0.2</span></footer>
 
 <script>
 "use strict";
 /* =====================================================================
    INDUSTRY PACK — swappable config. Everything domain-specific lives
    here; the dashboard engine below only reads this object.
+   Data provenance convention:
+     - Food Lube values: seeded simulation (fictional company)
+     - "bench"/"src" fields: real published benchmarks, sourced
+     - share matrix: illustrative (syndicated data not public)
    ===================================================================== */
 const PACK = {
   id:"soup-broth-concentrates", currency:"USD",
   company:{name:"Food Lube Co.", fyNetSalesM:1420, grossMarginPct:31.4},
   segments:["Value","Mainstream","Premium","Functional","Convenience"],
   competitors:[
-    {id:"foodlube",  name:"Food Lube",            color:"var(--s-foodlube)",  hex:"#3987e5"},
-    {id:"knorr",     name:"Knorr (Unilever)",     color:"var(--s-knorr)",     hex:"#199e70"},
-    {id:"btb",       name:"Better Than Bouillon", color:"var(--s-btb)",       hex:"#c98500"},
-    {id:"pacific",   name:"Pacific Foods",        color:"var(--s-pacific)",   hex:"#9085e9"},
-    {id:"kettlefire",name:"Kettle & Fire",        color:"var(--s-kettlefire)",hex:"#e66767"},
-    {id:"imagine",   name:"Imagine (Hain)",       color:"var(--s-imagine)",   hex:"#008300"},
-    {id:"other",     name:"Other / PL",           color:"var(--s-other)",     hex:"#3a3f47"}
+    {id:"foodlube",  name:"Food Lube",            hex:"#3987e5"},
+    {id:"knorr",     name:"Knorr (Unilever)",     hex:"#199e70"},
+    {id:"btb",       name:"Better Than Bouillon", hex:"#c98500"},
+    {id:"pacific",   name:"Pacific Foods",        hex:"#9085e9"},
+    {id:"kettlefire",name:"Kettle & Fire",        hex:"#e66767"},
+    {id:"imagine",   name:"Imagine (Hain)",       hex:"#008300"},
+    {id:"other",     name:"Other (incl. Swanson, College Inn, PL)", hex:"#33363c"}
   ],
-  /* $ share by demand space (rows sum to 100). "Other/PL" carries
-     Swanson, College Inn, private label, long tail. */
+  /* ILLUSTRATIVE $ share by demand space (rows sum to 100).
+     Anchored to public facts where they exist: Swanson = #1 US broth
+     (in "Other"); top-5 bone-broth brands ≈42% combined, led by
+     Ancient Brands ≈12.5% (in "Other"), so no single named brand
+     exceeds low-teens in Functional. */
   share:{
-    "Value":       {foodlube: 9, knorr:34, btb: 6, pacific: 0, kettlefire: 0, imagine: 0, other:51},
-    "Mainstream":  {foodlube:14, knorr:11, btb: 4, pacific: 9, kettlefire: 0, imagine: 6, other:56},
-    "Premium":     {foodlube:12, knorr: 0, btb: 0, pacific:31, kettlefire: 7, imagine:17, other:33},
-    "Functional":  {foodlube:16, knorr: 0, btb: 0, pacific: 8, kettlefire:27, imagine: 4, other:45},
-    "Convenience": {foodlube:11, knorr:24, btb:38, pacific: 0, kettlefire: 3, imagine: 0, other:24}
+    "Value":       {foodlube: 8, knorr:26, btb: 5, pacific: 0, kettlefire: 0, imagine: 0, other:61},
+    "Mainstream":  {foodlube:11, knorr: 8, btb: 3, pacific: 7, kettlefire: 0, imagine: 4, other:67},
+    "Premium":     {foodlube:10, knorr: 0, btb: 0, pacific:22, kettlefire: 5, imagine:12, other:51},
+    "Functional":  {foodlube: 9, knorr: 0, btb: 0, pacific: 6, kettlefire:11, imagine: 3, other:71},
+    "Convenience": {foodlube: 8, knorr:22, btb:28, pacific: 0, kettlefire: 2, imagine: 0, other:40}
   },
   ticker:[
-    {sym:"FL·NS",   label:"net sales run-rate $M", base:4.31, vol:.004, fmt:v=>"$"+v.toFixed(2)+"M"},
-    {sym:"FL·SHARE",label:"blended $ share",       base:12.4, vol:.001, fmt:v=>v.toFixed(1)+"%"},
-    {sym:"FL·HLTH", label:"composite health",      base:74,   vol:.001, fmt:v=>v.toFixed(0)},
-    {sym:"CHKN",    label:"chicken input idx",     base:118.4,vol:.003, fmt:v=>v.toFixed(1)},
-    {sym:"BEEF·BN", label:"beef bone idx",         base:131.2,vol:.004, fmt:v=>v.toFixed(1)},
-    {sym:"ALUM·CS", label:"can sheet $/t",         base:2412, vol:.002, fmt:v=>"$"+Math.round(v).toLocaleString()},
-    {sym:"NATGAS",  label:"nat gas $/MMBtu",       base:3.18, vol:.006, fmt:v=>"$"+v.toFixed(2)},
-    {sym:"DIESEL",  label:"diesel $/gal",          base:3.64, vol:.003, fmt:v=>"$"+v.toFixed(2)}
+    {sym:"FL·NS",   label:"net sales run-rate $M (sim)", base:4.31, vol:.004, fmt:v=>"$"+v.toFixed(2)+"M"},
+    {sym:"FL·SHARE",label:"blended $ share (sim)",       base:9.2,  vol:.001, fmt:v=>v.toFixed(1)+"%"},
+    {sym:"FL·HLTH", label:"composite health (sim)",      base:74,   vol:.001, fmt:v=>v.toFixed(0)},
+    {sym:"CHKN",    label:"chicken input idx (sim)",     base:118.4,vol:.003, fmt:v=>v.toFixed(1)},
+    {sym:"BEEF·BN", label:"beef bone idx (sim)",         base:131.2,vol:.004, fmt:v=>v.toFixed(1)},
+    {sym:"ALUM·CS", label:"can sheet $/t (sim)",         base:2412, vol:.002, fmt:v=>"$"+Math.round(v).toLocaleString()},
+    {sym:"NATGAS",  label:"nat gas $/MMBtu (sim)",       base:3.18, vol:.006, fmt:v=>"$"+v.toFixed(2)},
+    {sym:"DIESEL",  label:"diesel $/gal (sim)",          base:3.64, vol:.003, fmt:v=>"$"+v.toFixed(2)}
   ],
   departments:[
     {name:"Commercial & RevOps", score:82, kpis:[
       {n:"Net sales MTD vs plan", v:"+2.1%", d:+2.1, up:"good"},
       {n:"Trade spend ROI",       v:"1.42×", d:+0.06,up:"good"},
-      {n:"ACV distribution",      v:"68.3%", d:+0.8, up:"good"}]},
+      {n:"ACV distribution",      v:"68.3%", d:+0.8, up:"good"}],
+     detail:{
+      trendLabel:"ACV distribution, 90 days (%)",
+      trend:{start:66.2,end:68.3,noise:.25},
+      rows:[
+        ["Trade spend, % gross sales","19.4% (sim)","15–25% is typical for CPG brands — usually the 2nd-largest cost after COGS","TrewUp / Eightx (2026)"],
+        ["Gross-to-net deductions","33.8% (sim)","30–40% total G2N is common; net revenue lands near 60–70% of gross","Eightx (2026)"],
+        ["Trade spend ROI","1.42× (sim)","Above 1.0× is the minimum bar; best-in-class programs measure ROI by event","TrewUp"],
+        ["ACV distribution","68.3% (sim)","Challenger brands typically fight from 40–70% ACV vs national leaders' 90%+","industry norm"]],
+      prov:"Benchmarks: TrewUp trade-spend guide; Eightx CPG gross-to-net benchmarks."}},
     {name:"Marketing & Brand", score:74, kpis:[
-      {n:"Blended $ share",   v:"12.4%", d:+0.3, up:"good"},
+      {n:"Blended $ share",   v:"9.2%",  d:+0.3, up:"good"},
       {n:"Brand vitality idx",v:"71",    d:-1.0, up:"good"},
-      {n:"Media ROAS",        v:"2.8×",  d:+0.2, up:"good"}]},
+      {n:"Media ROAS",        v:"2.8×",  d:+0.2, up:"good"}],
+     detail:{
+      trendLabel:"Blended $ share, 90 days (%)",
+      trend:{start:8.9,end:9.2,noise:.05},
+      rows:[
+        ["US soup category size","—","≈ $5.9B (2024), ≈ 2.5% CAGR to 2032; shelf-stable ≈ 47% of it","GlobeNewswire / Mordor (2025)"],
+        ["Bone broth segment","—","≈ $1.2B global (2025), ≈ 6% CAGR; North America ≈ 36% of it","Fortune Business Insights"],
+        ["Category leader","—","Swanson (Campbell's) is the #1-selling US broth","Circana via Food Dive (2022)"],
+        ["Blended $ share","9.2% (sim)","Illustrative — syndicated share data not public","—"]],
+      prov:"Category sizes and leadership are sourced facts; Food Lube share is simulation."}},
     {name:"Supply Chain & Ops", score:61, kpis:[
       {n:"OEE (network)",   v:"67.8%", d:-2.4, up:"good"},
       {n:"OTIF fill rate",  v:"91.8%", d:-2.8, up:"good"},
-      {n:"Days inventory",  v:"61d",   d:+4.0, up:"bad"}]},
+      {n:"Days inventory",  v:"61d",   d:+4.0, up:"bad"}],
+     detail:{
+      trendLabel:"OTIF fill rate, 90 days (%)",
+      trend:{start:95.1,end:91.8,noise:.3},
+      rows:[
+        ["OEE (network)","67.8% (sim)","≈ 85% is the world-class benchmark; food plants commonly run 60–75%, dragged by packaging-line micro-stoppages","Brightly / Explitia"],
+        ["OTIF fill rate","91.8% (sim)","Major-retailer compliance programs commonly demand high-90s OTIF, with fines for misses","industry norm"],
+        ["Forecast MAPE (hero SKUs)","24% (sim)","15–25% MAPE is generally acceptable in CPG; hero SKUs target 80–90% accuracy","Planster / Imperia"],
+        ["Days inventory outstanding","61d (sim)","Varies widely by category; shelf-stable food carries more than fresh","—"]],
+      prov:"Benchmarks: Brightly Software food & beverage KPIs; Planster forecast-accuracy benchmarks."}},
     {name:"R&D & Innovation", score:78, kpis:[
       {n:"Active pipeline projects", v:"14",    d:+2.0, up:"good"},
       {n:"% sales from <3yr products",v:"17.2%",d:+1.1, up:"good"},
-      {n:"Stage-gate on-time",       v:"83%",   d:-3.0, up:"good"}]},
+      {n:"Stage-gate on-time",       v:"83%",   d:-3.0, up:"good"}],
+     detail:{
+      trendLabel:"% of sales from products <3 yrs old, 90 days",
+      trend:{start:16.1,end:17.2,noise:.12},
+      rows:[
+        ["Innovation vitality","17.2% (sim)","Growth-oriented CPGs commonly target 15–20%+ of sales from recent launches","industry norm"],
+        ["Active pipeline projects","14 (sim)","—","—"],
+        ["Stage-gate on-time","83% (sim)","—","—"],
+        ["Where growth is","—","Functional broth is the category's growth flank: ≈ 6% CAGR vs ≈ 2.5% for soup overall","Fortune BI / GlobeNewswire"]],
+      prov:"Category growth rates are sourced; pipeline metrics are simulation."}},
     {name:"Finance", score:70, kpis:[
       {n:"EBITDA margin LTM", v:"13.2%", d:+0.4, up:"good"},
       {n:"Net leverage",      v:"3.4×",  d:-0.1, up:"bad"},
-      {n:"Cash conversion",   v:"84%",   d:+2.0, up:"good"}]},
+      {n:"Cash conversion",   v:"84%",   d:+2.0, up:"good"}],
+     detail:{
+      trendLabel:"EBITDA margin LTM, 90 days (%)",
+      trend:{start:12.8,end:13.2,noise:.06},
+      rows:[
+        ["Gross margin","31.4% (sim)","Public food pure-plays: 21–38%, median ≈ 33% — Utz 24.9%, BellRing 33.3%, Simply Good 36.2%, Hain 21.4% (FY2025)","Eightx (2026)"],
+        ["Operating margin","≈ 9% (sim)","Healthy public food operators run ≈ 1–15% operating margin","Eightx (2026)"],
+        ["Net leverage","3.4× (sim)","Mid-cap packaged food commonly carries ≈ 3–4× net debt/EBITDA","peer filings"],
+        ["Revenue scale","$1.42B (sim)","Peer mid-caps: Utz ≈ $1.4B, Simply Good ≈ $1.45B, Hain ≈ $1.5B (FY2025)","company filings"]],
+      prov:"Peer figures from FY2025 filings / Eightx benchmark compilation; Food Lube figures are simulation."}},
     {name:"Quality & Food Safety", score:88, kpis:[
       {n:"Complaints / M units", v:"2.1", d:-0.3, up:"bad"},
       {n:"First-pass quality",   v:"98.7%",d:+0.1,up:"good"},
-      {n:"Audit score (SQF)",    v:"96",   d: 0.0,up:"good"}]}
+      {n:"Audit score (SQF)",    v:"96",   d: 0.0,up:"good"}],
+     detail:{
+      trendLabel:"Consumer complaints per million units, 90 days",
+      trend:{start:2.5,end:2.1,noise:.05},
+      rows:[
+        ["Complaints / M units","2.1 (sim)","—","—"],
+        ["First-pass quality","98.7% (sim)","Quality losses are one of OEE's three factors; food lines lose most to micro-stoppages and changeovers","Brightly / Explitia"],
+        ["SQF audit score","96 (sim)","SQF is a GFSI-benchmarked certification widely required by US retailers","SQF Institute"],
+        ["Recall exposure","low (sim)","—","—"]],
+      prov:"SQF/GFSI context is factual; scores are simulation."}}
   ],
+  /* Alert feed. type: "fact" = sourced real-world item; "scenario" =
+     hypothetical simulation; "sim" = internal fictional-company event. */
   alerts:[
-    {sev:"critical",dept:"SUPPLY CHAIN",min:12, msg:"Chicken input index +8.2% WoW — annualized COGS exposure $3.1M across EmberWell and Hearth stock lines."},
-    {sev:"serious", dept:"SUPPLY CHAIN",min:34, msg:"OTIF dipped to 91.8% at Toledo DC — carrier capacity shortfall; 96% target breach for 6 consecutive days."},
-    {sev:"warning", dept:"COMPETITIVE", min:57, msg:"Knorr concentrate promo depth 25% detected — Kroger Midwest, weeks 27–29. SimmrPro velocity risk."},
-    {sev:"warning", dept:"DEMAND",      min:88, msg:"Forecast MAPE breach on Pantry Gold 32oz stock (hero SKU): 27% vs 20% target, driven by club channel volatility."},
-    {sev:"good",    dept:"COMMERCIAL",  min:117,msg:"EmberWell sipping broth velocity +12% at Whole Foods after cooler placement reset; distribution +240 doors."},
-    {sev:"warning", dept:"QUALITY",     min:151,msg:"Complaint rate uptick on Stone & Sprig lentil carton (seal integrity) — 3.1/M vs 2.1 baseline. CAPA opened."},
-    {sev:"serious", dept:"COMPETITIVE", min:190,msg:"Better Than Bouillon adding a bone-broth concentrate line (trade press) — direct threat to EmberWell paste launch."},
-    {sev:"good",    dept:"FINANCE",     min:233,msg:"Revolver repricing closed at SOFR+165 (was +205) — annual interest savings ~$1.8M; leverage headroom intact."},
-    {sev:"warning", dept:"OPS",         min:275,msg:"Line 4 (Camden) micro-stoppage rate 2× baseline on carton filler — OEE drag −1.9pts network. Maintenance window Thu."},
-    {sev:"good",    dept:"R&D",         min:320,msg:"SimmrPro chef-grade paste passed gate 3 — consumer test top-2-box 78%; launch tracking to Q4 soup season."}
+    {sev:"critical",dept:"SUPPLY CHAIN · SIM",min:12, msg:"Chicken input index +8.2% WoW — annualized COGS exposure $3.1M across EmberWell and Hearth stock lines."},
+    {sev:"serious", dept:"SUPPLY CHAIN · SIM",min:34, msg:"OTIF dipped to 91.8% at Toledo DC — carrier capacity shortfall; 96% target breach for 6 consecutive days."},
+    {sev:"warning", dept:"COMPETITIVE · SCENARIO", min:57, msg:"Scenario: mainstream-broth price promotion detected in Midwest grocery, weeks 27–29 — SimmrPro velocity risk."},
+    {sev:"warning", dept:"DEMAND · SIM",      min:88, msg:"Forecast MAPE breach on Pantry Gold 32oz stock (hero SKU): 27% vs 20% target, driven by club channel volatility."},
+    {sev:"good",    dept:"COMMERCIAL · SIM",  min:117,msg:"EmberWell sipping broth velocity +12% in natural channel after cooler placement reset; distribution +240 doors."},
+    {sev:"warning", dept:"QUALITY · SIM",     min:151,msg:"Complaint rate uptick on Stone & Sprig lentil carton (seal integrity) — 3.1/M vs 2.1 baseline. CAPA opened."},
+    {sev:"serious", dept:"COMPETITIVE · FACT", min:190,msg:"B&G Foods completed its ~$110M acquisition of College Inn + Kitchen Basics (≈$110–120M net sales) — mainstream broth shelf consolidating. [B&G 8-K, Mar 2026]"},
+    {sev:"good",    dept:"FINANCE · SIM",     min:233,msg:"Revolver repricing closed at SOFR+165 (was +205) — annual interest savings ~$1.8M; leverage headroom intact."},
+    {sev:"warning", dept:"OPS · SIM",         min:275,msg:"Line 4 (Camden) micro-stoppage rate 2× baseline on carton filler — OEE drag −1.9pts network. Maintenance window Thu."},
+    {sev:"good",    dept:"R&D · SIM",         min:320,msg:"SimmrPro chef-grade paste passed gate 3 — consumer test top-2-box 78%; launch tracking to Q4 soup season."}
   ],
   liveAlerts:[
-    {sev:"warning", dept:"COMPETITIVE", msg:"Kettle & Fire national FSI dropped — 20% off sipping broth cartons; overlap with EmberWell core doors est. 61%."},
-    {sev:"good",    dept:"COMMERCIAL",  msg:"Costco Midwest region accepted Pantry Gold 6-pack rotation for October — incremental est. $2.4M net sales."},
-    {sev:"serious", dept:"SUPPLY CHAIN",msg:"Aluminum can sheet spot +3.4% today — hedging desk recommends extending Q1 cover from 60% to 75%."},
-    {sev:"warning", dept:"DEMAND",      msg:"Early-season cold snap forecast (Upper Midwest) — soup category demand signal +6% next 14 days; DC stock check advised."},
-    {sev:"good",    dept:"QUALITY",     msg:"Camden retort line passed unannounced SQF audit — zero non-conformities."},
-    {sev:"warning", dept:"FINANCE",     msg:"Trade deduction backlog at 4.2% of gross sales (target ≤3.5%) — settlement cycle slipping in club channel."}
+    {sev:"warning", dept:"COMPETITIVE · SCENARIO", msg:"Scenario: national 20%-off promotion on premium sipping-broth cartons — estimated 61% door overlap with EmberWell core distribution."},
+    {sev:"good",    dept:"COMMERCIAL · SIM",  msg:"Club channel Midwest region accepted Pantry Gold 6-pack rotation for October — incremental est. $2.4M net sales."},
+    {sev:"serious", dept:"SUPPLY CHAIN · SIM",msg:"Aluminum can sheet input +3.4% today in the simulation — hedging desk recommends extending Q1 cover from 60% to 75%."},
+    {sev:"warning", dept:"DEMAND · SIM",      msg:"Early-season cold snap forecast (Upper Midwest) — soup demand signal +6% next 14 days; DC stock check advised."},
+    {sev:"good",    dept:"QUALITY · SIM",     msg:"Camden retort line passed unannounced SQF audit — zero non-conformities."},
+    {sev:"warning", dept:"FINANCE · SIM",     msg:"Trade deduction backlog at 4.2% of gross sales (target ≤3.5%) — settlement cycle slipping in club channel."}
   ]
 };
 
@@ -363,6 +471,15 @@ const days=[], actual=[], plan=[];
     days.push(ts); plan.push(p); actual.push(Math.max(0.4, a));
   }
 }
+/* generic 90-day metric series between two anchors */
+function metricSeries(start,end,noise,n=90,seed=7){
+  const r=mulberry32(seed*7919+13); const out=[];
+  for(let i=0;i<n;i++){
+    const t=i/(n-1);
+    out.push(start+(end-start)*(t*t*(3-2*t)) + (r()-0.5)*2*noise);
+  }
+  out[n-1]=end; return out;
+}
 const fmtM = v => "$"+v.toFixed(2)+"M";
 const fmtDate = ts => new Date(ts).toLocaleDateString("en-US",{month:"short",day:"numeric"});
 const fmtDateY = ts => new Date(ts).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
@@ -374,82 +491,90 @@ const SVGNS="http://www.w3.org/2000/svg";
 function el(tag,attrs,parent){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
 function niceTicks(max,n){const raw=max/n,mag=Math.pow(10,Math.floor(Math.log10(raw)));const norm=raw/mag;const step=(norm<1.5?1:norm<3?2:norm<7?5:10)*mag;const out=[];for(let v=0;v<=max+1e-9;v+=step)out.push(v);return out}
 
-function sparkline(values, w=120, h=30, accentLast=true){
+function sparkline(values, w=120, h=26, accentLast=true){
   const svg=document.createElementNS(SVGNS,"svg");
   svg.setAttribute("width",w);svg.setAttribute("height",h);svg.setAttribute("aria-hidden","true");
   const mn=Math.min(...values),mx=Math.max(...values),pad=3;
   const x=i=>pad+i*(w-2*pad)/(values.length-1);
   const y=v=>mx===mn? h/2 : h-pad-(v-mn)*(h-2*pad)/(mx-mn);
   const d=values.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
-  el("path",{d,fill:"none",stroke:"#3d434d","stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"},svg);
+  el("path",{d,fill:"none",stroke:"#3a3f47","stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"},svg);
   if(accentLast){
     const i=values.length-1;
-    el("circle",{cx:x(i),cy:y(values[i]),r:5,fill:"#14161a"},svg);
-    el("circle",{cx:x(i),cy:y(values[i]),r:3.5,fill:"var(--accent)"},svg);
+    el("circle",{cx:x(i),cy:y(values[i]),r:4.5,fill:"#121316"},svg);
+    el("circle",{cx:x(i),cy:y(values[i]),r:3,fill:"var(--accent)"},svg);
   }
   return svg;
 }
 
-/* ---------- Revenue vs plan line chart ---------- */
-let revDays=30, revToggled=false;
-function drawRevenue(){
-  const host=document.getElementById("revPlot"); host.innerHTML="";
-  const n=Math.min(revDays,N_DAYS);
-  const xs=days.slice(-n), ya=actual.slice(-n), yp=plan.slice(-n);
-  const W=host.clientWidth||820, H=280, M={t:14,r:16,b:30,l:46};
+/* ---------- generic line chart with crosshair (used by main + modal) ---------- */
+function lineChart(host,tipEl,series,opts){
+  host.innerHTML="";
+  const n=series[0].vals.length;
+  const W=host.clientWidth||820, H=opts.h||260, M={t:12,r:16,b:28,l:48};
   const iw=W-M.l-M.r, ih=H-M.t-M.b;
-  const ymax=Math.max(...ya,...yp)*1.08;
-  const X=i=>M.l+i*iw/(n-1), Y=v=>M.t+ih-(v/ymax)*ih;
-  const svg=el("svg",{width:"100%",height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Daily net sales versus plan line chart"});
+  const all=series.flatMap(s=>s.vals);
+  let ymin=opts.zeroBase?0:Math.min(...all), ymax=Math.max(...all);
+  const span=(ymax-ymin)||1; if(!opts.zeroBase){ymin-=span*.15;ymax+=span*.1}else{ymax*=1.08}
+  const X=i=>M.l+i*iw/(n-1), Y=v=>M.t+ih-((v-ymin)/(ymax-ymin))*ih;
+  const svg=el("svg",{width:"100%",height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":opts.aria||"line chart"});
   host.appendChild(svg);
-  // grid + y ticks
-  niceTicks(ymax,4).forEach(v=>{
+  const yt=opts.zeroBase?niceTicks(ymax,4):[ymin,ymin+span*.5,ymax].map(v=>v);
+  yt.forEach(v=>{
     el("line",{x1:M.l,x2:W-M.r,y1:Y(v),y2:Y(v),stroke:"var(--grid)","stroke-width":1},svg);
-    const t=el("text",{x:M.l-8,y:Y(v)+4,"text-anchor":"end",fill:"#5f6672","font-size":10.5,"font-family":"var(--mono)"},svg);
-    t.textContent="$"+(v).toFixed(v<10&&v%1?1:0)+"M";
+    const t=el("text",{x:M.l-8,y:Y(v)+4,"text-anchor":"end",fill:"#5f6672","font-size":10,"font-family":"var(--mono)"},svg);
+    t.textContent=opts.yfmt(v);
   });
-  // x ticks
   const nx=Math.min(6,n);
   for(let k=0;k<nx;k++){
     const i=Math.round(k*(n-1)/(nx-1));
-    const t=el("text",{x:X(i),y:H-8,"text-anchor":"middle",fill:"#5f6672","font-size":10.5,"font-family":"var(--mono)"},svg);
-    t.textContent=fmtDate(xs[i]);
+    const t=el("text",{x:X(i),y:H-7,"text-anchor":"middle",fill:"#5f6672","font-size":10,"font-family":"var(--mono)"},svg);
+    t.textContent=opts.xlabel(i);
   }
-  // area wash under actual
-  const areaD="M"+X(0)+" "+Y(ya[0])+ya.map((v,i)=>"L"+X(i)+" "+Y(v)).join("")+`L${X(n-1)} ${M.t+ih}L${X(0)} ${M.t+ih}Z`;
-  el("path",{d:areaD,fill:"#3987e5","fill-opacity":.09},svg);
-  // plan line
-  el("path",{d:yp.map((v,i)=>(i?"L":"M")+X(i)+" "+Y(v)).join(""),fill:"none",stroke:"#5f6672","stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"},svg);
-  // actual line
-  el("path",{d:ya.map((v,i)=>(i?"L":"M")+X(i)+" "+Y(v)).join(""),fill:"none",stroke:"var(--s-foodlube)","stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"},svg);
-  // endpoint marker + surface ring + end label (selective direct label)
-  el("circle",{cx:X(n-1),cy:Y(ya[n-1]),r:6,fill:"#14161a"},svg);
-  el("circle",{cx:X(n-1),cy:Y(ya[n-1]),r:4,fill:"var(--s-foodlube)"},svg);
-  const lbl=el("text",{x:X(n-1)-8,y:Y(ya[n-1])-10,"text-anchor":"end",fill:"#f2f3f5","font-size":11,"font-family":"var(--mono)","font-weight":600},svg);
-  lbl.textContent=fmtM(ya[n-1]);
-  // crosshair + hover
-  const cross=el("line",{y1:M.t,y2:M.t+ih,stroke:"#39404b","stroke-width":1,visibility:"hidden"},svg);
-  const hoverDotA=el("circle",{r:4,fill:"var(--s-foodlube)",stroke:"#14161a","stroke-width":2,visibility:"hidden"},svg);
-  const hoverDotP=el("circle",{r:4,fill:"#5f6672",stroke:"#14161a","stroke-width":2,visibility:"hidden"},svg);
-  const tip=document.getElementById("revTip");
+  if(opts.area){
+    const a=series[0].vals;
+    const areaD="M"+X(0)+" "+Y(a[0])+a.map((v,i)=>"L"+X(i)+" "+Y(v)).join("")+`L${X(n-1)} ${M.t+ih}L${X(0)} ${M.t+ih}Z`;
+    el("path",{d:areaD,fill:series[0].color,"fill-opacity":.08},svg);
+  }
+  [...series].reverse().forEach(s=>{
+    el("path",{d:s.vals.map((v,i)=>(i?"L":"M")+X(i)+" "+Y(v)).join(""),fill:"none",stroke:s.color,"stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"},svg);
+  });
+  const s0=series[0], last=s0.vals[n-1];
+  el("circle",{cx:X(n-1),cy:Y(last),r:5.5,fill:"#121316"},svg);
+  el("circle",{cx:X(n-1),cy:Y(last),r:3.5,fill:s0.color},svg);
+  const lbl=el("text",{x:X(n-1)-8,y:Y(last)-9,"text-anchor":"end",fill:"#e8eaed","font-size":10.5,"font-family":"var(--mono)","font-weight":600},svg);
+  lbl.textContent=opts.yfmt(last);
+  const cross=el("line",{y1:M.t,y2:M.t+ih,stroke:"#383c44","stroke-width":1,visibility:"hidden"},svg);
+  const dots=series.map(s=>el("circle",{r:3.5,fill:s.color,stroke:"#121316","stroke-width":2,visibility:"hidden"},svg));
   const hit=el("rect",{x:M.l,y:M.t,width:iw,height:ih,fill:"transparent"},svg);
   hit.addEventListener("mousemove",ev=>{
     const r=svg.getBoundingClientRect(), sx=(ev.clientX-r.left)*(W/r.width);
     const i=Math.max(0,Math.min(n-1,Math.round((sx-M.l)/(iw/(n-1)))));
     cross.setAttribute("x1",X(i));cross.setAttribute("x2",X(i));cross.setAttribute("visibility","visible");
-    hoverDotA.setAttribute("cx",X(i));hoverDotA.setAttribute("cy",Y(ya[i]));hoverDotA.setAttribute("visibility","visible");
-    hoverDotP.setAttribute("cx",X(i));hoverDotP.setAttribute("cy",Y(yp[i]));hoverDotP.setAttribute("visibility","visible");
-    tip.style.display="block";
+    series.forEach((s,si)=>{dots[si].setAttribute("cx",X(i));dots[si].setAttribute("cy",Y(s.vals[i]));dots[si].setAttribute("visibility","visible")});
+    tipEl.style.display="block";
     const hostR=host.getBoundingClientRect();
     let px=ev.clientX-hostR.left+14; if(px>hostR.width-180)px=ev.clientX-hostR.left-180;
-    tip.style.left=px+"px"; tip.style.top=(ev.clientY-hostR.top-10)+"px";
-    tip.innerHTML=`<div class="tt-date">${fmtDateY(xs[i])}</div>
-      <div class="tt-row"><span class="swatch" style="width:9px;height:9px;border-radius:2px;background:var(--s-foodlube)"></span>Actual<span class="v">${fmtM(ya[i])}</span></div>
-      <div class="tt-row"><span class="swatch" style="width:9px;height:9px;border-radius:2px;background:#5f6672"></span>Plan<span class="v">${fmtM(yp[i])}</span></div>
-      <div class="tt-row" style="color:#9aa1ac">Δ vs plan<span class="v" style="color:${ya[i]>=yp[i]?'var(--good)':'var(--critical)'}">${((ya[i]/yp[i]-1)*100).toFixed(1)}%</span></div>`;
+    tipEl.style.left=px+"px"; tipEl.style.top=(ev.clientY-hostR.top-10)+"px";
+    tipEl.innerHTML=`<div class="tt-date">${opts.tipTitle(i)}</div>`+
+      series.map(s=>`<div class="tt-row"><span style="width:8px;height:8px;border-radius:2px;background:${s.color}"></span>${s.name}<span class="v">${opts.yfmt(s.vals[i])}</span></div>`).join("")+
+      (opts.tipExtra?opts.tipExtra(i):"");
   });
-  hit.addEventListener("mouseleave",()=>{tip.style.display="none";cross.setAttribute("visibility","hidden");hoverDotA.setAttribute("visibility","hidden");hoverDotP.setAttribute("visibility","hidden")});
-  // table view (weekly rollup so it stays readable)
+  hit.addEventListener("mouseleave",()=>{tipEl.style.display="none";cross.setAttribute("visibility","hidden");dots.forEach(d=>d.setAttribute("visibility","hidden"))});
+}
+
+/* ---------- Revenue vs plan ---------- */
+let revDays=30;
+function drawRevenue(){
+  const n=Math.min(revDays,N_DAYS);
+  const xs=days.slice(-n), ya=actual.slice(-n), yp=plan.slice(-n);
+  lineChart(document.getElementById("revPlot"),document.getElementById("revTip"),
+    [{name:"Actual",vals:ya,color:"#3987e5"},{name:"Plan",vals:yp,color:"#5f6672"}],
+    {h:260,zeroBase:true,area:true,aria:"Daily net sales versus plan",
+     yfmt:v=>"$"+(v>=10?v.toFixed(0):v.toFixed(1))+"M",
+     xlabel:i=>fmtDate(xs[i]),
+     tipTitle:i=>fmtDateY(xs[i]),
+     tipExtra:i=>`<div class="tt-row" style="color:#9aa1ac">Δ vs plan<span class="v" style="color:${ya[i]>=yp[i]?'var(--good)':'var(--critical)'}">${((ya[i]/yp[i]-1)*100).toFixed(1)}%</span></div>`});
   const tbl=document.getElementById("revTable");
   let rows="";const step=Math.max(1,Math.floor(n/10));
   for(let i=n-1;i>=0;i-=step){rows+=`<tr><td>${fmtDateY(xs[i])}</td><td>${fmtM(ya[i])}</td><td>${fmtM(yp[i])}</td><td>${((ya[i]/yp[i]-1)*100).toFixed(1)}%</td></tr>`}
@@ -460,7 +585,7 @@ function drawRevenue(){
 function drawShare(){
   const host=document.getElementById("sharePlot"); host.innerHTML="";
   const rowsN=PACK.segments.length, comp=PACK.competitors;
-  const W=host.clientWidth||820, rowH=34, gapY=14, M={t:6,r:14,b:4,l:104};
+  const W=host.clientWidth||820, rowH=18, gapY=16, M={t:6,r:14,b:4,l:104};
   const H=M.t+rowsN*(rowH+gapY)-gapY+M.b;
   const iw=W-M.l-M.r;
   const svg=el("svg",{width:"100%",height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Market share by demand space, stacked bars"});
@@ -468,41 +593,37 @@ function drawShare(){
   const tip=document.getElementById("shareTip");
   PACK.segments.forEach((seg,ri)=>{
     const y=M.t+ri*(rowH+gapY);
-    const t=el("text",{x:M.l-12,y:y+rowH/2+4,"text-anchor":"end",fill:"#9aa1ac","font-size":12},svg);
+    const t=el("text",{x:M.l-12,y:y+rowH/2+4,"text-anchor":"end",fill:"#9aa1ac","font-size":11.5},svg);
     t.textContent=seg;
     let x=M.l;
     comp.forEach((c,ci)=>{
       const pct=PACK.share[seg][c.id]||0; if(!pct)return;
       const wpx=pct/100*iw - 2; // 2px surface gap between segments
       if(wpx<=0)return;
-      const isEnd = ci===0, isLast = x+wpx+2>=M.l+iw-1;
-      const r=el("rect",{x:x,y:y,width:Math.max(1,wpx),height:rowH,fill:c.hex,rx:(isEnd||isLast)?4:0},svg);
-      // selective direct label: only when the segment comfortably fits it
-      if(wpx>44){
-        const lt=el("text",{x:x+wpx/2,y:y+rowH/2+4,"text-anchor":"middle","font-size":10.5,"font-family":"var(--mono)","font-weight":600,
+      const r=el("rect",{x:x,y:y,width:Math.max(1,wpx),height:rowH,fill:c.hex,rx:2},svg);
+      if(wpx>40){
+        const lt=el("text",{x:x+wpx/2,y:y+rowH/2+3.5,"text-anchor":"middle","font-size":9.5,"font-family":"var(--mono)","font-weight":600,
           fill:(c.id==="btb"||c.id==="knorr")?"#0b0b0b":"#ffffff"},svg);
         lt.textContent=pct+"%";
       }
       r.addEventListener("mousemove",ev=>{
         tip.style.display="block";
         const hostR=host.getBoundingClientRect();
-        let px=ev.clientX-hostR.left+14; if(px>hostR.width-190)px=ev.clientX-hostR.left-190;
+        let px=ev.clientX-hostR.left+14; if(px>hostR.width-210)px=ev.clientX-hostR.left-210;
         tip.style.left=px+"px"; tip.style.top=(ev.clientY-hostR.top-8)+"px";
-        tip.innerHTML=`<div class="tt-date">${seg} demand space</div>
-          <div class="tt-row"><span style="width:9px;height:9px;border-radius:2px;background:${c.hex}"></span>${c.name}<span class="v">${pct}%</span></div>`;
+        tip.innerHTML=`<div class="tt-date">${seg} demand space · illustrative</div>
+          <div class="tt-row"><span style="width:8px;height:8px;border-radius:2px;background:${c.hex}"></span>${c.name}<span class="v">${pct}%</span></div>`;
       });
       r.addEventListener("mouseleave",()=>tip.style.display="none");
       x+=wpx+2;
     });
   });
-  // legend
   const lg=document.getElementById("shareLegend"); lg.innerHTML="";
   comp.forEach(c=>{
     const s=document.createElement("span");s.className="key";
     s.innerHTML=`<span class="swatch" style="background:${c.hex}"></span>${c.name}`;
     lg.appendChild(s);
   });
-  // table view
   const tbl=document.getElementById("shareTable");
   let head=comp.map(c=>`<th>${c.name}</th>`).join("");
   let rows=PACK.segments.map(seg=>`<tr><td>${seg}</td>${comp.map(c=>`<td>${PACK.share[seg][c.id]||0}%</td>`).join("")}</tr>`).join("");
@@ -517,7 +638,7 @@ function statTile(hostId,label,val,unit,delta,deltaGoodWhenUp,meta,seriesVals){
   const up=delta>=0, good=(up===deltaGoodWhenUp);
   host.innerHTML=`<div class="lbl">${label}</div>
     <div class="val">${val}<span class="unit">${unit}</span></div>
-    <div class="meta"><span class="delta ${good?"up":"dn"}">${up?"▲":"▼"} ${Math.abs(delta).toFixed(1)}${typeof delta==="number"?"%":""}</span> ${meta}</div>`;
+    <div class="meta"><span class="delta ${good?"up":"dn"}">${up?"▲":"▼"} ${Math.abs(delta).toFixed(1)}%</span> ${meta}</div>`;
   host.appendChild(sparkline(seriesVals));
 }
 function renderTiles(){
@@ -534,16 +655,18 @@ function renderTiles(){
 }
 
 /* =====================================================================
-   DEPARTMENT SCORECARDS
+   DEPARTMENT SCORECARDS + DRILL-DOWN
    ===================================================================== */
 function statusOf(score){return score>=75?"good":score>=60?"warning":score>=45?"serious":"critical"}
 const STATUS_LABEL={good:"Healthy",warning:"Watch",serious:"At risk",critical:"Critical"};
 const STATUS_ICON={good:"✔",warning:"◔",serious:"◆",critical:"▲"};
 function renderDepts(){
   const grid=document.getElementById("deptGrid");grid.innerHTML="";
-  PACK.departments.forEach(d=>{
+  PACK.departments.forEach((d,di)=>{
     const st=statusOf(d.score);
     const card=document.createElement("div");card.className="card dept";
+    card.setAttribute("role","button");card.setAttribute("tabindex","0");
+    card.setAttribute("aria-label",d.name+" — open detail");
     const kpiRows=d.kpis.map(k=>{
       const up=k.d>=0, good=(k.up==="good")===(k.d>=0)||k.d===0;
       const cls=k.d===0?"":(good?"up":"dn");
@@ -557,13 +680,60 @@ function renderDepts(){
         <span class="score" style="color:var(--${st})">${d.score}</span></div>
       <div class="meter" style="background:color-mix(in srgb, var(--${st}) 16%, transparent)">
         <div class="fill" style="width:${d.score}%;background:var(--${st})"></div></div>
-      ${kpiRows}`;
+      ${kpiRows}
+      <div class="drill">VIEW DETAIL →</div>`;
+    card.addEventListener("click",()=>openDept(di));
+    card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDept(di)}});
     grid.appendChild(card);
   });
 }
+function deptTag(name){return name.split(" ")[0].replace("&","").toUpperCase()}
+function openDept(di){
+  const d=PACK.departments[di], st=statusOf(d.score);
+  document.getElementById("mTitle").textContent=d.name;
+  const chip=document.getElementById("mChip");
+  chip.className="status-chip "+st; chip.innerHTML=STATUS_ICON[st]+" "+STATUS_LABEL[st];
+  const sc=document.getElementById("mScore"); sc.textContent=d.score; sc.style.color=`var(--${st})`;
+  document.getElementById("mSub").textContent="Composite health score · Food Lube values are seeded simulation; benchmark column is sourced from public research.";
+  document.getElementById("mTrendLabel").textContent=d.detail.trendLabel;
+  document.getElementById("mProv").textContent=d.detail.prov;
+  // benchmark table
+  const rows=d.detail.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
+  document.getElementById("mTable").innerHTML=
+    `<table class="viz-table"><thead><tr><th>Metric</th><th>Food Lube</th><th>Industry benchmark / fact</th><th>Source</th></tr></thead><tbody>${rows}</tbody></table>`;
+  // related alerts
+  const key=d.name.split(" ")[0].toUpperCase();
+  const rel=[...document.querySelectorAll("#alertList .alert")].filter(a=>{
+    const src=a.querySelector(".a-src").textContent;
+    if(d.name.startsWith("Supply"))return src.includes("SUPPLY")||src.includes("OPS");
+    if(d.name.startsWith("Commercial"))return src.includes("COMMERCIAL")||src.includes("DEMAND");
+    if(d.name.startsWith("Marketing"))return src.includes("COMPETITIVE");
+    return src.includes(key);
+  }).slice(0,4);
+  const mA=document.getElementById("mAlerts");mA.innerHTML="";
+  if(rel.length)rel.forEach(a=>mA.appendChild(a.cloneNode(true)));
+  else mA.innerHTML='<div class="provenance" style="border:none;padding:0">No related alerts in the current window.</div>';
+  // trend chart
+  document.getElementById("modalBack").classList.add("open");
+  document.body.style.overflow="hidden";
+  requestAnimationFrame(()=>{
+    const t=d.detail.trend;
+    const vals=metricSeries(t.start,t.end,t.noise,90,di+3);
+    lineChart(document.getElementById("mPlot"),document.getElementById("mTip"),
+      [{name:d.detail.trendLabel.split(",")[0],vals,color:"#3987e5"}],
+      {h:200,zeroBase:false,area:true,aria:d.detail.trendLabel,
+       yfmt:v=>v.toFixed(1),
+       xlabel:i=>fmtDate(days[N_DAYS-90+i]),
+       tipTitle:i=>fmtDateY(days[N_DAYS-90+i])});
+  });
+}
+function closeDept(){document.getElementById("modalBack").classList.remove("open");document.body.style.overflow=""}
+document.getElementById("mClose").addEventListener("click",closeDept);
+document.getElementById("modalBack").addEventListener("click",e=>{if(e.target.id==="modalBack")closeDept()});
+window.addEventListener("keydown",e=>{if(e.key==="Escape")closeDept()});
 
 /* =====================================================================
-   LIVE ALERT STREAM
+   ALERT STREAM
    ===================================================================== */
 const SEV_LABEL={critical:"Critical",serious:"Serious",warning:"Warning",good:"Positive"};
 function alertNode(a,ts){
@@ -586,7 +756,7 @@ function renderAlerts(){
   updateAlertCount();
 }
 function updateAlertCount(){
-  const crit=document.querySelectorAll(".alert.critical,.alert.serious").length;
+  const crit=document.querySelectorAll("#alertList .alert.critical, #alertList .alert.serious").length;
   document.getElementById("alertCount").textContent=`${alertTotal} today · ${crit} need attention`;
 }
 let liveIdx=0;
