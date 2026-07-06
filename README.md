@@ -1,44 +1,60 @@
-# vibe_coding_test
+# Food Lube — Company Command Center
 
-## Food Lube — Executive Command Center (prototype)
+A founder's command center for **Food Lube**, a startup in the US soup, broth &
+concentrates space. The company starts at zero: **every company number in the
+app is entered by the founder** — nothing is simulated. Market context is
+sourced from public research.
 
-A high-fidelity, dark-terminal executive dashboard prototype for **Food Lube Co.**,
-a fictional ~$1.4B soup, broth & culinary concentrates challenger. Conceptually
-grounded in Capsim Capstone 2.0 business logic, translated into real-world food
-CPG metrics (trade spend, OTIF, OEE, forecast MAPE, demand-space share).
+## Using it
 
-- `index.html` — self-contained prototype (open directly in a browser). Seeded
-  daily simulation data (730 days) plus a live intraday tick: ticker, run-rate
-  hero, and alert stream update in real time.
-- **Department workspaces**: each scorecard opens a full page (hash-routed
-  tabs) with key metrics, a 90-day trend, an active-projects portfolio,
-  sourced industry benchmarks, and related alerts.
-- **User data entry**: "Edit data" on any department page lets you type your
-  own numbers (KPI values/deltas, health score, projects — add/remove/edit).
-  Edits persist in browser localStorage, flow back to the Overview tiles and
-  scorecards, and can be exported/imported as JSON from the header.
-- Industry-specific config lives in the `PACK` object at the top of the script —
-  segments, competitors, share matrix, ticker symbols, departments, alerts — so
-  the engine can be re-pointed at another vertical (snacks, sensors) by swapping
-  the pack.
-- Competitor set (real companies, configurable): Knorr (Unilever), Better Than
-  Bouillon (Summit Hill), Pacific Foods (Campbell's), Kettle & Fire, Imagine (Hain).
+Open `index.html` in any browser. Your data is saved in that browser
+(localStorage) and never leaves your machine. Use **Export backup** in the
+header regularly — it downloads a JSON file you can restore with **Import** on
+any computer.
 
-## Data provenance
+### Tabs
 
-Food Lube company values are **seeded simulation** (the company is fictional).
-Everything stated about the real world is sourced:
+- **Overview** — health scoreboard (cash, monthly burn, runway, spent-to-date,
+  revenue, MoM growth, gross margin, inventory, CAC, stockholders' equity),
+  cash-balance chart, monthly revenue vs. expenses, spend by category, and a
+  you-vs-the-market benchmark table.
+- **CEO** — milestones, key numbers (units produced/sold, retail doors, web
+  orders, new customers — feeds CAC), projects, and weekly → five-year
+  planning horizons.
+- **Finance** — equity ledger (Common Stock / Additional Paid-In Capital),
+  expense ledger (12 CPG categories; Equipment is capitalized), revenue ledger
+  (by channel), and auto-generated **Income Statement, Balance Sheet, and
+  Statement of Cash Flows** (MTD/QTD/YTD/all-time). Statement structure follows
+  the Capstone layout: Sales → Variable Costs → Contribution Margin → Period
+  Costs → EBIT → Taxes → Net Profit.
+- **Operations** — raw-materials ledger (purchases auto-post to the expense
+  ledger; on-hand quantities become balance-sheet inventory), finished-goods
+  inventory, and a shipments board with carrier tracking numbers (freight
+  auto-posts to expenses).
+- **Market** — sourced category outlook, competitive landscape, peer cost
+  structure, and a cost-driver/trend watch list.
 
-- Trade spend 15–25% of gross sales; gross-to-net deductions 30–40% — TrewUp / Eightx CPG benchmarks
-- Food pure-play gross margins 21–38% (median ~33%); Utz 24.9%, BellRing 33.3%, Simply Good Foods 36.2%, Hain 21.4% (FY2025) — Eightx / company filings
-- CPG forecast MAPE 15–25% acceptable; hero-SKU accuracy targets 80–90% — Planster / Imperia
-- OEE world-class ≈85%; food plants typically 60–75% — Brightly Software / Explitia
-- US soup market ≈$5.9B (2024), ≈2.5% CAGR — GlobeNewswire / Mordor Intelligence
-- Bone broth ≈$1.2B global (2025), ≈6% CAGR; top-5 players ≈42% combined — Fortune Business Insights
+### Accounting notes
+
+- COGS is accrual-adjusted: material purchases sitting in inventory are an
+  asset, not a cost, until consumed/sold (COGS = purchases − Δ inventory).
+- Equipment is capitalized and depreciated straight-line over 60 months.
+- Taxes accrue at the 21% US federal corporate rate on positive pre-tax income
+  and sit in Income Tax Payable. The balance sheet always balances.
+- Burn/runway use a trailing-90-day average and only display after 2+ weeks of
+  ledger history.
+
+## Data provenance (market facts)
+
+- US soup ≈$5.9B (2024), ≈2.5% CAGR — GlobeNewswire / Mordor Intelligence (2025)
+- Bone broth ≈$1.2B global (2025), ≈6% CAGR; top-5 ≈42% combined — Fortune Business Insights
+- Peer gross margins 21–38%, median ≈33% (Utz 24.9%, BellRing 33.3%, Simply Good 36.2%, Hain 21.4%, FY2025) — Eightx / filings
+- Trade spend 15–25% of gross sales; gross-to-net 30–40% — TrewUp / Eightx
 - Swanson is the #1-selling US broth — Circana, via Food Dive (2022)
-- B&G Foods acquired College Inn + Kitchen Basics for ~$110M (≈$110–120M net sales) — B&G Foods 8-K (2026)
+- B&G Foods acquired College Inn + Kitchen Basics for ~$110M — B&G Foods 8-K (2026)
+- CPG forecast MAPE 15–25% acceptable — Planster / Imperia
 
-Brand-level market share **by demand space is illustrative** (syndicated
-Circana/NIQ data is not public) and is labeled as such in the UI. Alert-feed
-items referencing real companies are either sourced facts (marked `FACT`) or
-hypothetical scenarios (marked `SCENARIO`); all internal events are marked `SIM`.
+## Roadmap
+
+Later phases: hosted backend with login (multi-device sync), CSV import,
+editable market-research content, and budget-vs-actual planning.
