@@ -5,6 +5,7 @@
  * any component; this module only filters the seed.
  */
 import seed from "@shared/seed.json";
+import { applyOverlay } from "./userStore.js";
 
 const clone = (x) => JSON.parse(JSON.stringify(x));
 
@@ -21,7 +22,8 @@ export async function getKpis({ mode = "company", department = null, cadence = n
   if (mode === "industry") rows = rows.filter((k) => k.scope === "E");
   if (department) rows = rows.filter((k) => k.department === department);
   if (cadence) rows = rows.filter((k) => k.cadence === cadence);
-  return clone(rows);
+  // User-submitted observations override mock values per KPI.
+  return clone(rows).map(applyOverlay);
 }
 
 export async function getCompetitors() {

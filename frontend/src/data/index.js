@@ -22,6 +22,7 @@
  */
 import * as mock from "./mock.js";
 import * as api from "./api.js";
+import * as userStore from "./userStore.js";
 
 const SOURCE = import.meta.env.VITE_DATA_SOURCE === "api" ? api : mock;
 
@@ -29,6 +30,15 @@ export const getCompany = (...a) => SOURCE.getCompany(...a);
 export const getDepartments = (...a) => SOURCE.getDepartments(...a);
 export const getKpis = (...a) => SOURCE.getKpis(...a);
 export const getCompetitors = (...a) => SOURCE.getCompetitors(...a);
+
+// User check-in submissions (real numbers overriding mock, per KPI).
+// Stored in the browser today; a LIVE provider can sync the same shape
+// to a database without touching UI code.
+export const submitObservations = userStore.submitObservations;
+export const exportUserData = userStore.exportUserData;
+export const importUserData = userStore.importUserData;
+export const clearUserData = userStore.clearUserData;
+export const countEntered = userStore.countEntered;
 
 export const CADENCES = ["daily", "weekly", "monthly", "quarterly", "annual"];
 export const CONFIDENCE = {

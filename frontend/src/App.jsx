@@ -1,13 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
-import { getCompany, getDepartments, getKpis, getCompetitors, CADENCES } from "./data/index.js";
+import {
+  getCompany, getDepartments, getKpis, getCompetitors, CADENCES,
+  exportUserData, importUserData, clearUserData, countEntered
+} from "./data/index.js";
 import Legend from "./components/Legend.jsx";
 import CadenceGroups from "./components/CadenceGroups.jsx";
 import CompetitorGrid from "./components/CompetitorGrid.jsx";
+import CheckIn from "./components/CheckIn.jsx";
 
 export default function App() {
   const [mode, setMode] = useState("company"); // "company" | "industry"
   const [cadence, setCadence] = useState(null); // null = all
   const [dept, setDept] = useState(null); // department drill-down (company mode)
+  const [checkin, setCheckin] = useState(false); // check-in (data entry) view
+  const [dataVersion, setDataVersion] = useState(0); // bump to re-read after submissions
   const [company, setCompany] = useState(null);
   const [departments, setDepartments] = useState([]);
   const [kpis, setKpis] = useState([]);
@@ -28,7 +34,13 @@ export default function App() {
     getKpis({ mode, department: dept, cadence })
       .then(setKpis)
       .catch((e) => setError(String(e)));
-  }, [mode, dept, cadence]);
+  }, [mode, dept, cadence, dataVersion]);
+
+  // full unfiltered company KPI list for the check-in form
+  const [allKpis, setAllKpis] = useState([]);
+  useEffect(() => {
+    if (checkin) getKpis({ mode: "company" }).then(setAllKpis).catch((e) => setError(String(e)));
+  }, [checkin, dataVersion]);
 
   const deptNames = useMemo(
     () => Object.fromEntries(departments.map((d) => [d.id, d.name])),
@@ -47,6 +59,37 @@ export default function App() {
   const switchMode = (m) => {
     setMode(m);
     setDept(null);
+    setCheckin(false);
+  };
+
+  const doExport = () => {
+    const blob = new Blob([exportUserData()], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `foodlube-entries-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+  const doImport = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        importUserData(r.result);
+        setDataVersion((v) => v + 1);
+      } catch (err) {
+        alert(String(err.message || err));
+      }
+    };
+    r.readAsText(f);
+    e.target.value = "";
+  };
+  const doReset = () => {
+    if (confirm("Erase all numbers you have entered and return to mock data? Export first if you want a backup.")) {
+      clearUserData();
+      setDataVersion((v) => v + 1);
+    }
   };
 
   if (error)
@@ -71,8 +114,22 @@ export default function App() {
             Industry
           </button>
         </div>
+        {mode === "company" && (
+          <button
+            className={`chip ${checkin ? "on" : ""}`}
+            style={checkin ? {} : { borderColor: "#2a5a8a", color: "#7fb2ea" }}
+            onClick={() => setCheckin(!checkin)}
+          >
+            ✎ Check-in
+          </button>
+        )}
         <span className="hspace" />
         <Legend />
+        <button className="chip" onClick={doExport} title="Download your entered numbers as a JSON backup">⭳</button>
+        <label className="chip" title="Restore entered numbers from a backup" style={{ cursor: "pointer" }}>
+          ⭱<input type="file" accept=".json" onChange={doImport} style={{ display: "none" }} />
+        </label>
+        <button className="chip" onClick={doReset} title="Erase entered numbers (back to mock)">↺</button>
       </header>
 
       <div className="bar" role="group" aria-label="Cadence filter">
@@ -92,7 +149,16 @@ export default function App() {
       </div>
 
       <main className="wrap">
-        {mode === "industry" ? (
+        {checkin && mode === "company" ? (
+          <CheckIn
+            kpis={allKpis}
+            deptNames={deptNames}
+            onDone={() => {
+              setCheckin(false);
+              setDataVersion((v) => v + 1);
+            }}
+          />
+        ) : mode === "industry" ? (
           <>
             <CompetitorGrid competitors={competitors} />
             <div className="sect-head">
@@ -142,7 +208,7 @@ export default function App() {
       </main>
 
       <footer className="foot">
-        FOOD LUBE · CPG intelligence dashboard · Phase 1 — data source: <span>{import.meta.env.VITE_DATA_SOURCE === "api" ? "API" : "mock"}</span> · company profile is fictional demo data · competitor values mock unless a public source is cited
+        FOOD LUBE · CPG intelligence dashboard · base data: <span>{import.meta.env.VITE_DATA_SOURCE === "api" ? "API" : "mock"}</span> · {countEntered()} KPI{countEntered() === 1 ? "" : "s"} overridden by your check-ins (green · manual entry) · your entries stay in this browser — use ⭳ to back up · competitor values mock unless a public source is cited
       </footer>
     </>
   );

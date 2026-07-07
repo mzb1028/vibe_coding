@@ -27,7 +27,10 @@ export default function KpiCard({ kpi, showDept, deptName }) {
       <Sparkline data={kpi.trend} />
       <div className="meta">
         <span>{showDept && deptName ? deptName : kpi.cadence}</span>
-        <span title="Data source">{kpi.source}</span>
+        <span title="Data source">
+          {kpi.source}
+          {kpi.lastUpdated ? ` · ${kpi.lastUpdated}` : ""}
+        </span>
       </div>
       {kpi.note && <div className="note">{kpi.note}</div>}
     </div>

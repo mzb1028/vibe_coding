@@ -96,6 +96,14 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .comp-table .cnote { font-size: 10.5px; color: var(--ink-3); max-width: 340px; white-space: normal; font-family: var(--sans); }
 .own { font-family: var(--mono); font-size: 9px; padding: 1px 5px; border: 1px solid var(--hairline); border-radius: var(--r); color: var(--ink-3); margin-left: 6px; }
 
+/* check-in (data entry) */
+.checkin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 8px 20px; }
+.ci-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--grid); }
+.ci-name { flex: 1; font-size: 12px; color: var(--ink-2); line-height: 1.3; }
+.ci-last { font-family: var(--mono); font-size: 10px; color: var(--ink-3); white-space: nowrap; }
+.ci-input { width: 96px; background: var(--raised); color: var(--ink); border: 1px solid #33363c; border-radius: var(--r); padding: 5px 8px; font-family: var(--mono); font-size: 12.5px; }
+.ci-input:focus { border-color: var(--accent); outline: none; }
+
 .provenance { font-size: 10.5px; color: var(--ink-3); border-top: 1px solid var(--grid); padding-top: 8px; margin-top: 10px; line-height: 1.5; }
 .foot { padding: 14px 22px 26px; text-align: center; font-size: 10.5px; color: var(--ink-3); }
 .foot span { font-family: var(--mono); }
