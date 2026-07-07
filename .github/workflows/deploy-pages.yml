@@ -1,6 +1,8 @@
 # Deploys the CPG Enterprise System frontend to GitHub Pages.
-# Pages is auto-enabled on first run (configure-pages enablement) — no
-# manual settings needed. Every push to the default branch republishes
+# ONE-TIME SETUP (required — GitHub does not allow the Actions token to
+# enable Pages for the first time): repo Settings -> Pages -> under
+# "Build and deployment" set Source = "GitHub Actions".
+# After that single click, every push to the default branch republishes
 # the site at https://<owner>.github.io/<repo>/
 name: Deploy to GitHub Pages
 
@@ -24,8 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/setup-node@v4
         with:
           node-version: 20
