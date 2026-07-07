@@ -1,0 +1,1014 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food Lube — Company Command Center</title>
+<style>
+/* ================= TOKENS ================= */
+:root{
+  --page:#0b0c0e; --surface:#121316; --raised:#17181c; --hairline:#24262b;
+  --ink:#e8eaed; --ink-2:#9aa1ac; --ink-3:#5f6672;
+  --accent:#3987e5;
+  --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  --grid:#1e2025;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","JetBrains Mono",Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:3px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:13.5px;line-height:1.45}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:2px}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+/* ================= MARKET FACTS STRIP ================= */
+.factstrip{position:sticky;top:0;z-index:50;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+  background:#08090b;border-bottom:1px solid var(--hairline);font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.factstrip::-webkit-scrollbar{display:none}
+.fact{padding:6px 15px;border-right:1px solid #17181c;white-space:nowrap}
+.fact b{color:var(--ink);font-weight:600}
+.fact .src{color:var(--ink-3);font-size:10px}
+
+/* ================= HEADER + NAV ================= */
+header{display:flex;align-items:center;gap:16px;padding:12px 22px;border-bottom:1px solid var(--hairline);flex-wrap:wrap}
+.wordmark{display:flex;align-items:center;gap:10px}
+.wordmark .block{width:24px;height:24px;border-radius:var(--r);background:#1c5cab;
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:12px;color:#fff}
+.wordmark h1{font-size:14.5px;font-weight:650;letter-spacing:.02em}
+.wordmark h1 span{color:var(--ink-3);font-weight:400}
+.hspace{flex:1}
+.tool-btn{padding:3px 10px;border:1px solid var(--hairline);border-radius:var(--r);color:var(--ink-2);font-size:11px;font-family:var(--mono)}
+.tool-btn:hover{background:var(--raised);color:var(--ink)}
+.clock{font-family:var(--mono);font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+nav.tabs{display:flex;gap:2px;padding:0 22px;border-bottom:1px solid var(--hairline);overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{padding:9px 14px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+  border-bottom:2px solid transparent;white-space:nowrap}
+.tab:hover{color:var(--ink-2)}
+.tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* ================= LAYOUT ================= */
+.wrap{max-width:1280px;margin:0 auto;padding:14px 22px 40px;display:flex;flex-direction:column;gap:14px}
+.card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r);padding:14px 16px;min-width:0}
+.card-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.card-head h2{font-size:11.5px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.card-head .sub{font-size:11px;color:var(--ink-3)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:980px){.grid2,.grid3{grid-template-columns:1fr}}
+.provenance{margin-top:9px;font-size:10.5px;color:var(--ink-3);border-top:1px solid var(--grid);padding-top:8px;line-height:1.5}
+.empty{padding:18px 4px;color:var(--ink-3);font-size:12px}
+.empty b{color:var(--ink-2);font-weight:600}
+
+/* ================= SCOREBOARD ================= */
+.score-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+@media (max-width:1180px){.score-row{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.score-row{grid-template-columns:repeat(2,1fr)}}
+.tile .lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.tile .val{font-size:21px;font-weight:650;line-height:1.1}
+.tile .val .unit{font-size:12px;color:var(--ink-2);font-weight:500;margin-left:2px}
+.tile .meta{margin-top:5px;font-size:10.5px;color:var(--ink-3)}
+.delta{font-family:var(--mono);font-size:11.5px;font-variant-numeric:tabular-nums}
+.delta.up{color:var(--good)} .delta.dn{color:var(--critical)}
+
+/* ================= TABLES / FORMS ================= */
+.viz-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.viz-table th{text-align:right;color:var(--ink-3);font-weight:500;padding:5px 9px;border-bottom:1px solid var(--hairline);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.viz-table th:first-child,.viz-table td:first-child{text-align:left}
+.viz-table th.l,.viz-table td.l{text-align:left}
+.viz-table td{padding:5px 9px;border-bottom:1px solid var(--grid);font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.viz-table td:first-child{font-family:var(--sans);color:var(--ink)}
+.viz-table td.sans{font-family:var(--sans);color:var(--ink-2)}
+.viz-table tr.total td{border-top:1px solid var(--hairline);color:var(--ink);font-weight:600}
+.viz-table tr.sect td{color:var(--ink-3);font-family:var(--sans);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding-top:10px}
+.viz-table tr.indent td:first-child{padding-left:22px}
+input.field,select.field,textarea.field{background:var(--raised);color:var(--ink);border:1px solid #33363c;border-radius:var(--r);
+  padding:4px 8px;font-family:var(--mono);font-size:12px}
+input.field.sans,textarea.field{font-family:var(--sans)}
+input.field:focus,select.field:focus,textarea.field:focus{border-color:var(--accent);outline:none}
+.formrow{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:10px;padding-top:10px;border-top:1px solid var(--grid)}
+.formrow .fld{display:flex;flex-direction:column;gap:3px}
+.formrow label{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.save-btn{background:#1c5cab;color:#fff;border:none;padding:5px 16px;border-radius:var(--r);font-size:12px;font-weight:600;height:28px}
+.save-btn:hover{background:#2a6ec2}
+.row-del{color:var(--ink-3);font-size:12px;padding:0 7px;border:1px solid var(--hairline);border-radius:var(--r)}
+.row-del:hover{color:var(--critical);border-color:rgba(208,59,59,.4)}
+.status-chip{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+  font-weight:650;padding:2px 7px;border-radius:var(--r);border:1px solid;white-space:nowrap}
+.status-chip.good{color:var(--good);border-color:rgba(12,163,12,.3)}
+.status-chip.warning{color:var(--warning);border-color:rgba(250,178,25,.3)}
+.status-chip.serious{color:var(--serious);border-color:rgba(236,131,90,.35)}
+.status-chip.neutral{color:var(--ink-2);border-color:var(--hairline)}
+.seg-btns{display:flex;gap:6px;flex-wrap:wrap}
+.seg{padding:3px 11px;border:1px solid var(--hairline);border-radius:var(--r);color:var(--ink-2);font-size:11px;font-family:var(--mono)}
+.seg.on{background:var(--raised);color:var(--ink);border-color:#3a3e46;font-weight:600}
+.seg:hover{background:var(--raised)}
+
+/* charts */
+.plot-wrap{position:relative}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:7px 0 2px;font-size:11px;color:var(--ink-2)}
+.legend .key{display:inline-flex;align-items:center;gap:6px}
+.key .swatch{width:8px;height:8px;border-radius:2px;flex:none}
+.tooltip{position:absolute;pointer-events:none;background:#1b1d22;border:1px solid #31343c;border-radius:var(--r);
+  padding:8px 11px;font-size:11.5px;box-shadow:0 6px 20px rgba(0,0,0,.45);z-index:20;min-width:140px;display:none}
+.tooltip .tt-date{font-family:var(--mono);color:var(--ink-3);font-size:10px;margin-bottom:5px}
+.tooltip .tt-row{display:flex;align-items:center;gap:7px;margin-top:3px}
+.tooltip .tt-row .v{margin-left:auto;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.pbar{height:3px;border-radius:2px;background:#24262b;position:relative;min-width:70px}
+.pbar .pfill{position:absolute;inset:0 auto 0 0;border-radius:2px;background:var(--accent)}
+.onboard{border:1px solid rgba(57,135,229,.35);background:rgba(57,135,229,.05)}
+.onboard ol{margin:6px 0 0 18px;color:var(--ink-2);font-size:12.5px}
+.onboard li{margin-top:4px}
+textarea.field{width:100%;min-height:56px;resize:vertical;line-height:1.45}
+footer{padding:10px 22px 26px;text-align:center;font-size:10.5px;color:var(--ink-3)}
+footer span{font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<!-- MARKET FACTS STRIP (sourced, static) -->
+<div class="factstrip" role="note" aria-label="Market facts">
+  <div class="fact">US SOUP <b>≈$5.9B</b> · +2.5% CAGR <span class="src">GlobeNewswire ’25</span></div>
+  <div class="fact">BONE BROTH <b>≈$1.2B</b> · ≈6% CAGR <span class="src">Fortune BI</span></div>
+  <div class="fact">PEER GROSS MARGIN <b>21–38%</b> · median ≈33% <span class="src">Eightx ’26</span></div>
+  <div class="fact">TRADE SPEND <b>15–25%</b> of gross sales <span class="src">TrewUp</span></div>
+  <div class="fact">#1 US BROTH <b>Swanson</b> <span class="src">Circana ’22</span></div>
+  <div class="fact">CPG FORECAST MAPE <b>15–25%</b> acceptable <span class="src">Planster</span></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="wordmark">
+    <div class="block">FL</div>
+    <h1>FOOD LUBE <span>· Company Command Center</span></h1>
+  </div>
+  <div class="hspace"></div>
+  <button class="tool-btn" id="exportBtn" title="Download all company data as a JSON backup">⭳ Export backup</button>
+  <button class="tool-btn" id="importBtn" title="Restore from a JSON backup">⭱ Import</button>
+  <button class="tool-btn" id="resetBtn" title="Erase all data">Reset</button>
+  <input type="file" id="importFile" accept=".json" class="hidden" style="display:none">
+  <div class="clock" id="clock">—</div>
+</header>
+
+<nav class="tabs" id="tabs"></nav>
+<div id="view" class="wrap"></div>
+
+<footer>FOOD LUBE · founder's command center · your data stays in this browser — use Export backup regularly · market facts sourced (see Market tab) · v1.0</footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   FOOD LUBE — COMPANY COMMAND CENTER
+   All company figures are user-entered, real, and start at zero.
+   Market benchmarks are sourced from public research (Market tab).
+   ===================================================================== */
+
+/* ---------- constants ---------- */
+const EXP_CATS = [
+  // Variable / COGS
+  {id:"raw",    name:"Raw Materials — Ingredients", grp:"cogs"},
+  {id:"pkg",    name:"Packaging",                   grp:"cogs"},
+  {id:"copack", name:"Co-Packer / Manufacturing",   grp:"cogs"},
+  {id:"freight",name:"Freight & Logistics",         grp:"cogs"},
+  // Period costs
+  {id:"rnd",    name:"R&D — Product & Recipe Development", grp:"rnd"},
+  {id:"promo",  name:"Marketing & Brand (Promotion)",      grp:"promo"},
+  {id:"sales",  name:"Sales & Distribution",               grp:"promo"},
+  {id:"legal",  name:"Legal & Compliance",                 grp:"admin"},
+  {id:"salary", name:"Salaries & Contractors",             grp:"admin"},
+  {id:"insur",  name:"Insurance, Fees & Certifications",   grp:"admin"},
+  {id:"other",  name:"Other (Admin)",                      grp:"admin"},
+  // CapEx (capitalized, not expensed — depreciated straight-line 5yr)
+  {id:"capex",  name:"Equipment (CapEx — capitalized)",    grp:"capex"}
+];
+const CAT = Object.fromEntries(EXP_CATS.map(c=>[c.id,c]));
+const REV_CH = ["DTC / Web","Retail","Wholesale / Distributor","Foodservice","Farmers Market / Events","Other"];
+const EQ_TYPES = ["Common Stock","Additional Paid-In Capital"];
+const KEY_METRICS = ["Units produced","Units sold","Retail doors","Website orders","New customers"];
+const SHIP_STATUS = ["In transit","Delivered","Delayed","Cancelled"];
+const TAX_RATE = 0.21;          // US federal corporate rate (21%)
+const DEP_MONTHS = 60;          // straight-line 5-year depreciation for equipment
+
+/* ---------- state ---------- */
+const LS_KEY="foodlube-live-v1";
+function blankState(){return {
+  equity:[], expenses:[], revenue:[],
+  milestones:[], keyNumbers:[], projects:[],
+  materials:[], finished:[], shipments:[],
+  plans:{weekly:"",monthly:"",yearly:"",fiveyear:""}
+}}
+let S;
+try{ S = JSON.parse(localStorage.getItem(LS_KEY)) || blankState(); }
+catch(e){ S = blankState(); }
+for(const k of Object.keys(blankState())) if(S[k]===undefined) S[k]=blankState()[k];
+function save(){ try{localStorage.setItem(LS_KEY,JSON.stringify(S))}catch(e){} }
+const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* ---------- helpers ---------- */
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $$ = (sel,root)=> (root||document).querySelectorAll(sel);
+const money = v => (v<0?"−$":"$")+Math.abs(v).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const money0 = v => (v<0?"−$":"$")+Math.abs(v).toLocaleString("en-US",{maximumFractionDigits:0});
+const todayISO = ()=> new Date().toISOString().slice(0,10);
+const parseD = iso => new Date(iso+"T12:00:00");
+const fmtD = iso => iso? parseD(iso).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "—";
+const monthKey = iso => iso.slice(0,7);
+const num = v => { const x=parseFloat(String(v).replace(/[^0-9.\-]/g,"")); return isNaN(x)?0:x; };
+
+/* ---------- financial engine (all derived from the ledgers) ---------- */
+function inRange(iso, from, to){ return (!from||iso>=from) && (!to||iso<=to); }
+function sumWhere(arr, pred){ return arr.reduce((s,e)=> s + (pred(e)? +e.amount||0 : 0), 0); }
+
+function depreciationBetween(from, to){
+  // straight-line over 60 months per capex entry, monthly recognition
+  let dep=0;
+  S.expenses.filter(e=>e.cat==="capex").forEach(e=>{
+    const start=parseD(e.date), end= to? parseD(to): new Date();
+    const monthly=(+e.amount||0)/DEP_MONTHS;
+    let m=new Date(start.getFullYear(), start.getMonth()+1, 1); // first full month after purchase
+    let count=0;
+    while(m<=end && count<DEP_MONTHS){
+      const iso=m.toISOString().slice(0,10);
+      if(!from || iso>=from) dep+=monthly;
+      m=new Date(m.getFullYear(), m.getMonth()+1, 1); count++;
+    }
+  });
+  return dep;
+}
+function inventoryValueAt(to){
+  const raw = S.materials.reduce((s,m)=> (!to||m.date<=to) ? s + (+m.onHandQty||0)*(+m.unitCost||0) : s, 0);
+  const fg  = S.finished.reduce((s,f)=> (!to||f.date<=to) ? s + (+f.qty||0)*(+f.unitCost||0) : s, 0);
+  return {raw, fg, total: raw+fg};
+}
+function financials(from, to){
+  const sales   = sumWhere(S.revenue, r=>inRange(r.date,from,to));
+  const byGrp = g => sumWhere(S.expenses, e=>inRange(e.date,from,to) && CAT[e.cat]?.grp===g);
+  const cogsCash = byGrp("cogs");
+  const invEnd   = inventoryValueAt(to).total;
+  const invStart = from ? inventoryValueAt(addDays(from,-1)).total : 0;
+  const cogs     = cogsCash - (invEnd - invStart);          // purchases adjusted for Δ inventory
+  const rnd=byGrp("rnd"), promo=byGrp("promo"), admin=byGrp("admin");
+  const dep = depreciationBetween(from,to);
+  const contribution = sales - cogs;
+  const ebit = contribution - rnd - promo - admin - dep;
+  const taxes = Math.max(0, ebit) * TAX_RATE;
+  const net = ebit - taxes;
+  const capex = byGrp("capex");
+  return {sales,cogsCash,cogs,invEnd,invStart,rnd,promo,admin,dep,contribution,ebit,taxes,net,capex};
+}
+function addDays(iso,d){ const x=parseD(iso); x.setDate(x.getDate()+d); return x.toISOString().slice(0,10); }
+function cashAt(to){
+  const eq  = sumWhere(S.equity, e=>(!to||e.date<=to));
+  const rev = sumWhere(S.revenue,e=>(!to||e.date<=to));
+  const out = sumWhere(S.expenses,e=>(!to||e.date<=to));  // all cash out incl. capex
+  return eq + rev - out;
+}
+function balanceSheet(to){
+  const cash = cashAt(to);
+  const inv  = inventoryValueAt(to);
+  const capexGross = sumWhere(S.expenses, e=>e.cat==="capex" && (!to||e.date<=to));
+  const accDep = depreciationBetween(null,to);
+  const netPE = capexGross - accDep;
+  const f = financials(null,to);
+  const taxPayable = f.taxes;                    // accrued, not yet remitted
+  const stock = sumWhere(S.equity, e=>(!to||e.date<=to));
+  const retained = f.net;                        // cumulative net profit since founding
+  return {cash, invRaw:inv.raw, invFG:inv.fg, inv:inv.total, capexGross, accDep, netPE,
+          assets: cash+inv.total+netPE,
+          taxPayable, liabilities: taxPayable,
+          stock, retained, equity: stock+retained,
+          check: cash+inv.total+netPE - (taxPayable+stock+retained)};
+}
+function cashFlow(from,to){
+  const f=financials(from,to);
+  const opsIn  = f.sales;
+  const opsOut = f.cogsCash + f.rnd + f.promo + f.admin;
+  const investing = -f.capex;
+  const financing = sumWhere(S.equity, e=>inRange(e.date,from,to));
+  const net = opsIn - opsOut + investing + financing;
+  const start = from? cashAt(addDays(from,-1)) : 0;
+  return {opsIn,opsOut,ops:opsIn-opsOut,investing,financing,net,start,end:start+net};
+}
+function burnAndRunway(){
+  // trailing-90-day average net cash outflow, monthly
+  const today=todayISO(), from=addDays(today,-89);
+  const rev=sumWhere(S.revenue,r=>inRange(r.date,from,today));
+  const out=sumWhere(S.expenses,e=>inRange(e.date,from,today));
+  const days=Math.min(90, S.expenses.length||S.revenue.length ? daysSinceFirstEntry() : 0);
+  if(days<14) return {burn:null,runway:null,young:days>0}; // too little history to annualize honestly
+  const netOutMonthly=(out-rev)/days*30.44;
+  const cash=cashAt(null);
+  return {burn:netOutMonthly, runway: netOutMonthly>0? cash/netOutMonthly : null};
+}
+function daysSinceFirstEntry(){
+  const all=[...S.expenses,...S.revenue,...S.equity].map(e=>e.date).sort();
+  if(!all.length)return 0;
+  return Math.max(1, Math.round((parseD(todayISO())-parseD(all[0]))/864e5)+1);
+}
+function monthlySeries(){
+  const map={};
+  S.revenue.forEach(r=>{const k=monthKey(r.date);(map[k]=map[k]||{rev:0,exp:0}).rev+=+r.amount||0});
+  S.expenses.forEach(e=>{const k=monthKey(e.date);(map[k]=map[k]||{rev:0,exp:0}).exp+=+e.amount||0});
+  return Object.keys(map).sort().map(k=>({k,...map[k]}));
+}
+
+/* =====================================================================
+   SVG chart helpers
+   ===================================================================== */
+const SVGNS="http://www.w3.org/2000/svg";
+function el(t,a,p){const e=document.createElementNS(SVGNS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+function niceTicks(max,n){if(max<=0)return[0];const raw=max/n,mag=Math.pow(10,Math.floor(Math.log10(raw)));const norm=raw/mag;const step=(norm<1.5?1:norm<3?2:norm<7?5:10)*mag;const out=[];for(let v=0;v<=max+1e-9;v+=step)out.push(v);return out}
+/* cumulative cash line */
+function cashLine(host,tip){
+  host.innerHTML="";
+  const events=[...S.equity.map(e=>({d:e.date,v:+e.amount||0})),
+                ...S.revenue.map(e=>({d:e.date,v:+e.amount||0})),
+                ...S.expenses.map(e=>({d:e.date,v:-(+e.amount||0)}))].sort((a,b)=>a.d<b.d?-1:1);
+  if(!events.length){host.innerHTML='<div class="empty">Cash over time will draw here after your first equity or ledger entry.</div>';return}
+  const pts=[]; let run=0;
+  const byDay={}; events.forEach(e=>{byDay[e.d]=(byDay[e.d]||0)+e.v});
+  const daysK=Object.keys(byDay).sort();
+  let cur=daysK[0]; const last=todayISO();
+  while(cur<=last){ run+=byDay[cur]||0; pts.push({d:cur,v:run}); cur=addDays(cur,1); }
+  const W=host.clientWidth||760,H=220,M={t:12,r:16,b:26,l:56};
+  const iw=W-M.l-M.r, ih=H-M.t-M.b, n=pts.length;
+  const vmax=Math.max(...pts.map(p=>p.v),1), vmin=Math.min(...pts.map(p=>p.v),0);
+  const X=i=> n===1? M.l+iw/2 : M.l+i*iw/(n-1);
+  const Y=v=> M.t+ih-((v-vmin)/((vmax-vmin)||1))*ih;
+  const svg=el("svg",{width:"100%",height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Cash balance over time"},host);
+  niceTicks(vmax,4).forEach(v=>{
+    el("line",{x1:M.l,x2:W-M.r,y1:Y(v),y2:Y(v),stroke:"var(--grid)","stroke-width":1},svg);
+    el("text",{x:M.l-8,y:Y(v)+4,"text-anchor":"end",fill:"#5f6672","font-size":10,"font-family":"var(--mono)"},svg).textContent=money0(v);
+  });
+  if(vmin<0)el("line",{x1:M.l,x2:W-M.r,y1:Y(0),y2:Y(0),stroke:"#3a3e46","stroke-width":1},svg);
+  const nx=Math.min(5,n);
+  for(let k=0;k<nx;k++){const i=Math.round(k*(n-1)/(Math.max(1,nx-1)));
+    el("text",{x:X(i),y:H-7,"text-anchor":"middle",fill:"#5f6672","font-size":10,"font-family":"var(--mono)"},svg).textContent=parseD(pts[i].d).toLocaleDateString("en-US",{month:"short",day:"numeric"});}
+  const dpath=pts.map((p,i)=>(i?"L":"M")+X(i)+" "+Y(p.v)).join("");
+  el("path",{d:dpath+`L${X(n-1)} ${M.t+ih}L${X(0)} ${M.t+ih}Z`,fill:"#3987e5","fill-opacity":.08},svg);
+  el("path",{d:dpath,fill:"none",stroke:"var(--accent)","stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"},svg);
+  el("circle",{cx:X(n-1),cy:Y(pts[n-1].v),r:5.5,fill:"#121316"},svg);
+  el("circle",{cx:X(n-1),cy:Y(pts[n-1].v),r:3.5,fill:"var(--accent)"},svg);
+  el("text",{x:X(n-1)-8,y:Math.max(M.t+10,Y(pts[n-1].v)-9),"text-anchor":"end",fill:"#e8eaed","font-size":10.5,"font-family":"var(--mono)","font-weight":600},svg).textContent=money0(pts[n-1].v);
+  const cross=el("line",{y1:M.t,y2:M.t+ih,stroke:"#383c44",visibility:"hidden"},svg);
+  const dot=el("circle",{r:3.5,fill:"var(--accent)",stroke:"#121316","stroke-width":2,visibility:"hidden"},svg);
+  const hit=el("rect",{x:M.l,y:M.t,width:iw,height:ih,fill:"transparent"},svg);
+  hit.addEventListener("mousemove",ev=>{
+    const r=svg.getBoundingClientRect(),sx=(ev.clientX-r.left)*(W/r.width);
+    const i=Math.max(0,Math.min(n-1,Math.round((sx-M.l)/(iw/Math.max(1,n-1)))));
+    cross.setAttribute("x1",X(i));cross.setAttribute("x2",X(i));cross.setAttribute("visibility","visible");
+    dot.setAttribute("cx",X(i));dot.setAttribute("cy",Y(pts[i].v));dot.setAttribute("visibility","visible");
+    tip.style.display="block";
+    const hr=host.getBoundingClientRect();let px=ev.clientX-hr.left+14;if(px>hr.width-160)px=ev.clientX-hr.left-160;
+    tip.style.left=px+"px";tip.style.top=(ev.clientY-hr.top-10)+"px";
+    tip.innerHTML=`<div class="tt-date">${fmtD(pts[i].d)}</div><div class="tt-row">Cash<span class="v">${money(pts[i].v)}</span></div>`;
+  });
+  hit.addEventListener("mouseleave",()=>{tip.style.display="none";cross.setAttribute("visibility","hidden");dot.setAttribute("visibility","hidden")});
+}
+/* spend by category — horizontal bars, one series (magnitude) */
+function spendBars(host){
+  host.innerHTML="";
+  const tot={};
+  S.expenses.forEach(e=>{tot[e.cat]=(tot[e.cat]||0)+(+e.amount||0)});
+  const rows=EXP_CATS.filter(c=>tot[c.id]).map(c=>({name:c.name,v:tot[c.id]})).sort((a,b)=>b.v-a.v);
+  if(!rows.length){host.innerHTML='<div class="empty">Nothing spent yet. When you log expenses, this shows exactly where the money goes.</div>';return}
+  const W=host.clientWidth||760, rowH=16, gapY=12, M={t:4,r:80,b:4,l:250};
+  const H=M.t+rows.length*(rowH+gapY)-gapY+M.b;
+  const iw=W-M.l-M.r, vmax=Math.max(...rows.map(r=>r.v));
+  const svg=el("svg",{width:"100%",height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Spend by category"},host);
+  rows.forEach((r,i)=>{
+    const y=M.t+i*(rowH+gapY);
+    el("text",{x:M.l-10,y:y+rowH/2+4,"text-anchor":"end",fill:"#9aa1ac","font-size":11},svg).textContent=r.name;
+    const w=Math.max(2, r.v/vmax*iw);
+    el("rect",{x:M.l,y:y,width:w,height:rowH,fill:"var(--accent)",rx:2},svg);
+    el("text",{x:M.l+w+8,y:y+rowH/2+4,fill:"#e8eaed","font-size":10.5,"font-family":"var(--mono)"},svg).textContent=money0(r.v);
+  });
+}
+/* monthly revenue vs expenses grouped columns */
+function monthlyBars(host,tip){
+  host.innerHTML="";
+  const ms=monthlySeries();
+  if(!ms.length){host.innerHTML='<div class="empty">Monthly revenue vs. spending draws here once the ledgers have entries.</div>';return}
+  const W=host.clientWidth||760,H=220,M={t:12,r:14,b:26,l:56};
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const vmax=Math.max(...ms.flatMap(m=>[m.rev,m.exp]),1)*1.05;
+  const svg=el("svg",{width:"100%",height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Monthly revenue versus expenses"},host);
+  niceTicks(vmax,4).forEach(v=>{
+    el("line",{x1:M.l,x2:W-M.r,y1:M.t+ih-(v/vmax)*ih,y2:M.t+ih-(v/vmax)*ih,stroke:"var(--grid)"},svg);
+    el("text",{x:M.l-8,y:M.t+ih-(v/vmax)*ih+4,"text-anchor":"end",fill:"#5f6672","font-size":10,"font-family":"var(--mono)"},svg).textContent=money0(v);
+  });
+  const slot=iw/ms.length, bw=Math.min(22,(slot-8)/2);
+  ms.forEach((m,i)=>{
+    const cx=M.l+slot*i+slot/2;
+    const hr=(m.rev/vmax)*ih, he=(m.exp/vmax)*ih;
+    const r1=el("rect",{x:cx-bw-1,y:M.t+ih-hr,width:bw,height:Math.max(hr,m.rev?2:0),fill:"#199e70",rx:2},svg);
+    const r2=el("rect",{x:cx+1,y:M.t+ih-he,width:bw,height:Math.max(he,m.exp?2:0),fill:"#e66767",rx:2},svg);
+    [ [r1,"Revenue",m.rev,"#199e70"], [r2,"Expenses",m.exp,"#e66767"] ].forEach(([rc,nm,v,col])=>{
+      rc.addEventListener("mousemove",ev=>{
+        tip.style.display="block";
+        const hb=host.getBoundingClientRect();let px=ev.clientX-hb.left+14;if(px>hb.width-160)px=ev.clientX-hb.left-160;
+        tip.style.left=px+"px";tip.style.top=(ev.clientY-hb.top-10)+"px";
+        tip.innerHTML=`<div class="tt-date">${m.k}</div><div class="tt-row"><span style="width:8px;height:8px;border-radius:2px;background:${col}"></span>${nm}<span class="v">${money(v)}</span></div>`;
+      });
+      rc.addEventListener("mouseleave",()=>tip.style.display="none");
+    });
+    el("text",{x:cx,y:H-7,"text-anchor":"middle",fill:"#5f6672","font-size":10,"font-family":"var(--mono)"},svg).textContent=m.k.slice(2);
+  });
+}
+
+/* =====================================================================
+   ROUTER
+   ===================================================================== */
+const TABS=[
+  {id:"overview",label:"Overview"},
+  {id:"ceo",label:"CEO"},
+  {id:"finance",label:"Finance"},
+  {id:"ops",label:"Operations"},
+  {id:"market",label:"Market"}
+];
+function renderTabs(){
+  const nav=document.getElementById("tabs");nav.innerHTML="";
+  const cur=location.hash.slice(1)||"overview";
+  TABS.forEach(t=>{
+    const b=document.createElement("button");
+    b.className="tab"+(t.id===cur?" on":"");b.textContent=t.label;
+    b.addEventListener("click",()=>{location.hash=t.id});
+    nav.appendChild(b);
+  });
+}
+window.addEventListener("hashchange",route);
+function route(){
+  renderTabs();
+  const h=location.hash.slice(1)||"overview";
+  ({overview:renderOverview,ceo:renderCEO,finance:renderFinance,ops:renderOps,market:renderMarket}[h]||renderOverview)();
+  window.scrollTo(0,0);
+}
+
+/* =====================================================================
+   OVERVIEW
+   ===================================================================== */
+function tile(lbl,val,unit,meta){
+  return `<div class="card tile"><div class="lbl">${lbl}</div>
+    <div class="val">${val}${unit?`<span class="unit">${unit}</span>`:""}</div>
+    ${meta?`<div class="meta">${meta}</div>`:""}</div>`;
+}
+function momGrowth(){
+  const ms=monthlySeries().filter(m=>m.rev>0);
+  if(ms.length<2)return null;
+  const a=ms[ms.length-2].rev,b=ms[ms.length-1].rev;
+  return a>0?(b/a-1)*100:null;
+}
+function cacCalc(){
+  const spend=sumWhere(S.expenses,e=>CAT[e.cat]?.grp==="promo");
+  const cust=S.keyNumbers.filter(k=>k.metric==="New customers").reduce((s,k)=>s+(+k.qty||0),0);
+  return cust>0? spend/cust : null;
+}
+function renderOverview(){
+  const cash=cashAt(null), {burn,runway}=burnAndRunway();
+  const spent=sumWhere(S.expenses,()=>true), rev=sumWhere(S.revenue,()=>true);
+  const f=financials(null,null);
+  const gm=f.sales>0? (f.sales-f.cogs)/f.sales*100 : null;
+  const inv=inventoryValueAt(null), mom=momGrowth(), cac=cacCalc();
+  const hasAny=S.equity.length||S.expenses.length||S.revenue.length;
+  const view=document.getElementById("view");
+  view.innerHTML=`
+  ${!hasAny?`<div class="card onboard">
+    <div class="card-head"><h2>Day zero — welcome, founder</h2></div>
+    <div style="font-size:12.5px;color:var(--ink-2)">Food Lube starts from a true zero. Three steps to bring this command center to life:</div>
+    <ol>
+      <li><b>Capitalize the company</b> — record your founding investment as Common Stock under <a href="#finance" style="color:var(--accent)">Finance → Equity</a>.</li>
+      <li><b>Log money as it moves</b> — every expense and (someday) every sale goes in the ledgers. The income statement, balance sheet and cash flow build themselves.</li>
+      <li><b>Set your first milestones</b> — recipe finalized, LLC formed, first co-packer run — under <a href="#ceo" style="color:var(--accent)">CEO</a>.</li>
+    </ol>
+    <div class="provenance">Nothing here is simulated. Company data is only what you enter. Market context (top strip and Market tab) is sourced from public research.</div>
+  </div>`:""}
+  <div class="score-row">
+    ${tile("Cash on hand",money0(cash),"","from equity + ledgers")}
+    ${tile("Monthly burn", burn!==null&&burn>0?money0(burn):"—","", burn===null?"needs 2+ weeks of history":burn>0?"trailing 90-day avg":"no net outflow")}
+    ${tile("Runway", runway!==null?runway.toFixed(1):"—", runway!==null?"mo":"", runway!==null?"at current burn":"shows once burn is measurable")}
+    ${tile("Total spent to date",money0(spent),"","all-time, all categories")}
+    ${tile("Revenue to date",money0(rev),"","all channels")}
+    ${tile("Revenue growth", mom!==null? (mom>=0?"+":"")+mom.toFixed(1):"—", mom!==null?"%":"", mom!==null?"month over month":"needs 2 months of sales")}
+    ${tile("Gross margin", gm!==null?gm.toFixed(1):"—", gm!==null?"%":"", gm!==null?"vs peer median ≈33% <span class='src'>(Eightx)</span>":"once selling · peers ≈33%")}
+    ${tile("Inventory",money0(inv.total),"",`raw ${money0(inv.raw)} · finished ${money0(inv.fg)}`)}
+    ${tile("CAC", cac!==null?money0(cac):"—","", cac!==null?"promo+sales ÷ new customers":"log customers under CEO")}
+    ${tile("Stockholders' equity",money0(balanceSheet(null).equity),"","common stock + retained earnings")}
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h2>Cash balance</h2><span class="sub">daily, from your ledgers</span></div>
+      <div class="plot-wrap" id="cashPlot"></div><div class="tooltip" id="cashTip"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Revenue vs expenses</h2><span class="sub">by month</span></div>
+      <div class="legend"><span class="key"><span class="swatch" style="background:#199e70"></span>Revenue</span>
+      <span class="key"><span class="swatch" style="background:#e66767"></span>Expenses</span></div>
+      <div class="plot-wrap" id="mbPlot"></div><div class="tooltip" id="mbTip"></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h2>Where the money goes</h2><span class="sub">all-time spend by category</span></div>
+      <div class="plot-wrap" id="spendPlot"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>You vs the market</h2><span class="sub">sourced benchmarks</span></div>
+      <table class="viz-table">
+        <thead><tr><th>Measure</th><th>Food Lube</th><th>Market / peers</th></tr></thead>
+        <tbody>
+          <tr><td>Revenue growth (MoM)</td><td>${mom!==null?(mom>=0?"+":"")+mom.toFixed(1)+"%":"—"}</td><td>soup ≈2.5%/yr · bone broth ≈6%/yr</td></tr>
+          <tr><td>Gross margin</td><td>${gm!==null?gm.toFixed(1)+"%":"—"}</td><td>peers 21–38%, median ≈33%</td></tr>
+          <tr><td>COGS share of spend</td><td>${spent>0?((f.cogsCash/spent)*100).toFixed(0)+"%":"—"}</td><td>≈65–70% of net sales at scale</td></tr>
+          <tr><td>Marketing + sales share</td><td>${spent>0?((sumWhere(S.expenses,e=>CAT[e.cat]?.grp==="promo")/spent)*100).toFixed(0)+"%":"—"}</td><td>trade/promo 15–25% of gross sales</td></tr>
+        </tbody>
+      </table>
+      <div class="provenance">Benchmarks: Eightx CPG margin compilation (2026); TrewUp trade-spend guide; GlobeNewswire US soup forecast (2025); Fortune Business Insights bone broth (2025). Early-stage numbers will look nothing like scaled peers — the point is knowing the destination.</div>
+    </div>
+  </div>`;
+  cashLine(document.getElementById("cashPlot"),document.getElementById("cashTip"));
+  monthlyBars(document.getElementById("mbPlot"),document.getElementById("mbTip"));
+  spendBars(document.getElementById("spendPlot"));
+}
+
+/* =====================================================================
+   generic ledger table + form builder
+   ===================================================================== */
+function ledgerTable(rows, cols, delFn){
+  if(!rows.length) return "";
+  const head=cols.map(c=>`<th class="${c.l?"l":""}">${c.h}</th>`).join("")+"<th></th>";
+  const body=rows.map(r=>"<tr>"+cols.map(c=>`<td class="${c.l?"l sans":""}">${c.f(r)}</td>`).join("")+
+    `<td style="text-align:right"><button class="row-del" data-del="${r.id}" aria-label="Delete entry">✕</button></td></tr>`).join("");
+  return `<div style="overflow-x:auto"><table class="viz-table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function wireDeletes(root,arrName,after){
+  $$("[data-del]",root).forEach(b=>b.addEventListener("click",()=>{
+    const id=b.dataset.del;
+    if(arrName==="materials"||arrName==="shipments"){
+      S.expenses=S.expenses.filter(e=>e.ref!==id);
+    }
+    S[arrName]=S[arrName].filter(e=>e.id!==id);
+    save();route();
+  }));
+}
+const sortByDate=(a,b)=> a.date<b.date?1:-1;
+
+/* =====================================================================
+   CEO TAB
+   ===================================================================== */
+function renderCEO(){
+  const view=document.getElementById("view");
+  const ms=[...S.milestones].sort(sortByDate);
+  const kn=[...S.keyNumbers].sort(sortByDate);
+  const PSTAT={"On track":"good","At risk":"warning","Behind":"serious","Done":"neutral"};
+  view.innerHTML=`
+  <div class="card">
+    <div class="card-head"><h2>Milestones</h2><span class="sub">the company's story, one step at a time</span></div>
+    ${ms.length? ledgerTable(ms,[
+      {h:"Milestone",l:1,f:r=>`<b style="color:var(--ink)">${esc(r.title)}</b>${r.note?`<div style="font-size:11px;color:var(--ink-3)">${esc(r.note)}</div>`:""}`},
+      {h:"Date",f:r=>fmtD(r.date)},
+      {h:"Status",l:1,f:r=>`<span class="status-chip ${r.done?"good":"neutral"}">${r.done?"✔ Achieved":"◔ Planned"}</span>`}
+    ]) : `<div class="empty"><b>No milestones yet.</b> First candidates: LLC formed · recipe v1 finalized · brand name cleared · first co-packer conversation.</div>`}
+    <div class="formrow" id="msForm">
+      <div class="fld"><label>Milestone</label><input class="field sans" id="msTitle" style="width:240px" placeholder="e.g., LLC formed"></div>
+      <div class="fld"><label>Date</label><input class="field" id="msDate" type="date" value="${todayISO()}"></div>
+      <div class="fld"><label>Status</label><select class="field" id="msDone"><option value="0">Planned</option><option value="1">Achieved</option></select></div>
+      <div class="fld"><label>Note</label><input class="field sans" id="msNote" style="width:220px" placeholder="optional"></div>
+      <button class="save-btn" id="msAdd">Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Key numbers</h2><span class="sub">operational counts — log as they happen</span></div>
+    ${kn.length? ledgerTable(kn,[
+      {h:"Metric",l:1,f:r=>esc(r.metric)},
+      {h:"Quantity",f:r=>(+r.qty).toLocaleString()},
+      {h:"Date",f:r=>fmtD(r.date)},
+      {h:"Note",l:1,f:r=>esc(r.note||"")}
+    ]) : `<div class="empty"><b>Nothing logged yet.</b> Track: units produced · units sold · retail doors · website orders · new customers (feeds CAC).</div>`}
+    <div class="formrow">
+      <div class="fld"><label>Metric</label><select class="field" id="knMetric">${KEY_METRICS.map(m=>`<option>${m}</option>`).join("")}</select></div>
+      <div class="fld"><label>Quantity</label><input class="field" id="knQty" type="number" min="0" style="width:90px"></div>
+      <div class="fld"><label>Date</label><input class="field" id="knDate" type="date" value="${todayISO()}"></div>
+      <div class="fld"><label>Note</label><input class="field sans" id="knNote" style="width:220px" placeholder="optional"></div>
+      <button class="save-btn" id="knAdd">Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Projects</h2><span class="sub">what you're actively working on</span></div>
+    ${S.projects.length? ledgerTable([...S.projects],[
+      {h:"Project",l:1,f:r=>`<b style="color:var(--ink)">${esc(r.name)}</b>${r.desc?`<div style="font-size:11px;color:var(--ink-3)">${esc(r.desc)}</div>`:""}`},
+      {h:"Stage",l:1,f:r=>esc(r.stage)},
+      {h:"Due",f:r=>fmtD(r.due)},
+      {h:"Progress",l:1,f:r=>`<div class="pbar"><div class="pfill" style="width:${Math.min(100,+r.pct||0)}%"></div></div>`},
+      {h:"Status",l:1,f:r=>`<span class="status-chip ${PSTAT[r.status]||"neutral"}">${esc(r.status)}</span>`}
+    ]) : `<div class="empty"><b>No projects yet.</b> Examples for an idea-stage soup company: recipe development sprints · co-packer search · brand identity · market validation interviews.</div>`}
+    <div class="formrow">
+      <div class="fld"><label>Project</label><input class="field sans" id="pjName" style="width:220px"></div>
+      <div class="fld"><label>Description</label><input class="field sans" id="pjDesc" style="width:220px" placeholder="optional"></div>
+      <div class="fld"><label>Stage</label><input class="field sans" id="pjStage" style="width:120px" placeholder="Scoping"></div>
+      <div class="fld"><label>Due</label><input class="field" id="pjDue" type="date"></div>
+      <div class="fld"><label>% done</label><input class="field" id="pjPct" type="number" min="0" max="100" value="0" style="width:70px"></div>
+      <div class="fld"><label>Status</label><select class="field" id="pjStatus"><option>On track</option><option>At risk</option><option>Behind</option><option>Done</option></select></div>
+      <button class="save-btn" id="pjAdd">Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Planning horizons</h2><span class="sub">weekly → five-year · edits save automatically</span></div>
+    <div class="grid2">
+      ${[["weekly","This week"],["monthly","This month"],["yearly","This year"],["fiveyear","Five-year vision"]].map(([k,lbl])=>`
+        <div><label style="font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">${lbl}</label>
+        <textarea class="field" data-plan="${k}" placeholder="—">${esc(S.plans[k])}</textarea></div>`).join("")}
+    </div>
+  </div>`;
+  document.getElementById("msAdd").addEventListener("click",()=>{
+    const t=document.getElementById("msTitle").value.trim(); if(!t)return;
+    S.milestones.push({id:uid(),title:t,date:document.getElementById("msDate").value||todayISO(),
+      done:document.getElementById("msDone").value==="1",note:document.getElementById("msNote").value.trim()});
+    save();route();
+  });
+  document.getElementById("knAdd").addEventListener("click",()=>{
+    const q=num(document.getElementById("knQty").value); if(!q)return;
+    S.keyNumbers.push({id:uid(),metric:document.getElementById("knMetric").value,qty:q,
+      date:document.getElementById("knDate").value||todayISO(),note:document.getElementById("knNote").value.trim()});
+    save();route();
+  });
+  document.getElementById("pjAdd").addEventListener("click",()=>{
+    const n=document.getElementById("pjName").value.trim(); if(!n)return;
+    S.projects.push({id:uid(),name:n,desc:document.getElementById("pjDesc").value.trim(),
+      stage:document.getElementById("pjStage").value.trim()||"Scoping",due:document.getElementById("pjDue").value,
+      pct:num(document.getElementById("pjPct").value),status:document.getElementById("pjStatus").value});
+    save();route();
+  });
+  $$("textarea[data-plan]").forEach(ta=>ta.addEventListener("change",()=>{S.plans[ta.dataset.plan]=ta.value;save()}));
+  wireDeletes(view,"milestones"); wireDeletes(view,"keyNumbers"); wireDeletes(view,"projects");
+}
+
+/* =====================================================================
+   FINANCE TAB
+   ===================================================================== */
+let finPeriod="all";
+function periodRange(p){
+  const t=todayISO(), y=t.slice(0,4), m=t.slice(0,7);
+  if(p==="month")return [m+"-01",t];
+  if(p==="year")return [y+"-01-01",t];
+  if(p==="quarter"){const q=Math.floor((+t.slice(5,7)-1)/3)*3+1;return [y+"-"+String(q).padStart(2,"0")+"-01",t]}
+  return [null,null];
+}
+function renderFinance(){
+  const view=document.getElementById("view");
+  const [from,to]=periodRange(finPeriod);
+  const f=financials(from,to), bs=balanceSheet(null), cf=cashFlow(from,to);
+  const eq=[...S.equity].sort(sortByDate), ex=[...S.expenses].sort(sortByDate), rv=[...S.revenue].sort(sortByDate);
+  const perLbl={all:"All time",year:"This year",quarter:"This quarter",month:"This month"}[finPeriod];
+  view.innerHTML=`
+  <div class="card">
+    <div class="card-head"><h2>Equity — capitalization</h2><span class="sub">founding & follow-on investment · recorded as stockholders' equity</span></div>
+    ${eq.length? ledgerTable(eq,[
+      {h:"Type",l:1,f:r=>esc(r.type)},
+      {h:"Amount",f:r=>money(+r.amount)},
+      {h:"Date",f:r=>fmtD(r.date)},
+      {h:"Note",l:1,f:r=>esc(r.note||"")}
+    ]) : `<div class="empty"><b>The company is not yet capitalized.</b> Record your founding investment below — it becomes Common Stock on the balance sheet and opening cash.</div>`}
+    <div class="formrow">
+      <div class="fld"><label>Type</label><select class="field" id="eqType">${EQ_TYPES.map(t=>`<option>${t}</option>`).join("")}</select></div>
+      <div class="fld"><label>Amount $</label><input class="field" id="eqAmt" type="number" min="0" step="0.01" style="width:120px"></div>
+      <div class="fld"><label>Date</label><input class="field" id="eqDate" type="date" value="${todayISO()}"></div>
+      <div class="fld"><label>Note</label><input class="field sans" id="eqNote" style="width:220px" placeholder="e.g., founder contribution"></div>
+      <button class="save-btn" id="eqAdd">Record</button>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h2>Expense ledger</h2><span class="sub">${ex.length} ${ex.length===1?"entry":"entries"} · Equipment is capitalized, not expensed</span></div>
+      ${ex.length? ledgerTable(ex,[
+        {h:"Category",l:1,f:r=>`${esc(CAT[r.cat]?.name||r.cat)}${r.note?`<div style="font-size:11px;color:var(--ink-3)">${esc(r.note)}</div>`:""}${r.ref?`<div style="font-size:10px;color:var(--ink-3)">auto-posted from Operations</div>`:""}`},
+        {h:"Amount",f:r=>money(+r.amount)},
+        {h:"Date",f:r=>fmtD(r.date)}
+      ]) : `<div class="empty"><b>No expenses yet.</b> Every dollar out gets a line here — that's how the statements below stay true.</div>`}
+      <div class="formrow">
+        <div class="fld"><label>Category</label><select class="field" id="exCat">${EXP_CATS.map(c=>`<option value="${c.id}">${c.name}</option>`).join("")}</select></div>
+        <div class="fld"><label>Amount $</label><input class="field" id="exAmt" type="number" min="0" step="0.01" style="width:110px"></div>
+        <div class="fld"><label>Date</label><input class="field" id="exDate" type="date" value="${todayISO()}"></div>
+        <div class="fld"><label>Note / vendor</label><input class="field sans" id="exNote" style="width:180px"></div>
+        <button class="save-btn" id="exAdd">Add</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Revenue ledger</h2><span class="sub">${rv.length} ${rv.length===1?"entry":"entries"}</span></div>
+      ${rv.length? ledgerTable(rv,[
+        {h:"Channel",l:1,f:r=>`${esc(r.channel)}${r.note?`<div style="font-size:11px;color:var(--ink-3)">${esc(r.note)}</div>`:""}`},
+        {h:"Amount",f:r=>money(+r.amount)},
+        {h:"Units",f:r=>r.units?(+r.units).toLocaleString():"—"},
+        {h:"Date",f:r=>fmtD(r.date)}
+      ]) : `<div class="empty"><b>No revenue yet — that's honest for day zero.</b> The first sale you log here will be a milestone worth recording too.</div>`}
+      <div class="formrow">
+        <div class="fld"><label>Channel</label><select class="field" id="rvCh">${REV_CH.map(c=>`<option>${c}</option>`).join("")}</select></div>
+        <div class="fld"><label>Amount $</label><input class="field" id="rvAmt" type="number" min="0" step="0.01" style="width:110px"></div>
+        <div class="fld"><label>Units</label><input class="field" id="rvUnits" type="number" min="0" style="width:80px"></div>
+        <div class="fld"><label>Date</label><input class="field" id="rvDate" type="date" value="${todayISO()}"></div>
+        <div class="fld"><label>Note / customer</label><input class="field sans" id="rvNote" style="width:150px"></div>
+        <button class="save-btn" id="rvAdd">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Financial statements</h2><span class="sub">generated from your ledgers · accrual-adjusted for inventory & depreciation</span>
+      <div class="seg-btns" style="margin-left:auto">
+        ${["month","quarter","year","all"].map(p=>`<button class="seg ${finPeriod===p?"on":""}" data-per="${p}">${{month:"MTD",quarter:"QTD",year:"YTD",all:"All time"}[p]}</button>`).join("")}
+      </div>
+    </div>
+    <div class="grid3">
+      <div>
+        <h2 style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:8px 0 2px">Income statement <span style="color:var(--ink-3);text-transform:none;letter-spacing:0">· ${perLbl}</span></h2>
+        <table class="viz-table"><tbody>
+          <tr><td>Sales</td><td>${money(f.sales)}</td></tr>
+          <tr class="sect"><td colspan="2">Variable costs</td></tr>
+          <tr class="indent"><td>Cost of goods sold¹</td><td>${money(f.cogs)}</td></tr>
+          <tr class="total"><td>Contribution margin</td><td>${money(f.contribution)}</td></tr>
+          <tr class="sect"><td colspan="2">Period costs</td></tr>
+          <tr class="indent"><td>R&amp;D</td><td>${money(f.rnd)}</td></tr>
+          <tr class="indent"><td>Promotion &amp; sales</td><td>${money(f.promo)}</td></tr>
+          <tr class="indent"><td>Admin, legal &amp; other</td><td>${money(f.admin)}</td></tr>
+          <tr class="indent"><td>Depreciation</td><td>${money(f.dep)}</td></tr>
+          <tr class="total"><td>EBIT</td><td>${money(f.ebit)}</td></tr>
+          <tr><td>Taxes (21%)²</td><td>${money(f.taxes)}</td></tr>
+          <tr class="total"><td>Net profit</td><td style="color:${f.net>=0?"var(--good)":"var(--critical)"}">${money(f.net)}</td></tr>
+        </tbody></table>
+      </div>
+      <div>
+        <h2 style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:8px 0 2px">Balance sheet <span style="color:var(--ink-3);text-transform:none;letter-spacing:0">· as of today</span></h2>
+        <table class="viz-table"><tbody>
+          <tr class="sect"><td colspan="2">Assets</td></tr>
+          <tr class="indent"><td>Cash</td><td>${money(bs.cash)}</td></tr>
+          <tr class="indent"><td>Inventory (raw + finished)</td><td>${money(bs.inv)}</td></tr>
+          <tr class="indent"><td>Plant &amp; equipment (gross)</td><td>${money(bs.capexGross)}</td></tr>
+          <tr class="indent"><td>Accumulated depreciation</td><td>(${money(bs.accDep).replace("$","$")})</td></tr>
+          <tr class="total"><td>Total assets</td><td>${money(bs.assets)}</td></tr>
+          <tr class="sect"><td colspan="2">Liabilities</td></tr>
+          <tr class="indent"><td>Income tax payable</td><td>${money(bs.taxPayable)}</td></tr>
+          <tr class="sect"><td colspan="2">Stockholders' equity</td></tr>
+          <tr class="indent"><td>Common stock &amp; paid-in capital</td><td>${money(bs.stock)}</td></tr>
+          <tr class="indent"><td>Retained earnings</td><td>${money(bs.retained)}</td></tr>
+          <tr class="total"><td>Total liabilities &amp; equity</td><td>${money(bs.liabilities+bs.equity)}</td></tr>
+        </tbody></table>
+      </div>
+      <div>
+        <h2 style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:8px 0 2px">Statement of cash flows <span style="color:var(--ink-3);text-transform:none;letter-spacing:0">· ${perLbl}</span></h2>
+        <table class="viz-table"><tbody>
+          <tr class="sect"><td colspan="2">Operating activities</td></tr>
+          <tr class="indent"><td>Cash from customers</td><td>${money(cf.opsIn)}</td></tr>
+          <tr class="indent"><td>Cash paid to suppliers &amp; operations</td><td>(${money(cf.opsOut)})</td></tr>
+          <tr class="total"><td>Net cash — operating</td><td>${money(cf.ops)}</td></tr>
+          <tr class="sect"><td colspan="2">Investing activities</td></tr>
+          <tr class="indent"><td>Purchases of equipment</td><td>${money(cf.investing)}</td></tr>
+          <tr class="sect"><td colspan="2">Financing activities</td></tr>
+          <tr class="indent"><td>Issuance of common stock</td><td>${money(cf.financing)}</td></tr>
+          <tr class="total"><td>Net change in cash</td><td>${money(cf.net)}</td></tr>
+          <tr><td>Cash — beginning of period</td><td>${money(cf.start)}</td></tr>
+          <tr class="total"><td>Cash — end of period</td><td>${money(cf.end)}</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div class="provenance">¹ COGS = COGS-category purchases adjusted for the change in inventory on hand (Operations tab), so ingredients sitting in inventory are an asset, not a cost. ² Taxes accrue at the 21% US federal corporate rate on positive pre-tax income and appear as Income Tax Payable until remitted. Statement structure follows the Capstone income statement / balance sheet layout (sales → variable costs → contribution margin → period costs → EBIT → net profit).</div>
+  </div>`;
+  document.getElementById("eqAdd").addEventListener("click",()=>{
+    const a=num(document.getElementById("eqAmt").value); if(!a)return;
+    S.equity.push({id:uid(),type:document.getElementById("eqType").value,amount:a,
+      date:document.getElementById("eqDate").value||todayISO(),note:document.getElementById("eqNote").value.trim()});
+    save();route();
+  });
+  document.getElementById("exAdd").addEventListener("click",()=>{
+    const a=num(document.getElementById("exAmt").value); if(!a)return;
+    S.expenses.push({id:uid(),cat:document.getElementById("exCat").value,amount:a,
+      date:document.getElementById("exDate").value||todayISO(),note:document.getElementById("exNote").value.trim()});
+    save();route();
+  });
+  document.getElementById("rvAdd").addEventListener("click",()=>{
+    const a=num(document.getElementById("rvAmt").value); if(!a)return;
+    S.revenue.push({id:uid(),channel:document.getElementById("rvCh").value,amount:a,
+      units:num(document.getElementById("rvUnits").value)||null,
+      date:document.getElementById("rvDate").value||todayISO(),note:document.getElementById("rvNote").value.trim()});
+    save();route();
+  });
+  $$(".seg[data-per]").forEach(b=>b.addEventListener("click",()=>{finPeriod=b.dataset.per;renderFinance()}));
+  wireDeletes(view,"equity"); wireDeletes(view,"expenses"); wireDeletes(view,"revenue");
+}
+
+/* =====================================================================
+   OPERATIONS TAB
+   ===================================================================== */
+function renderOps(){
+  const view=document.getElementById("view");
+  const mats=[...S.materials].sort(sortByDate), fin=[...S.finished].sort(sortByDate), shp=[...S.shipments].sort(sortByDate);
+  const inv=inventoryValueAt(null);
+  const inTransit=shp.filter(s=>s.status==="In transit").length;
+  const freight=sumWhere(S.expenses,e=>e.cat==="freight");
+  view.innerHTML=`
+  <div class="score-row" style="grid-template-columns:repeat(4,1fr)">
+    ${tile("Raw materials on hand",money0(inv.raw),"","at purchase cost")}
+    ${tile("Finished goods",money0(inv.fg),"","at unit cost")}
+    ${tile("Shipments in transit",String(inTransit),"","tracked below")}
+    ${tile("Freight & logistics spend",money0(freight),"","all-time")}
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Raw materials</h2><span class="sub">purchases auto-post to the expense ledger (Raw Materials or Packaging) · update “on hand” as you consume</span></div>
+    ${mats.length? ledgerTable(mats,[
+      {h:"Item",l:1,f:r=>`<b style="color:var(--ink)">${esc(r.item)}</b>${r.note?`<div style="font-size:11px;color:var(--ink-3)">${esc(r.note)}</div>`:""}`},
+      {h:"Type",l:1,f:r=>r.kind==="pkg"?"Packaging":"Ingredient"},
+      {h:"Purchased",f:r=>(+r.qty).toLocaleString()+" "+esc(r.unit)},
+      {h:"Unit cost",f:r=>money(+r.unitCost)},
+      {h:"Total",f:r=>money((+r.qty)*(+r.unitCost))},
+      {h:"On hand",l:1,f:r=>`<input class="field" type="number" min="0" step="any" value="${+r.onHandQty}" data-oh="${r.id}" style="width:80px"> ${esc(r.unit)}`},
+      {h:"Date",f:r=>fmtD(r.date)}
+    ]) : `<div class="empty"><b>No materials yet.</b> When you buy your first bones, vegetables, aromatics or cartons, record them here — cost flows to Finance automatically and the on-hand quantity becomes balance-sheet inventory.</div>`}
+    <div class="formrow">
+      <div class="fld"><label>Item</label><input class="field sans" id="mtItem" style="width:170px" placeholder="e.g., Chicken bones"></div>
+      <div class="fld"><label>Type</label><select class="field" id="mtKind"><option value="raw">Ingredient</option><option value="pkg">Packaging</option></select></div>
+      <div class="fld"><label>Qty</label><input class="field" id="mtQty" type="number" min="0" step="any" style="width:80px"></div>
+      <div class="fld"><label>Unit</label><input class="field" id="mtUnit" style="width:64px" placeholder="lb"></div>
+      <div class="fld"><label>Unit cost $</label><input class="field" id="mtCost" type="number" min="0" step="0.0001" style="width:90px"></div>
+      <div class="fld"><label>Date</label><input class="field" id="mtDate" type="date" value="${todayISO()}"></div>
+      <div class="fld"><label>Note / supplier</label><input class="field sans" id="mtNote" style="width:150px"></div>
+      <button class="save-btn" id="mtAdd">Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Finished goods</h2><span class="sub">produced product on hand · unit cost = your all-in cost per unit</span></div>
+    ${fin.length? ledgerTable(fin,[
+      {h:"SKU / product",l:1,f:r=>esc(r.sku)},
+      {h:"On hand",l:1,f:r=>`<input class="field" type="number" min="0" value="${+r.qty}" data-fg="${r.id}" style="width:80px"> units`},
+      {h:"Unit cost",f:r=>money(+r.unitCost)},
+      {h:"Value",f:r=>money((+r.qty)*(+r.unitCost))},
+      {h:"Date",f:r=>fmtD(r.date)}
+    ]) : `<div class="empty"><b>No finished product yet.</b> After your first production run, log the batch here (SKU, units, all-in unit cost).</div>`}
+    <div class="formrow">
+      <div class="fld"><label>SKU / product</label><input class="field sans" id="fgSku" style="width:190px" placeholder="e.g., Bone broth 32oz"></div>
+      <div class="fld"><label>Units</label><input class="field" id="fgQty" type="number" min="0" style="width:80px"></div>
+      <div class="fld"><label>Unit cost $</label><input class="field" id="fgCost" type="number" min="0" step="0.01" style="width:90px"></div>
+      <div class="fld"><label>Date</label><input class="field" id="fgDate" type="date" value="${todayISO()}"></div>
+      <button class="save-btn" id="fgAdd">Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Shipments &amp; logistics</h2><span class="sub">inbound ingredients or outbound product · freight cost auto-posts to the expense ledger</span></div>
+    ${shp.length? ledgerTable(shp,[
+      {h:"Contents",l:1,f:r=>`<b style="color:var(--ink)">${esc(r.contents)}</b><div style="font-size:11px;color:var(--ink-3)">${esc(r.direction)} · ${esc(r.carrier)}</div>`},
+      {h:"Tracking #",l:1,f:r=>`<span style="font-family:var(--mono);font-size:11.5px">${esc(r.tracking||"—")}</span>`},
+      {h:"Status",l:1,f:r=>{
+        const cls=r.status==="Delivered"?"good":r.status==="In transit"?"warning":r.status==="Delayed"?"serious":"neutral";
+        return `<select class="field" data-shst="${r.id}" style="width:110px">${SHIP_STATUS.map(s=>`<option ${s===r.status?"selected":""}>${s}</option>`).join("")}</select>`}},
+      {h:"ETA",f:r=>fmtD(r.eta)},
+      {h:"Freight",f:r=>r.cost?money(+r.cost):"—"},
+      {h:"Date",f:r=>fmtD(r.date)}
+    ]) : `<div class="empty"><b>No shipments tracked.</b> Log anything moving — a pallet of cartons inbound, samples to a buyer outbound — with its carrier tracking number.</div>`}
+    <div class="formrow">
+      <div class="fld"><label>Contents</label><input class="field sans" id="shCont" style="width:170px" placeholder="e.g., 32oz cartons ×2,000"></div>
+      <div class="fld"><label>Direction</label><select class="field" id="shDir"><option>Inbound</option><option>Outbound</option></select></div>
+      <div class="fld"><label>Carrier</label><input class="field sans" id="shCar" style="width:90px" placeholder="UPS"></div>
+      <div class="fld"><label>Tracking #</label><input class="field" id="shTrk" style="width:150px"></div>
+      <div class="fld"><label>ETA</label><input class="field" id="shEta" type="date"></div>
+      <div class="fld"><label>Freight $</label><input class="field" id="shCost" type="number" min="0" step="0.01" style="width:90px"></div>
+      <div class="fld"><label>Date</label><input class="field" id="shDate" type="date" value="${todayISO()}"></div>
+      <button class="save-btn" id="shAdd">Add</button>
+    </div>
+  </div>`;
+  document.getElementById("mtAdd").addEventListener("click",()=>{
+    const item=document.getElementById("mtItem").value.trim(), qty=num(document.getElementById("mtQty").value), uc=num(document.getElementById("mtCost").value);
+    if(!item||!qty)return;
+    const id=uid(), date=document.getElementById("mtDate").value||todayISO(), kind=document.getElementById("mtKind").value;
+    S.materials.push({id,item,kind,qty,unit:document.getElementById("mtUnit").value.trim()||"ea",unitCost:uc,onHandQty:qty,date,note:document.getElementById("mtNote").value.trim()});
+    if(qty*uc>0)S.expenses.push({id:uid(),cat:kind==="pkg"?"pkg":"raw",amount:qty*uc,date,note:"Materials: "+item,ref:id});
+    save();route();
+  });
+  document.getElementById("fgAdd").addEventListener("click",()=>{
+    const sku=document.getElementById("fgSku").value.trim(); if(!sku)return;
+    S.finished.push({id:uid(),sku,qty:num(document.getElementById("fgQty").value),unitCost:num(document.getElementById("fgCost").value),date:document.getElementById("fgDate").value||todayISO()});
+    save();route();
+  });
+  document.getElementById("shAdd").addEventListener("click",()=>{
+    const c=document.getElementById("shCont").value.trim(); if(!c)return;
+    const id=uid(), date=document.getElementById("shDate").value||todayISO(), cost=num(document.getElementById("shCost").value);
+    S.shipments.push({id,contents:c,direction:document.getElementById("shDir").value,carrier:document.getElementById("shCar").value.trim(),
+      tracking:document.getElementById("shTrk").value.trim(),eta:document.getElementById("shEta").value,cost,status:"In transit",date});
+    if(cost>0)S.expenses.push({id:uid(),cat:"freight",amount:cost,date,note:"Freight: "+c,ref:id});
+    save();route();
+  });
+  $$("[data-oh]").forEach(inp=>inp.addEventListener("change",()=>{
+    const m=S.materials.find(x=>x.id===inp.dataset.oh); if(m){m.onHandQty=Math.max(0,num(inp.value));save();}
+  }));
+  $$("[data-fg]").forEach(inp=>inp.addEventListener("change",()=>{
+    const f=S.finished.find(x=>x.id===inp.dataset.fg); if(f){f.qty=Math.max(0,num(inp.value));save();}
+  }));
+  $$("[data-shst]").forEach(sel=>sel.addEventListener("change",()=>{
+    const s=S.shipments.find(x=>x.id===sel.dataset.shst); if(s){s.status=sel.value;save();route();}
+  }));
+  wireDeletes(view,"materials"); wireDeletes(view,"finished"); wireDeletes(view,"shipments");
+}
+
+/* =====================================================================
+   MARKET TAB (all sourced)
+   ===================================================================== */
+function renderMarket(){
+  document.getElementById("view").innerHTML=`
+  <div class="card">
+    <div class="card-head"><h2>Category outlook — soup, broth &amp; concentrates (US)</h2><span class="sub">sourced research · updated manually as new data publishes</span></div>
+    <table class="viz-table">
+      <thead><tr><th>Segment</th><th>Size</th><th>Growth</th><th class="l">What's happening</th><th class="l">Source</th></tr></thead>
+      <tbody>
+        <tr><td>US soup (total)</td><td>≈$5.9B (2024)</td><td>≈2.5% CAGR</td><td class="l">Mature core; shelf-stable ≈47% of the market</td><td class="l">GlobeNewswire / Mordor (2025)</td></tr>
+        <tr><td>Bone broth (global)</td><td>≈$1.2B (2025)</td><td>≈6% CAGR</td><td class="l">The functional growth flank; North America ≈36% of it; top-5 brands ≈42% combined</td><td class="l">Fortune Business Insights</td></tr>
+        <tr><td>Broth &amp; stock brands</td><td>—</td><td>—</td><td class="l">Swanson (Campbell's) is the #1-selling US broth; College Inn + Kitchen Basics changed hands to B&amp;G Foods for ~$110M (≈$110–120M net sales)</td><td class="l">Circana via Food Dive; B&amp;G 8-K (2026)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Competitive landscape</h2><span class="sub">who already owns the shelf you want</span></div>
+    <table class="viz-table">
+      <thead><tr><th>Player</th><th class="l">Owner</th><th class="l">Where they're strong</th><th class="l">What it means for Food Lube</th></tr></thead>
+      <tbody>
+        <tr><td>Swanson</td><td class="l">Campbell's</td><td class="l">#1 US broth (Circana); mainstream everywhere</td><td class="l">Don't fight head-on in plain broth — differentiate</td></tr>
+        <tr><td>Knorr</td><td class="l">Unilever</td><td class="l">Bouillon, stocks &amp; concentrates; value + convenience</td><td class="l">Concentrate formats face a global giant</td></tr>
+        <tr><td>Better Than Bouillon</td><td class="l">Summit Hill Foods</td><td class="l">Paste concentrates — the category-defining format</td><td class="l">The bar for any paste/concentrate product</td></tr>
+        <tr><td>Pacific Foods</td><td class="l">Campbell's</td><td class="l">Premium organic carton broths (~$130M)</td><td class="l">Premium shelf gatekeeper in natural channel</td></tr>
+        <tr><td>Kettle &amp; Fire</td><td class="l">Independent (VC-backed)</td><td class="l">Bone broth / sipping broth; built the modern playbook</td><td class="l">Proof a startup can win here — study their moves</td></tr>
+        <tr><td>Imagine</td><td class="l">Hain Celestial</td><td class="l">Organic broths &amp; soups</td><td class="l">Premium organic is crowded but growing</td></tr>
+      </tbody>
+    </table>
+    <div class="provenance">Sources: Circana via Food Dive (2022); B&amp;G Foods 8-K (2026); Campbell's investor materials; Fortune Business Insights (2025); CB Insights (Kettle &amp; Fire).</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h2>Cost structure to plan against</h2><span class="sub">what the P&amp;L of a scaled peer looks like</span></div>
+      <table class="viz-table">
+        <thead><tr><th>Line</th><th>Typical range</th><th class="l">Source</th></tr></thead>
+        <tbody>
+          <tr><td>Gross margin</td><td>21–38% · median ≈33%</td><td class="l">Eightx (2026)</td></tr>
+          <tr><td>COGS</td><td>≈62–79% of net sales</td><td class="l">implied</td></tr>
+          <tr><td>Trade spend</td><td>15–25% of gross sales</td><td class="l">TrewUp</td></tr>
+          <tr><td>Gross-to-net deductions</td><td>30–40%</td><td class="l">Eightx</td></tr>
+          <tr><td>Operating margin</td><td>≈1–15% for healthy operators</td><td class="l">Eightx</td></tr>
+          <tr><td>Peer revenue scale</td><td>Utz ≈$1.4B · Simply Good ≈$1.45B · Hain ≈$1.5B (FY25)</td><td class="l">company filings</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Watch list — cost drivers &amp; trends</h2><span class="sub">qualitative, sourced</span></div>
+      <table class="viz-table">
+        <thead><tr><th>Factor</th><th class="l">Why it matters to a broth company</th></tr></thead>
+        <tbody>
+          <tr><td>Chicken / beef bone costs</td><td class="l">Primary input; protein markets are volatile — build supplier relationships early</td></tr>
+          <tr><td>Packaging (cartons, cans, aluminum)</td><td class="l">Second-biggest COGS driver; carton vs. can is a defining early choice</td></tr>
+          <tr><td>Functional / wellness demand</td><td class="l">Bone broth growing ≈6% vs ≈2.5% for soup overall — the tailwind segment</td></tr>
+          <tr><td>Private label pressure</td><td class="l">Retailer own-brands squeeze the value tier — avoid competing on price alone</td></tr>
+          <tr><td>Retailer compliance (OTIF, SQF)</td><td class="l">Major retailers demand high-90s OTIF and GFSI-benchmarked certification (SQF) — plan for these before pitching chains</td></tr>
+          <tr><td>Seasonality</td><td class="l">Soup demand peaks Nov–Feb; plan production and launches around the winter window</td></tr>
+        </tbody>
+      </table>
+      <div class="provenance">Sources: Fortune Business Insights; GlobeNewswire soup forecast; Brightly Software (OTIF/compliance); SQF Institute; category reporting.</div>
+    </div>
+  </div>`;
+}
+
+/* =====================================================================
+   EXPORT / IMPORT / RESET / CLOCK
+   ===================================================================== */
+document.getElementById("exportBtn").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download="foodlube-backup-"+todayISO()+".json";a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const j=JSON.parse(r.result);
+      if(j.expenses&&j.equity){S=j;for(const k of Object.keys(blankState()))if(S[k]===undefined)S[k]=blankState()[k];save();route()}
+      else alert("That file doesn't look like a Food Lube backup.");
+    }catch(err){alert("Couldn't read that file as JSON.")}
+  };
+  r.readAsText(f); e.target.value="";
+});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  if(confirm("Erase ALL company data in this browser? Export a backup first if you want to keep it."))
+  {S=blankState();save();route()}
+});
+function tickClock(){
+  const n=new Date();
+  document.getElementById("clock").textContent=
+    n.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"})+" "+
+    n.toLocaleTimeString("en-US",{hour12:false});
+  setTimeout(tickClock,1000);
+}
+
+/* boot */
+route(); tickClock();
+let rsz;window.addEventListener("resize",()=>{clearTimeout(rsz);rsz=setTimeout(()=>{if((location.hash.slice(1)||"overview")==="overview")renderOverview()},150)});
+</script>
+</body>
+</html>

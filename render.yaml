@@ -1,0 +1,21 @@
+# Render blueprint: one static frontend + one FastAPI backend.
+# Deploy: push repo to GitHub -> Render dashboard -> New + Blueprint -> pick repo.
+services:
+  - type: web
+    name: foodlube-api
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+
+  - type: web
+    name: foodlube-dashboard
+    runtime: static
+    buildCommand: cd frontend && npm ci && npm run build
+    staticPublishPath: frontend/dist
+    plan: free
+    envVars:
+      # Point the frontend at the deployed API to switch from bundled mock
+      # to API mode (VITE_DATA_SOURCE=api). Left as mock by default.
+      - key: VITE_DATA_SOURCE
+        value: mock
