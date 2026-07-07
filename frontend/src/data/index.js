@@ -30,6 +30,7 @@ export const getCompany = (...a) => SOURCE.getCompany(...a);
 export const getDepartments = (...a) => SOURCE.getDepartments(...a);
 export const getKpis = (...a) => SOURCE.getKpis(...a);
 export const getCompetitors = (...a) => SOURCE.getCompetitors(...a);
+export const getCourier = (...a) => SOURCE.getCourier(...a);
 
 // User check-in submissions (real numbers overriding mock, per KPI).
 // Stored in the browser today; a LIVE provider can sync the same shape

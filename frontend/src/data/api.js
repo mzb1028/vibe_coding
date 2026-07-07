@@ -20,3 +20,4 @@ export const getKpis = ({ mode = "company", department = null, cadence = null } 
   return get(`/api/kpis?${q}`);
 };
 export const getCompetitors = () => get("/api/competitors");
+export const getCourier = () => get("/api/courier");

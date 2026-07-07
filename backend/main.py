@@ -53,6 +53,9 @@ class MockProvider:
             rows = [k for k in rows if k["cadence"] == cadence]
         return rows
 
+    def courier(self) -> dict:
+        return self._seed["courier"]
+
     def competitors(self) -> list:
         # Competitor cards are externally-observable [E] by construction;
         # enforce it anyway so a bad seed can never leak an [I] KPI.
@@ -106,3 +109,8 @@ def kpis(
 @app.get("/api/competitors")
 def competitors():
     return provider.competitors()
+
+
+@app.get("/api/courier")
+def courier():
+    return provider.courier()

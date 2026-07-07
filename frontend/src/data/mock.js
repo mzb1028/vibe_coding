@@ -26,6 +26,10 @@ export async function getKpis({ mode = "company", department = null, cadence = n
   return clone(rows).map(applyOverlay);
 }
 
+export async function getCourier() {
+  return clone(seed.courier);
+}
+
 export async function getCompetitors() {
   // [E]-only enforcement even if the seed were edited badly.
   return clone(

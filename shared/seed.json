@@ -3502,5 +3502,800 @@
     }
    ]
   }
- ]
+ ],
+ "courier": {
+  "_note": "Courier-style company overview. Terminology adapted from the Capstone Courier report; every value is mock (fictional demo profile) unless a source is cited. $ figures in $K unless noted.",
+  "asOf": "FY2025 — Dec. 31, 2025",
+  "financialStatistics": [
+   [
+    "ROS",
+    "4.6%"
+   ],
+   [
+    "Asset Turnover",
+    "2.46"
+   ],
+   [
+    "ROA",
+    "11.2%"
+   ],
+   [
+    "Leverage",
+    "2.96"
+   ],
+   [
+    "ROE",
+    "33.3%"
+   ],
+   [
+    "Sales",
+    "$75,000"
+   ],
+   [
+    "EBIT",
+    "$6,200"
+   ],
+   [
+    "Profit",
+    "$3,426"
+   ],
+   [
+    "Cumulative Profit",
+    "$8,600"
+   ],
+   [
+    "SG&A to Sales Ratio",
+    "24.0%"
+   ],
+   [
+    "Contribution Margin",
+    "34.0%"
+   ],
+   [
+    "Emergency Loan",
+    "$0"
+   ]
+  ],
+  "percentOfSales": [
+   {
+    "name": "Variable Costs",
+    "pct": 66
+   },
+   {
+    "name": "Depreciation",
+    "pct": 1.1
+   },
+   {
+    "name": "SG&A",
+    "pct": 24
+   },
+   {
+    "name": "Other (incl. interest & taxes)",
+    "pct": 4.3
+   },
+   {
+    "name": "Profit",
+    "pct": 4.6
+   }
+  ],
+  "cashFlow": {
+   "sections": [
+    {
+     "h": "Cash From Operations",
+     "rows": [
+      [
+       "Net Income(Loss)",
+       3426
+      ],
+      [
+       "Depreciation",
+       800
+      ],
+      [
+       "Extraordinary Gains/Losses/Write-offs",
+       0
+      ]
+     ]
+    },
+    {
+     "h": "Changes In Current Assets And Liabilities",
+     "rows": [
+      [
+       "Accounts Payable",
+       420
+      ],
+      [
+       "Inventory",
+       -860
+      ],
+      [
+       "Accounts Receivable",
+       -1110
+      ]
+     ],
+     "total": [
+      "Net Cash From Operations",
+      2676
+     ]
+    },
+    {
+     "h": "Cash From Investing",
+     "rows": [
+      [
+       "Net Plant Improvements",
+       -1500
+      ]
+     ]
+    },
+    {
+     "h": "Cash From Financing",
+     "rows": [
+      [
+       "Dividends Paid",
+       0
+      ],
+      [
+       "Sales Of Common Stock",
+       0
+      ],
+      [
+       "Purchase Of Common Stock",
+       0
+      ],
+      [
+       "Cash From Long-Term Debt Issued",
+       0
+      ],
+      [
+       "Early Retirement Of Long-Term Debt",
+       0
+      ],
+      [
+       "Retirement Of Current Debt",
+       -1000
+      ],
+      [
+       "Cash From Current Debt Borrowing",
+       1500
+      ],
+      [
+       "Cash From Emergency Loan",
+       0
+      ]
+     ],
+     "total": [
+      "Net Cash From Financing",
+      500
+     ]
+    }
+   ],
+   "netChange": [
+    "Net Change In Cash",
+    1676
+   ],
+   "closing": [
+    "Closing Cash Position",
+    6800
+   ]
+  },
+  "balanceSheet": {
+   "assets": [
+    [
+     "Cash",
+     6800
+    ],
+    [
+     "Accounts Receivable",
+     8200
+    ],
+    [
+     "Inventory",
+     7500
+    ],
+    [
+     "Total Current Assets",
+     22500,
+     1
+    ],
+    [
+     "Plant And Equipment",
+     12000
+    ],
+    [
+     "Accumulated Depreciation",
+     -4000
+    ],
+    [
+     "Total Fixed Assets",
+     8000,
+     1
+    ],
+    [
+     "Total Assets",
+     30500,
+     1
+    ]
+   ],
+   "liabilities": [
+    [
+     "Accounts Payable",
+     6200
+    ],
+    [
+     "Current Debt",
+     2000
+    ],
+    [
+     "Long Term Debt",
+     12000
+    ],
+    [
+     "Total Liabilities",
+     20200,
+     1
+    ]
+   ],
+   "equity": [
+    [
+     "Common Stock",
+     5000
+    ],
+    [
+     "Retained Earnings",
+     5300
+    ],
+    [
+     "Total Equity",
+     10300,
+     1
+    ],
+    [
+     "Total Liabilities & Owners' Equity",
+     30500,
+     1
+    ]
+   ]
+  },
+  "incomeStatement": [
+   [
+    "Sales",
+    75000
+   ],
+   [
+    "Variable Costs (Materials, Co-Man, Freight, Inventory Carry)",
+    -49500
+   ],
+   [
+    "Contribution Margin",
+    25500,
+    1
+   ],
+   [
+    "Depreciation",
+    -800
+   ],
+   [
+    "SG&A (R&D, Promotion, Sales, Admin)",
+    -18000
+   ],
+   [
+    "Other",
+    -500
+   ],
+   [
+    "EBIT",
+    6200,
+    1
+   ],
+   [
+    "Interest (Short & Long Term)",
+    -1750
+   ],
+   [
+    "Taxes (21%)",
+    -935
+   ],
+   [
+    "Profit Sharing",
+    -89
+   ],
+   [
+    "Net Profit",
+    3426,
+    1
+   ]
+  ],
+  "products": [
+   {
+    "name": "Pantry Gold",
+    "segment": "Value",
+    "unitsSoldK": 9500,
+    "inventoryK": 820,
+    "revisionDate": "14-Feb-2026",
+    "ageYrs": 3.2,
+    "qualityIdx": 68,
+    "price": 2.1,
+    "materialCost": 1.02,
+    "coManCost": 0.53,
+    "cogs": 1.55,
+    "contributionMargin": 26.2,
+    "utilization": 78
+   },
+   {
+    "name": "Hearth Classic",
+    "segment": "Mainstream",
+    "unitsSoldK": 7200,
+    "inventoryK": 610,
+    "revisionDate": "02-Oct-2025",
+    "ageYrs": 4.1,
+    "qualityIdx": 74,
+    "price": 2.6,
+    "materialCost": 1.18,
+    "coManCost": 0.64,
+    "cogs": 1.82,
+    "contributionMargin": 30,
+    "utilization": 71
+   },
+   {
+    "name": "Stone & Sprig",
+    "segment": "Premium",
+    "unitsSoldK": 3100,
+    "inventoryK": 240,
+    "revisionDate": "21-Apr-2026",
+    "ageYrs": 1.8,
+    "qualityIdx": 85,
+    "price": 4.5,
+    "materialCost": 1.95,
+    "coManCost": 0.95,
+    "cogs": 2.9,
+    "contributionMargin": 35.6,
+    "utilization": 64
+   },
+   {
+    "name": "EmberWell",
+    "segment": "Functional",
+    "unitsSoldK": 1800,
+    "inventoryK": 95,
+    "revisionDate": "08-Jun-2026",
+    "ageYrs": 1.1,
+    "qualityIdx": 91,
+    "price": 7,
+    "materialCost": 2.8,
+    "coManCost": 1.3,
+    "cogs": 4.1,
+    "contributionMargin": 41.4,
+    "utilization": 82
+   },
+   {
+    "name": "SimmrPro",
+    "segment": "Convenience",
+    "unitsSoldK": 1600,
+    "inventoryK": 130,
+    "revisionDate": "30-May-2026",
+    "ageYrs": 0.9,
+    "qualityIdx": 88,
+    "price": 6,
+    "materialCost": 2.35,
+    "coManCost": 1.2,
+    "cogs": 3.55,
+    "contributionMargin": 40.8,
+    "utilization": 58
+   }
+  ],
+  "segments": [
+   {
+    "name": "Value",
+    "sizeM": 250,
+    "fSku": "Pantry Gold",
+    "unitsDemandM": 116,
+    "growthRate": 1.5,
+    "criteria": [
+     [
+      "Price",
+      "$1.50 – $2.50",
+      "53%"
+     ],
+     [
+      "Brand Familiarity",
+      "established names",
+      "24%"
+     ],
+     [
+      "Positioning",
+      "shelf placement & pack format",
+      "16%"
+     ],
+     [
+      "Quality Consistency",
+      "complaint-free",
+      "7%"
+     ]
+    ],
+    "topProducts": [
+     [
+      "Knorr Bouillon",
+      "Knorr (Unilever)",
+      26
+     ],
+     [
+      "Private label (aggregate)",
+      "Retailer own-brands",
+      45
+     ],
+     [
+      "Pantry Gold",
+      "Food Lube",
+      8
+     ],
+     [
+      "Better Than Bouillon (entry sizes)",
+      "Summit Hill",
+      5
+     ]
+    ]
+   },
+   {
+    "name": "Mainstream",
+    "sizeM": 210,
+    "fSku": "Hearth Classic",
+    "unitsDemandM": 66,
+    "growthRate": 1,
+    "criteria": [
+     [
+      "Brand Heritage (Age)",
+      "trusted, familiar",
+      "47%"
+     ],
+     [
+      "Price",
+      "$2.00 – $3.00",
+      "23%"
+     ],
+     [
+      "Positioning",
+      "center-store presence",
+      "21%"
+     ],
+     [
+      "Quality Consistency",
+      "complaint-free",
+      "9%"
+     ]
+    ],
+    "topProducts": [
+     [
+      "Swanson (in Other)",
+      "Campbell's",
+      30
+     ],
+     [
+      "Hearth Classic",
+      "Food Lube",
+      11
+     ],
+     [
+      "Knorr Stocks",
+      "Knorr (Unilever)",
+      8
+     ],
+     [
+      "Pacific (mainstream lines)",
+      "Pacific Foods (Campbell's)",
+      7
+     ]
+    ]
+   },
+   {
+    "name": "Premium",
+    "sizeM": 150,
+    "fSku": "Stone & Sprig",
+    "unitsDemandM": 31,
+    "growthRate": 4,
+    "criteria": [
+     [
+      "Positioning",
+      "organic credentials, clean label",
+      "43%"
+     ],
+     [
+      "Newness (Age)",
+      "recent renovation",
+      "29%"
+     ],
+     [
+      "Quality",
+      "ingredient integrity",
+      "19%"
+     ],
+     [
+      "Price",
+      "$3.50 – $5.50",
+      "9%"
+     ]
+    ],
+    "topProducts": [
+     [
+      "Pacific Foods Organic",
+      "Pacific Foods (Campbell's)",
+      22
+     ],
+     [
+      "Imagine Organic",
+      "Imagine (Hain)",
+      12
+     ],
+     [
+      "Stone & Sprig",
+      "Food Lube",
+      10
+     ],
+     [
+      "Kettle & Fire (premium lines)",
+      "Kettle & Fire",
+      5
+     ]
+    ]
+   },
+   {
+    "name": "Functional",
+    "sizeM": 110,
+    "fSku": "EmberWell",
+    "unitsDemandM": 20,
+    "growthRate": 6,
+    "criteria": [
+     [
+      "Efficacy / Quality",
+      "protein & collagen content",
+      "43%"
+     ],
+     [
+      "Positioning",
+      "wellness credibility",
+      "29%"
+     ],
+     [
+      "Price",
+      "$5.00 – $8.00",
+      "19%"
+     ],
+     [
+      "Newness (Age)",
+      "current formulation",
+      "9%"
+     ]
+    ],
+    "topProducts": [
+     [
+      "Kettle & Fire Bone Broth",
+      "Kettle & Fire",
+      11
+     ],
+     [
+      "EmberWell",
+      "Food Lube",
+      9
+     ],
+     [
+      "Pacific Bone Broth",
+      "Pacific Foods (Campbell's)",
+      6
+     ],
+     [
+      "Imagine (functional lines)",
+      "Imagine (Hain)",
+      3
+     ]
+    ]
+   },
+   {
+    "name": "Convenience",
+    "sizeM": 93,
+    "fSku": "SimmrPro",
+    "unitsDemandM": 19,
+    "growthRate": 5,
+    "criteria": [
+     [
+      "Format / Positioning",
+      "paste, single-serve, portability",
+      "43%"
+     ],
+     [
+      "Newness (Age)",
+      "format innovation",
+      "29%"
+     ],
+     [
+      "Quality",
+      "dissolve/performance",
+      "19%"
+     ],
+     [
+      "Price",
+      "$4.50 – $7.00",
+      "9%"
+     ]
+    ],
+    "topProducts": [
+     [
+      "Better Than Bouillon",
+      "Summit Hill",
+      28
+     ],
+     [
+      "Knorr Concentrates",
+      "Knorr (Unilever)",
+      22
+     ],
+     [
+      "SimmrPro",
+      "Food Lube",
+      8
+     ],
+     [
+      "Kettle & Fire (cups)",
+      "Kettle & Fire",
+      2
+     ]
+    ]
+   }
+  ],
+  "marketShare": {
+   "note": "$ share of segment, L52W — illustrative directional estimates (syndicated Circana/NIQ data not public). Segment sizes are mock estimates of the addressable broth & concentrates sub-category (≈$813M), not the full $5.9B soup market.",
+   "segments": [
+    "Value",
+    "Mainstream",
+    "Premium",
+    "Functional",
+    "Convenience"
+   ],
+   "segmentSizeM": [
+    250,
+    210,
+    150,
+    110,
+    93
+   ],
+   "rows": [
+    {
+     "name": "Pantry Gold",
+     "company": "Food Lube",
+     "shares": [
+      8.2,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Hearth Classic",
+     "company": "Food Lube",
+     "shares": [
+      0,
+      10.9,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Stone & Sprig",
+     "company": "Food Lube",
+     "shares": [
+      0,
+      0,
+      10,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "EmberWell",
+     "company": "Food Lube",
+     "shares": [
+      0,
+      0,
+      0,
+      9,
+      0
+     ]
+    },
+    {
+     "name": "SimmrPro",
+     "company": "Food Lube",
+     "shares": [
+      0,
+      0,
+      0,
+      0,
+      8.4
+     ]
+    },
+    {
+     "name": "Total — Food Lube",
+     "company": "Food Lube",
+     "shares": [
+      8.2,
+      10.9,
+      10,
+      9,
+      8.4
+     ],
+     "total": true
+    },
+    {
+     "name": "Knorr (Unilever)",
+     "company": "Knorr",
+     "shares": [
+      26,
+      8,
+      0,
+      0,
+      22
+     ],
+     "total": true
+    },
+    {
+     "name": "Better Than Bouillon",
+     "company": "Summit Hill",
+     "shares": [
+      5,
+      3,
+      0,
+      0,
+      28
+     ],
+     "total": true
+    },
+    {
+     "name": "Pacific Foods",
+     "company": "Campbell's",
+     "shares": [
+      0,
+      7,
+      22,
+      6,
+      0
+     ],
+     "total": true
+    },
+    {
+     "name": "Kettle & Fire",
+     "company": "Kettle & Fire",
+     "shares": [
+      0,
+      0,
+      5,
+      11,
+      2
+     ],
+     "total": true
+    },
+    {
+     "name": "Imagine",
+     "company": "Hain",
+     "shares": [
+      0,
+      4,
+      12,
+      3,
+      0
+     ],
+     "total": true
+    },
+    {
+     "name": "Other (incl. Swanson, College Inn, PL)",
+     "company": "—",
+     "shares": [
+      60.8,
+      67.1,
+      51,
+      71,
+      39.6
+     ],
+     "total": true
+    }
+   ]
+  }
+ }
 }
