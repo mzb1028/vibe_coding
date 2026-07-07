@@ -1,7 +1,7 @@
 # Deploys the CPG Enterprise System frontend to GitHub Pages.
-# One-time setup: repo Settings -> Pages -> Source: "GitHub Actions".
-# After that, every push to the default branch republishes the site at
-# https://<owner>.github.io/<repo>/
+# Pages is auto-enabled on first run (configure-pages enablement) — no
+# manual settings needed. Every push to the default branch republishes
+# the site at https://<owner>.github.io/<repo>/
 name: Deploy to GitHub Pages
 
 on:
@@ -23,6 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/setup-node@v4
         with:
           node-version: 20
