@@ -106,7 +106,7 @@ export default function App() {
       <header className="hdr">
         <div className="block">FL</div>
         <h1>
-          FOOD LUBE <span>· CPG Intelligence</span>
+          CPG ENTERPRISE SYSTEM <span>· Food Lube</span>
         </h1>
         <div className="mode-toggle" role="tablist" aria-label="Mode">
           <button role="tab" aria-selected={mode === "overview"} className={mode === "overview" ? "on" : ""} onClick={() => switchMode("overview")}>
@@ -215,7 +215,7 @@ export default function App() {
       </main>
 
       <footer className="foot">
-        FOOD LUBE · CPG intelligence dashboard · base data: <span>{import.meta.env.VITE_DATA_SOURCE === "api" ? "API" : "mock"}</span> · {countEntered()} KPI{countEntered() === 1 ? "" : "s"} overridden by your check-ins (green · manual entry) · your entries stay in this browser — use ⭳ to back up · competitor values mock unless a public source is cited
+        CPG ENTERPRISE SYSTEM · company: Food Lube · base data: <span>{import.meta.env.VITE_DATA_SOURCE === "api" ? "API" : "mock"}</span> · {countEntered()} KPI{countEntered() === 1 ? "" : "s"} overridden by your check-ins (green · manual entry) · your entries stay in this browser — use ⭳ to back up · competitor values mock unless a public source is cited
       </footer>
     </>
   );
