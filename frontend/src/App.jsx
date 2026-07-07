@@ -10,11 +10,10 @@ import CheckIn from "./components/CheckIn.jsx";
 import CourierOverview from "./components/CourierOverview.jsx";
 
 export default function App() {
-  const [mode, setMode] = useState("company"); // "company" | "industry"
+  const [mode, setMode] = useState("overview"); // "overview" | "company" | "industry"
   const [cadence, setCadence] = useState(null); // null = all
   const [dept, setDept] = useState(null); // department drill-down (company mode)
   const [checkin, setCheckin] = useState(false); // check-in (data entry) view
-  const [view, setView] = useState("courier"); // company sub-view: "courier" | "kpis"
   const [dataVersion, setDataVersion] = useState(0); // bump to re-read after submissions
   const [company, setCompany] = useState(null);
   const [departments, setDepartments] = useState([]);
@@ -33,6 +32,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (mode === "overview") return; // Courier overview fetches its own block
     getKpis({ mode, department: dept, cadence })
       .then(setKpis)
       .catch((e) => setError(String(e)));
@@ -109,6 +109,9 @@ export default function App() {
           FOOD LUBE <span>· CPG Intelligence</span>
         </h1>
         <div className="mode-toggle" role="tablist" aria-label="Mode">
+          <button role="tab" aria-selected={mode === "overview"} className={mode === "overview" ? "on" : ""} onClick={() => switchMode("overview")}>
+            Overview
+          </button>
           <button role="tab" aria-selected={mode === "company"} className={mode === "company" ? "on" : ""} onClick={() => switchMode("company")}>
             My Company
           </button>
@@ -134,18 +137,7 @@ export default function App() {
         <button className="chip" onClick={doReset} title="Erase entered numbers (back to mock)">↺</button>
       </header>
 
-      {mode === "company" && !checkin && (
-        <div className="bar" role="tablist" aria-label="Company views">
-          <span className="lbl">View</span>
-          <button role="tab" aria-selected={view === "courier"} className={`chip ${view === "courier" ? "on" : ""}`} onClick={() => setView("courier")}>
-            Overview
-          </button>
-          <button role="tab" aria-selected={view === "kpis"} className={`chip ${view === "kpis" ? "on" : ""}`} onClick={() => setView("kpis")}>
-            Departments &amp; KPIs
-          </button>
-        </div>
-      )}
-      <div className="bar" role="group" aria-label="Cadence filter" style={mode === "company" && view === "courier" && !checkin ? { display: "none" } : {}}>
+      <div className="bar" role="group" aria-label="Cadence filter" style={mode === "overview" ? { display: "none" } : {}}>
         <span className="lbl">Cadence</span>
         <button className={`chip ${cadence === null ? "on" : ""}`} onClick={() => setCadence(null)}>
           All
@@ -171,7 +163,7 @@ export default function App() {
               setDataVersion((v) => v + 1);
             }}
           />
-        ) : mode === "company" && view === "courier" ? (
+        ) : mode === "overview" ? (
           <CourierOverview />
         ) : mode === "industry" ? (
           <>
