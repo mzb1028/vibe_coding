@@ -21,3 +21,4 @@ export const getKpis = ({ mode = "company", department = null, cadence = null } 
 };
 export const getCompetitors = () => get("/api/competitors");
 export const getCourier = () => get("/api/courier");
+export const getSeedProjects = (deptId) => get(`/api/projects?department=${encodeURIComponent(deptId)}`);

@@ -54,6 +54,21 @@ uvicorn backend.main:app --reload
 3. To use API mode, set the static site's env var `VITE_DATA_SOURCE=api`
    and `VITE_API_BASE` to the API service URL, then redeploy.
 
+## Daily log & derived KPIs
+
+The **Daily log** (My Company → ✎ Daily log) takes raw, bottom-up facts —
+raw material purchases, packaging, co-man fees, inbound/outbound freight,
+storage/3PL, duties, marketing, trade promo, travel, payroll, R&D, legal,
+equipment, sales (with units & channel), inventory counts, doors, orders,
+customers, complaints — and files each automatically (COGS / Distribution /
+OpEx / CapEx / Revenue / Inventory, owning department). derive.js then
+computes KPIs from the entries (gross margin, cash, burn, runway, landed
+cost/unit, freight & storage %% of revenue, CAC, marketing %% of revenue,
+payroll %%, inventory value, operational counts) and overrides the demo
+values — derived numbers show green, sourced "derived from your entries".
+Every department tracks 10+ factors (106 KPIs) and has an Active Projects
+board (seeded examples + your own) in its drill-down.
+
 ## Build phases
 
 - **Phase 1 (this)** — full schema, 10 departments, mock data, confidence
