@@ -83,7 +83,7 @@ export default function CheckIn({ kpis, deptNames, onDone }) {
                 </span>
                 <span className="ci-last" title="Current displayed value">
                   now: {typeof k.value === "number" ? k.value.toLocaleString("en-US") : k.value} {k.unit}
-                  {k.source === "manual entry" ? " · yours" : " · mock"}
+                  {k.source === "manual entry" ? " · yours" : " · demo"}
                 </span>
                 <input
                   type="number"

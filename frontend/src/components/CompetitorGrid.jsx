@@ -78,8 +78,8 @@ export default function CompetitorGrid({ competitors }) {
         </table>
       </div>
       <div className="provenance">
-        Competitor names are real. Values are Phase-1 mock placeholders (red = guessing) except where the source
-        cites a public record or filing; syndicated velocity/distribution/share require Circana or SPINS (Phase 3).
+        Competitor names are real. Values are directional demo estimates (red = guessing) except where the source
+        cites a public record or filing; syndicated velocity/distribution/share require Circana or SPINS.
         Hover any number for its confidence and source.
       </div>
     </div>

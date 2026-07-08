@@ -45,5 +45,5 @@ export const CADENCES = ["daily", "weekly", "monthly", "quarterly", "annual"];
 export const CONFIDENCE = {
   certain: { color: "var(--conf-certain)", label: "Certain", desc: "filing / ERP / public record" },
   likely: { color: "var(--conf-likely)", label: "Likely", desc: "strong inference" },
-  guessing: { color: "var(--conf-guessing)", label: "Guessing", desc: "filled gap / mock" }
+  guessing: { color: "var(--conf-guessing)", label: "Guessing", desc: "filled gap / demo estimate" }
 };
