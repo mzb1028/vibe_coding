@@ -1,9 +1,7 @@
 # Deploys the CPG Enterprise System frontend to GitHub Pages.
-# ONE-TIME SETUP (required — GitHub does not allow the Actions token to
-# enable Pages for the first time): repo Settings -> Pages -> under
-# "Build and deployment" set Source = "GitHub Actions".
-# After that single click, every push to the default branch republishes
-# the site at https://<owner>.github.io/<repo>/
+# Publishes the built site to the `gh-pages` branch — Pages auto-serves
+# that branch with zero settings required. Every push to the default
+# branch republishes https://<owner>.github.io/<repo>/
 name: Deploy to GitHub Pages
 
 on:
@@ -12,20 +10,17 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -35,16 +30,9 @@ jobs:
         working-directory: frontend
       - run: npm run build
         working-directory: frontend
-      - uses: actions/upload-pages-artifact@v3
+      - run: touch frontend/dist/.nojekyll
+      - uses: peaceiris/actions-gh-pages@v4
         with:
-          path: frontend/dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: frontend/dist
+          force_orphan: true
