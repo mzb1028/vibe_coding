@@ -63,8 +63,8 @@ equipment, sales (with units & channel), inventory counts, doors, orders,
 customers, complaints — and files each automatically (COGS / Distribution /
 OpEx / CapEx / Revenue / Inventory, owning department). derive.js then
 computes KPIs from the entries (gross margin, cash, burn, runway, landed
-cost/unit, freight & storage %% of revenue, CAC, marketing %% of revenue,
-payroll %%, inventory value, operational counts) and overrides the demo
+cost/unit, freight & storage % of revenue, CAC, marketing % of revenue,
+payroll %, inventory value, operational counts) and overrides the demo
 values — derived numbers show green, sourced "derived from your entries".
 Every department tracks 10+ factors (106 KPIs) and has an Active Projects
 board (seeded examples + your own) in its drill-down.
