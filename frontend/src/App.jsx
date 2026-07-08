@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   getCompany, getDepartments, getKpis, getCompetitors, CADENCES,
-  exportUserData, importUserData, clearUserData, countEntered
+  exportUserData, importUserData, clearUserData, entryCount
 } from "./data/index.js";
+import Projects from "./components/Projects.jsx";
 import Legend from "./components/Legend.jsx";
 import CadenceGroups from "./components/CadenceGroups.jsx";
 import CompetitorGrid from "./components/CompetitorGrid.jsx";
@@ -38,11 +39,6 @@ export default function App() {
       .catch((e) => setError(String(e)));
   }, [mode, dept, cadence, dataVersion]);
 
-  // full unfiltered company KPI list for the check-in form
-  const [allKpis, setAllKpis] = useState([]);
-  useEffect(() => {
-    if (checkin) getKpis({ mode: "company" }).then(setAllKpis).catch((e) => setError(String(e)));
-  }, [checkin, dataVersion]);
 
   const deptNames = useMemo(
     () => Object.fromEntries(departments.map((d) => [d.id, d.name])),
@@ -125,7 +121,7 @@ export default function App() {
             style={checkin ? {} : { borderColor: "#2a5a8a", color: "#7fb2ea" }}
             onClick={() => setCheckin(!checkin)}
           >
-            ✎ Check-in
+            ✎ Daily log
           </button>
         )}
         <span className="hspace" />
@@ -156,12 +152,8 @@ export default function App() {
       <main className="wrap">
         {checkin && mode === "company" ? (
           <CheckIn
-            kpis={allKpis}
-            deptNames={deptNames}
-            onDone={() => {
-              setCheckin(false);
-              setDataVersion((v) => v + 1);
-            }}
+            onDone={() => setDataVersion((v) => v + 1)}
+            onClose={() => { setCheckin(false); setDataVersion((v) => v + 1); }}
           />
         ) : mode === "overview" ? (
           <CourierOverview />
@@ -183,6 +175,7 @@ export default function App() {
               <h2>{deptNames[dept]}</h2>
               <span className="sub">grouped by cadence{cadence ? ` · filtered: ${cadence}` : ""}</span>
             </div>
+            <Projects deptId={dept} />
             <CadenceGroups kpis={kpis} deptNames={deptNames} />
           </>
         ) : (
@@ -215,7 +208,7 @@ export default function App() {
       </main>
 
       <footer className="foot">
-        CPG ENTERPRISE SYSTEM · company: Food Lube · base data: <span>{import.meta.env.VITE_DATA_SOURCE === "api" ? "API" : "demo"}</span> · {countEntered()} KPI{countEntered() === 1 ? "" : "s"} overridden by your check-ins (green · manual entry) · your entries stay in this browser — use ⭳ to back up · competitor values are directional demo estimates unless a public source is cited
+        CPG ENTERPRISE SYSTEM · company: Food Lube · base data: <span>{import.meta.env.VITE_DATA_SOURCE === "api" ? "API" : "demo"}</span> · {entryCount()} raw {entryCount() === 1 ? "entry" : "entries"} logged — KPIs computed from them show green ("derived from your entries") · your data stays in this browser, use ⭳ to back up · competitor values are directional demo estimates unless a public source is cited
       </footer>
     </>
   );

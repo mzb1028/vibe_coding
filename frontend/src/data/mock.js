@@ -1,11 +1,12 @@
 /**
- * MOCK PROVIDER — Phase 1.
+ * DEMO PROVIDER.
  * All seed data lives in ../../../shared/seed.json (the single source of
  * truth, also served by backend/main.py). Nothing is hardcoded here or in
- * any component; this module only filters the seed.
+ * any component; this module only filters the seed — and overlays KPIs
+ * that can be computed from the user's raw entries (derive.js).
  */
 import seed from "@shared/seed.json";
-import { applyOverlay } from "./userStore.js";
+import { deriveKpis, applyDerived } from "./derive.js";
 
 const clone = (x) => JSON.parse(JSON.stringify(x));
 
@@ -22,12 +23,17 @@ export async function getKpis({ mode = "company", department = null, cadence = n
   if (mode === "industry") rows = rows.filter((k) => k.scope === "E");
   if (department) rows = rows.filter((k) => k.department === department);
   if (cadence) rows = rows.filter((k) => k.cadence === cadence);
-  // User-submitted observations override mock values per KPI.
-  return clone(rows).map(applyOverlay);
+  // KPIs computable from the user's raw entries override demo values.
+  const derived = deriveKpis();
+  return clone(rows).map((k) => applyDerived(k, derived));
 }
 
 export async function getCourier() {
   return clone(seed.courier);
+}
+
+export async function getSeedProjects(deptId) {
+  return clone((seed.projects || {})[deptId] || []);
 }
 
 export async function getCompetitors() {

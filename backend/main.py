@@ -56,6 +56,12 @@ class MockProvider:
     def courier(self) -> dict:
         return self._seed["courier"]
 
+    def projects(self, department: Optional[str]) -> list:
+        allp = self._seed.get("projects", {})
+        if department:
+            return allp.get(department, [])
+        return allp
+
     def competitors(self) -> list:
         # Competitor cards are externally-observable [E] by construction;
         # enforce it anyway so a bad seed can never leak an [I] KPI.
@@ -114,3 +120,8 @@ def competitors():
 @app.get("/api/courier")
 def courier():
     return provider.courier()
+
+
+@app.get("/api/projects")
+def projects(department: Optional[str] = None):
+    return provider.projects(department)

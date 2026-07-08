@@ -1,12 +1,10 @@
 /**
- * DATA-SOURCE INTERFACE — the single swap point between MOCK and LIVE data.
+ * DATA-SOURCE INTERFACE — the single swap point between DEMO and LIVE data.
  * ==========================================================================
- * Every UI component fetches through these four functions and ONLY these:
+ * Every UI component fetches through these functions and ONLY these:
  *
- *   getCompany()                          -> { name, profile, revenueM, mode }
- *   getDepartments()                      -> [{ id, name }]
- *   getKpis({ mode, department, cadence }) -> [KPI]
- *   getCompetitors()                      -> [{ id, name, ownership, note, kpis: [KPI] }]
+ *   getCompany() / getDepartments() / getKpis({mode,department,cadence})
+ *   getCompetitors() / getCourier() / getSeedProjects(deptId)
  *
  * KPI shape (the data contract — identical in shared/seed.json and the API):
  *   { id, name, department, scope ("I"|"E"), cadence, value, unit,
@@ -17,12 +15,12 @@
  *   VITE_DATA_SOURCE=mock  (default) -> bundled shared/seed.json, zero network
  *   VITE_DATA_SOURCE=api             -> FastAPI backend (VITE_API_BASE)
  *
- * Phase 2/3: implement real fetchers inside api-provider (or new providers)
- * returning the same shapes. No component code changes.
+ * The user's RAW ENTRIES (entries.js) are aggregated by derive.js into
+ * KPIs, overriding demo values wherever real data exists. A LIVE backend
+ * can sync the same entry shapes to a database without UI changes.
  */
 import * as mock from "./mock.js";
 import * as api from "./api.js";
-import * as userStore from "./userStore.js";
 
 const SOURCE = import.meta.env.VITE_DATA_SOURCE === "api" ? api : mock;
 
@@ -31,19 +29,19 @@ export const getDepartments = (...a) => SOURCE.getDepartments(...a);
 export const getKpis = (...a) => SOURCE.getKpis(...a);
 export const getCompetitors = (...a) => SOURCE.getCompetitors(...a);
 export const getCourier = (...a) => SOURCE.getCourier(...a);
+export const getSeedProjects = (...a) => (SOURCE.getSeedProjects ? SOURCE.getSeedProjects(...a) : mock.getSeedProjects(...a));
 
-// User check-in submissions (real numbers overriding mock, per KPI).
-// Stored in the browser today; a LIVE provider can sync the same shape
-// to a database without touching UI code.
-export const submitObservations = userStore.submitObservations;
-export const exportUserData = userStore.exportUserData;
-export const importUserData = userStore.importUserData;
-export const clearUserData = userStore.clearUserData;
-export const countEntered = userStore.countEntered;
+// raw entries + user projects (browser-local; see entries.js)
+export {
+  ENTRY_KINDS, KIND, SALE_CHANNELS,
+  addEntry, deleteEntry, listEntries, entryCount,
+  userProjectsFor, addProject, deleteProject,
+  exportUserData, importUserData, clearUserData
+} from "./entries.js";
 
 export const CADENCES = ["daily", "weekly", "monthly", "quarterly", "annual"];
 export const CONFIDENCE = {
-  certain: { color: "var(--conf-certain)", label: "Certain", desc: "filing / ERP / public record" },
+  certain: { color: "var(--conf-certain)", label: "Certain", desc: "filing / ERP / your data" },
   likely: { color: "var(--conf-likely)", label: "Likely", desc: "strong inference" },
   guessing: { color: "var(--conf-guessing)", label: "Guessing", desc: "filled gap / demo estimate" }
 };
