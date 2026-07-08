@@ -44,7 +44,7 @@ export default function CourierOverview() {
         ))}
         <span className="hspace" />
         <span className="badge" style={{ color: "var(--conf-guessing)", borderColor: "rgba(208,59,59,.35)" }}>
-          ● all values mock — fictional demo profile
+          ● illustrative demo profile — not actual results
         </span>
       </div>
 

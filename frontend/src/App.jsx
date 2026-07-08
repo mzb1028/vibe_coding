@@ -215,7 +215,7 @@ export default function App() {
       </main>
 
       <footer className="foot">
-        CPG ENTERPRISE SYSTEM · company: Food Lube · base data: <span>{import.meta.env.VITE_DATA_SOURCE === "api" ? "API" : "mock"}</span> · {countEntered()} KPI{countEntered() === 1 ? "" : "s"} overridden by your check-ins (green · manual entry) · your entries stay in this browser — use ⭳ to back up · competitor values mock unless a public source is cited
+        CPG ENTERPRISE SYSTEM · company: Food Lube · base data: <span>{import.meta.env.VITE_DATA_SOURCE === "api" ? "API" : "demo"}</span> · {countEntered()} KPI{countEntered() === 1 ? "" : "s"} overridden by your check-ins (green · manual entry) · your entries stay in this browser — use ⭳ to back up · competitor values are directional demo estimates unless a public source is cited
       </footer>
     </>
   );
